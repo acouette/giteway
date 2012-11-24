@@ -11,15 +11,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
 @Component
-public class GitSearchConnectorImpl extends AbstractGitConnector implements GitSearchConnector{
+public class GitSearchConnectorImpl extends AbstractGitConnector implements GitSearchConnector {
 
 	@Autowired
 	public GitSearchConnectorImpl(RestOperations restOperations) {
 		super(restOperations);
 	}
 
-	static final String GET_REPOSITORIES_BY_KEYWORD = BASE_GITHUB_URL+"/legacy/repos/search/{keyword}";
-	
+	static final String GET_REPOSITORIES_BY_KEYWORD = BASE_GITHUB_URL + "/legacy/repos/search/{keyword}";
+
+	@Override
 	public List<RepositorySearch> searchRepositoryByKeyword(String keyword) {
 		return restOperations.getForObject(GET_REPOSITORIES_BY_KEYWORD, Repositories.class, keyword).getRepositories();
 	}

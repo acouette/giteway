@@ -6,14 +6,14 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Repository implements Serializable{
+public class Repository implements Serializable {
 
 	private User owner;
 
 	private String name;
-	
+
 	private String description;
-	
+
 	public User getOwner() {
 		return owner;
 	}
@@ -68,6 +68,5 @@ public class Repository implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }

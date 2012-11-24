@@ -7,5 +7,5 @@ import org.kwet.giteway.model.RepositorySearch;
 public interface GitSearchConnector {
 
 	List<RepositorySearch> searchRepositoryByKeyword(String keyword);
-	
+
 }

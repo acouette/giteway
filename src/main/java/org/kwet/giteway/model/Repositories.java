@@ -14,6 +14,4 @@ public class Repositories {
 		this.repositories = repositories;
 	}
 
-	
-
 }

@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
-public class CommitDetail implements Serializable{
+public class CommitDetail implements Serializable {
 
 	private String message;
 
@@ -17,7 +17,5 @@ public class CommitDetail implements Serializable{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-	
-	
+
 }

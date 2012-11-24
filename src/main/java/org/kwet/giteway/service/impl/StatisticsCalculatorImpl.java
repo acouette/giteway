@@ -19,6 +19,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		this.gitRepositoryConnector = gitRepositoryConnector;
 	}
 
+	@Override
 	public Map<User, Double> calculateActivity(Repository repository) {
 
 		if (repository == null) {
@@ -37,7 +38,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		for (Commit commit : commits) {
 			User committer = commit.getCommitter();
 			if (totalByUser.containsKey(committer)) {
-				totalByUser.put(committer, totalByUser.get(committer)+1);
+				totalByUser.put(committer, totalByUser.get(committer) + 1);
 			} else {
 				totalByUser.put(committer, 1);
 			}
