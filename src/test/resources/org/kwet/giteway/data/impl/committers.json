@@ -1,0 +1,34 @@
+[
+  {
+    "received_events_url": "https://api.github.com/users/cbeams/received_events",
+    "subscriptions_url": "https://api.github.com/users/cbeams/subscriptions",
+    "url": "https://api.github.com/users/cbeams",
+    "gravatar_id": "29490cd51d5a93b61cc946844f471589",
+    "starred_url": "https://api.github.com/users/cbeams/starred{/owner}{/repo}",
+    "avatar_url": "https://secure.gravatar.com/avatar/29490cd51d5a93b61cc946844f471589?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+    "repos_url": "https://api.github.com/users/cbeams/repos",
+    "organizations_url": "https://api.github.com/users/cbeams/orgs",
+    "followers_url": "https://api.github.com/users/cbeams/followers",
+    "events_url": "https://api.github.com/users/cbeams/events{/privacy}",
+    "gists_url": "https://api.github.com/users/cbeams/gists{/gist_id}",
+    "following_url": "https://api.github.com/users/cbeams/following",
+    "id": 301810,
+    "login": "cbeams"
+  },
+  {
+    "received_events_url": "https://api.github.com/users/costin/received_events",
+    "subscriptions_url": "https://api.github.com/users/costin/subscriptions",
+    "url": "https://api.github.com/users/costin",
+    "gravatar_id": "a8e46d03322bab9b73873a1305685660",
+    "starred_url": "https://api.github.com/users/costin/starred{/owner}{/repo}",
+    "avatar_url": "https://secure.gravatar.com/avatar/a8e46d03322bab9b73873a1305685660?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+    "repos_url": "https://api.github.com/users/costin/repos",
+    "organizations_url": "https://api.github.com/users/costin/orgs",
+    "followers_url": "https://api.github.com/users/costin/followers",
+    "events_url": "https://api.github.com/users/costin/events{/privacy}",
+    "gists_url": "https://api.github.com/users/costin/gists{/gist_id}",
+    "following_url": "https://api.github.com/users/costin/following",
+    "id": 76245,
+    "login": "costin"
+  }
+]

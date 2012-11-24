@@ -1,0 +1,22 @@
+{
+  "repositories": [
+    {
+      "type": "repo",
+      "followers": 55,
+      "created_at": "2011-03-14T23:08:39-07:00",
+      "watchers": 55,
+      "owner": "feliperazeek",
+      "pushed_at": "2012-09-04T10:32:05-07:00",
+      "description": "Integrate Elastic Search in a Play! Framework Application.",
+      "forks": 24,
+      "fork": false,
+      "size": 152,
+      "created": "2011-03-14T23:08:39-07:00",
+      "language": "JavaScript",
+      "name": "playframework-elasticsearch",
+      "private": false,
+      "pushed": "2012-09-04T10:32:05-07:00",
+      "username": "feliperazeek"
+    }
+  ]
+}
