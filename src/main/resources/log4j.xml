@@ -11,8 +11,8 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="org.ket.giteway">
-		<level value="info" />
+	<logger name="org.kwet.giteway">
+		<level value="debug" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

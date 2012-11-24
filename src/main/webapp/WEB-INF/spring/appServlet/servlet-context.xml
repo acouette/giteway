@@ -24,5 +24,8 @@
 	<context:component-scan base-package="org.kwet.giteway.controller" />
 	
 	
+	<!-- Forwards requests to the "/" resource to the "welcome" view -->
+	<view-controller path="/" view-name="home" />
+	
 	
 </beans:beans>

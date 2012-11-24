@@ -16,17 +16,24 @@ public class LogAdvice {
 	@Around("execution(* org.kwet.giteway..*.*(..))")
 	public Object logAroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		if (log.isDebugEnabled()) {
-			log.debug("BEGIN : " + pjp.getSignature().toShortString() + (pjp.getArgs() != null ? " " + pjp.getArgs() : ""));
-		} else if (log.isInfoEnabled()) {
-			log.info("BEGIN : " + pjp.getSignature().toString());
+		if(log.isDebugEnabled()){
+			StringBuilder methodDesc = new StringBuilder(pjp.getSignature().toShortString());
+			if(log.isDebugEnabled()){
+				methodDesc.append(" args : [");
+				for (Object obj : pjp.getArgs()) {
+					methodDesc.append(" ").append(obj.toString());
+				}
+				methodDesc.append(" ]");
+			}
+			log.debug("BEGIN : " + methodDesc.toString());
 		}
+
 		Object retVal = pjp.proceed();
-		if (log.isDebugEnabled()) {
-			log.debug("END : " + pjp.getSignature().toString());
-		} else if (log.isInfoEnabled()) {
-			log.info("END : " + pjp.getSignature().toString());
+		
+		if(log.isDebugEnabled()){
+			log.debug("END : " + pjp.getSignature().toShortString());
 		}
+		
 		return retVal;
 	}
 }
