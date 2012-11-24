@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Committer implements Serializable {
+public class User implements Serializable {
 
 	private long id;
 
@@ -42,7 +42,7 @@ public class Committer implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Committer [id=" + id + ", login=" + login + "]";
+		return "User [id=" + id + ", login=" + login + "]";
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Committer implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Committer other = (Committer) obj;
+		User other = (User) obj;
 		if (id != other.id)
 			return false;
 		return true;

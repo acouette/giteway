@@ -1,0 +1,125 @@
+[
+  {
+    "sha": "2d8bacace71a30e33a1d582a83b981b8629b867b",
+    "url": "https://api.github.com/repos/SpringSource/spring-framework/commits/2d8bacace71a30e33a1d582a83b981b8629b867b",
+    "parents": [
+      {
+        "sha": "e3681c107dab0e5a136241069bd833087d2df76e",
+        "url": "https://api.github.com/repos/SpringSource/spring-framework/commits/e3681c107dab0e5a136241069bd833087d2df76e"
+      }
+    ],
+    "commit": {
+      "tree": {
+        "sha": "4fd25bd8ef2f46f4800cd6527712e9db7c292bd6",
+        "url": "https://api.github.com/repos/SpringSource/spring-framework/git/trees/4fd25bd8ef2f46f4800cd6527712e9db7c292bd6"
+      },
+      "comment_count": 0,
+      "message": "Set the ApplicationContext prop of ExceptionResolver...",
+      "author": {
+        "date": "2012-11-23T20:12:52Z",
+        "email": "rstoyanchev@vmware.com",
+        "name": "Rossen Stoyanchev"
+      },
+      "committer": {
+        "date": "2012-11-23T20:12:52Z",
+        "email": "rstoyanchev@vmware.com",
+        "name": "Rossen Stoyanchev"
+      }
+    },
+    "author": {
+      "gists_url": "https://api.github.com/users/rstoyanchev/gists{/gist_id}",
+      "following_url": "https://api.github.com/users/rstoyanchev/following",
+      "gravatar_id": "58f09866bb6943801d1349742bd8bb73",
+      "events_url": "https://api.github.com/users/rstoyanchev/events{/privacy}",
+      "repos_url": "https://api.github.com/users/rstoyanchev/repos",
+      "subscriptions_url": "https://api.github.com/users/rstoyanchev/subscriptions",
+      "received_events_url": "https://api.github.com/users/rstoyanchev/received_events",
+      "starred_url": "https://api.github.com/users/rstoyanchev/starred{/owner}{/repo}",
+      "url": "https://api.github.com/users/rstoyanchev",
+      "avatar_url": "https://secure.gravatar.com/avatar/58f09866bb6943801d1349742bd8bb73?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "organizations_url": "https://api.github.com/users/rstoyanchev/orgs",
+      "id": 401908,
+      "followers_url": "https://api.github.com/users/rstoyanchev/followers",
+      "login": "rstoyanchev"
+    },
+    "comments_url": "https://api.github.com/repos/SpringSource/spring-framework/commits/2d8bacace71a30e33a1d582a83b981b8629b867b/comments",
+    "committer": {
+      "gists_url": "https://api.github.com/users/rstoyanchev/gists{/gist_id}",
+      "following_url": "https://api.github.com/users/rstoyanchev/following",
+      "gravatar_id": "58f09866bb6943801d1349742bd8bb73",
+      "events_url": "https://api.github.com/users/rstoyanchev/events{/privacy}",
+      "repos_url": "https://api.github.com/users/rstoyanchev/repos",
+      "subscriptions_url": "https://api.github.com/users/rstoyanchev/subscriptions",
+      "received_events_url": "https://api.github.com/users/rstoyanchev/received_events",
+      "starred_url": "https://api.github.com/users/rstoyanchev/starred{/owner}{/repo}",
+      "url": "https://api.github.com/users/rstoyanchev",
+      "avatar_url": "https://secure.gravatar.com/avatar/58f09866bb6943801d1349742bd8bb73?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "organizations_url": "https://api.github.com/users/rstoyanchev/orgs",
+      "id": 401908,
+      "followers_url": "https://api.github.com/users/rstoyanchev/followers",
+      "login": "rstoyanchev"
+    }
+  },
+  {
+    "sha": "e3681c107dab0e5a136241069bd833087d2df76e",
+    "url": "https://api.github.com/repos/SpringSource/spring-framework/commits/e3681c107dab0e5a136241069bd833087d2df76e",
+    "parents": [
+      {
+        "sha": "631f24bb3284883f79cfde3d14676e5706a3ccfa",
+        "url": "https://api.github.com/repos/SpringSource/spring-framework/commits/631f24bb3284883f79cfde3d14676e5706a3ccfa"
+      }
+    ],
+    "commit": {
+      "tree": {
+        "sha": "c09fce87a6d7b942bd342571401ef62ddcc5c7e7",
+        "url": "https://api.github.com/repos/SpringSource/spring-framework/git/trees/c09fce87a6d7b942bd342571401ef62ddcc5c7e7"
+      },
+      "comment_count": 0,
+      "message": "Set response to 503 for async requests that time out\n\nIssue: SPR-10002",
+      "url": "https://api.github.com/repos/SpringSource/spring-framework/git/commits/e3681c107dab0e5a136241069bd833087d2df76e",
+      "author": {
+        "date": "2012-11-22T20:37:17Z",
+        "email": "rstoyanchev@vmware.com",
+        "name": "Rossen Stoyanchev"
+      },
+      "committer": {
+        "date": "2012-11-22T20:39:22Z",
+        "email": "rstoyanchev@vmware.com",
+        "name": "Rossen Stoyanchev"
+      }
+    },
+    "author": {
+      "gists_url": "https://api.github.com/users/rstoyanchev/gists{/gist_id}",
+      "following_url": "https://api.github.com/users/rstoyanchev/following",
+      "gravatar_id": "58f09866bb6943801d1349742bd8bb73",
+      "events_url": "https://api.github.com/users/rstoyanchev/events{/privacy}",
+      "repos_url": "https://api.github.com/users/rstoyanchev/repos",
+      "subscriptions_url": "https://api.github.com/users/rstoyanchev/subscriptions",
+      "received_events_url": "https://api.github.com/users/rstoyanchev/received_events",
+      "starred_url": "https://api.github.com/users/rstoyanchev/starred{/owner}{/repo}",
+      "url": "https://api.github.com/users/rstoyanchev",
+      "avatar_url": "https://secure.gravatar.com/avatar/58f09866bb6943801d1349742bd8bb73?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "organizations_url": "https://api.github.com/users/rstoyanchev/orgs",
+      "id": 401908,
+      "followers_url": "https://api.github.com/users/rstoyanchev/followers",
+      "login": "rstoyanchev"
+    },
+    "comments_url": "https://api.github.com/repos/SpringSource/spring-framework/commits/e3681c107dab0e5a136241069bd833087d2df76e/comments",
+    "committer": {
+      "gists_url": "https://api.github.com/users/rstoyanchev/gists{/gist_id}",
+      "following_url": "https://api.github.com/users/rstoyanchev/following",
+      "gravatar_id": "58f09866bb6943801d1349742bd8bb73",
+      "events_url": "https://api.github.com/users/rstoyanchev/events{/privacy}",
+      "repos_url": "https://api.github.com/users/rstoyanchev/repos",
+      "subscriptions_url": "https://api.github.com/users/rstoyanchev/subscriptions",
+      "received_events_url": "https://api.github.com/users/rstoyanchev/received_events",
+      "starred_url": "https://api.github.com/users/rstoyanchev/starred{/owner}{/repo}",
+      "url": "https://api.github.com/users/rstoyanchev",
+      "avatar_url": "https://secure.gravatar.com/avatar/58f09866bb6943801d1349742bd8bb73?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
+      "organizations_url": "https://api.github.com/users/rstoyanchev/orgs",
+      "id": 401908,
+      "followers_url": "https://api.github.com/users/rstoyanchev/followers",
+      "login": "rstoyanchev"
+    }
+  }
+]

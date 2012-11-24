@@ -4,14 +4,16 @@ import java.util.List;
 
 public class Repositories {
 
-	private List<Repository> repositories;
+	private List<RepositorySearch> repositories;
 
-	public List<Repository> getRepositories() {
+	public List<RepositorySearch> getRepositories() {
 		return repositories;
 	}
 
-	public void setRepository(List<Repository> repositories) {
+	public void setRepositories(List<RepositorySearch> repositories) {
 		this.repositories = repositories;
 	}
+
+	
 
 }
