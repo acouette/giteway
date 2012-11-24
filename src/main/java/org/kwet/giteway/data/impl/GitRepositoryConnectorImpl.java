@@ -24,17 +24,23 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 	
 	static final String GET_COLLABORATORS = GET_REPOSITORY+"/collaborators";
 	
-	static final String GET_COMMITS = GET_REPOSITORY+"/commits";
+	static final String GET_COMMITS = GET_REPOSITORY+"/commits?page=1&per_page=100";
 
 	public Repository find(String owner, String name) {
 		return restOperations.getForObject(GET_REPOSITORY,Repository.class,owner,name);
 	}
 	
 	public List<User> findCollaborators(Repository repository) {
+		if(repository==null){
+			throw new IllegalArgumentException("repository can not be null !");
+		}
 		return Arrays.asList(restOperations.getForObject(GET_COLLABORATORS, User[].class, repository.getOwner().getLogin(),repository.getName()));
 	}
 
 	public List<Commit> findCommits(Repository repository) {
+		if(repository==null){
+			throw new IllegalArgumentException("repository can not be null !");
+		}
 		return Arrays.asList(restOperations.getForObject(GET_COMMITS, Commit[].class, repository.getOwner().getLogin(),repository.getName()));
 	}
 	

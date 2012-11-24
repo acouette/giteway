@@ -31,4 +31,11 @@ public class Commit implements Serializable{
 		return null;
 	}
 	
+	public void setMessage(String message){
+		if(commit == null){
+			commit = new CommitDetail();
+		}
+		commit.setMessage(message);
+	}
+	
 }

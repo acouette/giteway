@@ -6,10 +6,14 @@ import org.kwet.giteway.data.AbstractGitConnector;
 import org.kwet.giteway.data.GitSearchConnector;
 import org.kwet.giteway.model.Repositories;
 import org.kwet.giteway.model.RepositorySearch;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestOperations;
 
+@Component
 public class GitSearchConnectorImpl extends AbstractGitConnector implements GitSearchConnector{
 
+	@Autowired
 	public GitSearchConnectorImpl(RestOperations restOperations) {
 		super(restOperations);
 	}
