@@ -9,6 +9,8 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class CommitDetail implements Serializable {
 
 	private String message;
+	
+	private Commiter committer;
 
 	public String getMessage() {
 		return message;
@@ -17,5 +19,15 @@ public class CommitDetail implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public Commiter getCommitter() {
+		return committer;
+	}
+
+	public void setCommitter(Commiter committer) {
+		this.committer = committer;
+	}
+	
+	
 
 }

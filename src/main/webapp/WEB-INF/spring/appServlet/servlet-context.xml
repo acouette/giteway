@@ -25,7 +25,7 @@
 	
 	
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
-	<view-controller path="/" view-name="home" />
+	<view-controller path="/" view-name="search" />
 	
 	
 </beans:beans>

@@ -86,9 +86,10 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		Commit commit = commits.get(0);
 		assertEquals("Set the ApplicationContext prop of ExceptionResolver...", commit.getMessage());
 		assertNotNull(commit.getCommitter());
-
 		assertEquals("rstoyanchev", commit.getCommitter().getLogin());
 		assertEquals(401908, commit.getCommitter().getId());
+		assertEquals(1353701572000L,commit.getDate().getTime());
+		
 	}
 
 	private List<Commit> findCommits(String responseFile) {

@@ -8,7 +8,7 @@ import org.kwet.giteway.model.User;
 
 public interface GitRepositoryConnector {
 
-	Repository find(String name, String owner);
+	Repository find(String owner, String name);
 
 	List<User> findCollaborators(Repository repository);
 
