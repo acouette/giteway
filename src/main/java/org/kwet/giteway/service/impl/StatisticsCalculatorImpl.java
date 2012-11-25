@@ -32,7 +32,11 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 
 		Map<String, Integer> totalByUser = new HashMap<>();
 		for (Commit commit : commits) {
+			if(commit.getCommitter()==null){
+				continue;
+			}
 			String login = commit.getCommitter().getLogin();
+			
 			if (totalByUser.containsKey(login)) {
 				totalByUser.put(login, totalByUser.get(login) + 1);
 			} else {
