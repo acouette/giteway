@@ -1,12 +1,14 @@
-package org.kwet.giteway.data.impl;
+package org.kwet.giteway.github.impl;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kwet.giteway.data.GitRepositoryConnector;
+import org.kwet.giteway.github.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
@@ -30,7 +32,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		restTemplate = new RestTemplate();
-		gitRepositoryConnector = new GitRepositoryConnectorImpl(restTemplate);
+		//gitRepositoryConnector = new GitRepositoryConnectorImpl(restTemplate);
 	}
 
 	@Test

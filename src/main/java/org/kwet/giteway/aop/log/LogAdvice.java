@@ -1,5 +1,7 @@
 package org.kwet.giteway.aop.log;
 
+import java.util.Date;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,24 +18,20 @@ public class LogAdvice {
 	@Around("execution(* org.kwet.giteway..*.*(..))")
 	public Object logAroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
+		
+		
 		if(log.isDebugEnabled()){
+			long start = new Date().getTime();
 			StringBuilder methodDesc = new StringBuilder(pjp.getSignature().toShortString());
-			if(log.isDebugEnabled()){
-				methodDesc.append(" args : [");
-				for (Object obj : pjp.getArgs()) {
-					methodDesc.append(" ").append(obj.toString());
-				}
-				methodDesc.append(" ]");
-			}
 			log.debug("BEGIN : " + methodDesc.toString());
+			Object retVal = pjp.proceed();
+			long stop = new Date().getTime();
+			log.debug("END : " + pjp.getSignature().toShortString()+" - time : "+(stop-start));
+			return retVal;
+		}else{
+			return pjp.proceed();
 		}
-
-		Object retVal = pjp.proceed();
 		
-		if(log.isDebugEnabled()){
-			log.debug("END : " + pjp.getSignature().toShortString());
-		}
 		
-		return retVal;
 	}
 }

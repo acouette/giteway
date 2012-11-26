@@ -7,7 +7,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.kwet.giteway.data.GitRepositoryConnector;
+import org.kwet.giteway.github.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.CommitterActivity;
 import org.kwet.giteway.model.Repository;
@@ -51,9 +51,10 @@ public class RepositoryController {
 		List<User> collaborators = gitRepositoryConnector.findCollaborators(repository);
 		model.addAttribute("collaborators",collaborators);
 		
+
+		List<Commit> commits = gitRepositoryConnector.findCommits(repository);
 		
 		//Timeline
-		List<Commit> commits = gitRepositoryConnector.findCommits(repository);
 		List<TimelineData> timelineDatas = statisticsCalculator.getTimeLine(commits);
 		ObjectMapper objectMapper = new ObjectMapper();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

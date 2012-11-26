@@ -5,9 +5,9 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
-public class Commiter implements Serializable{
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Commiter implements Serializable {
 
 	private Date date;
 
@@ -18,7 +18,5 @@ public class Commiter implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
-	
-	
+
 }

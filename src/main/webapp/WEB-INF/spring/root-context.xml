@@ -6,7 +6,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<import resource="classpath:/META-INF/spring/app-context-aop.xml"/>
-	<import resource="classpath:/META-INF/spring/app-context-data.xml"/>
+	<import resource="classpath:/META-INF/spring/app-context-github.xml"/>
 	<import resource="classpath:/META-INF/spring/app-context-service.xml"/>
 	
 </beans>

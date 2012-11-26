@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommitDetail implements Serializable {
 
 	private String message;
-	
+
 	private Commiter committer;
 
 	public String getMessage() {
@@ -27,7 +27,5 @@ public class CommitDetail implements Serializable {
 	public void setCommitter(Commiter committer) {
 		this.committer = committer;
 	}
-	
-	
 
 }

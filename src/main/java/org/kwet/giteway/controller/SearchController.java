@@ -2,7 +2,7 @@ package org.kwet.giteway.controller;
 
 import java.util.List;
 
-import org.kwet.giteway.data.GitSearchConnector;
+import org.kwet.giteway.github.GitSearchConnector;
 import org.kwet.giteway.model.RepositorySearch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

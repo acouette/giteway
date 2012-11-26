@@ -1,11 +1,14 @@
-package org.kwet.giteway.data.impl;
+package org.kwet.giteway.github.impl;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.kwet.giteway.data.GitSearchConnector;
+import org.kwet.giteway.github.GitSearchConnector;
 import org.kwet.giteway.model.RepositorySearch;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.client.RestTemplate;
@@ -17,7 +20,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		restTemplate = new RestTemplate();
-		gitSearchConnector = new GitSearchConnectorImpl(restTemplate);
+		//gitSearchConnector = new GitSearchConnectorImpl(restTemplate);
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package org.kwet.giteway.data.impl;
+package org.kwet.giteway.github.impl;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.test.web.client.RequestMatchers.method;

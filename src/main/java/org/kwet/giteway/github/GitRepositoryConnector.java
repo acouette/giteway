@@ -1,4 +1,4 @@
-package org.kwet.giteway.data;
+package org.kwet.giteway.github;
 
 import java.util.List;
 
