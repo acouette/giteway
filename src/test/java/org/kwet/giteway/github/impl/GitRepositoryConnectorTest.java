@@ -32,7 +32,8 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		restTemplate = new RestTemplate();
-		//gitRepositoryConnector = new GitRepositoryConnectorImpl(restTemplate);
+		// gitRepositoryConnector = new
+		// GitRepositoryConnectorImpl(restTemplate);
 	}
 
 	@Test
@@ -90,8 +91,8 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		assertNotNull(commit.getCommitter());
 		assertEquals("rstoyanchev", commit.getCommitter().getLogin());
 		assertEquals(401908, commit.getCommitter().getId());
-		assertEquals(1353701572000L,commit.getDate().getTime());
-		
+		assertEquals(1353701572000L, commit.getDate().getTime());
+
 	}
 
 	private List<Commit> findCommits(String responseFile) {

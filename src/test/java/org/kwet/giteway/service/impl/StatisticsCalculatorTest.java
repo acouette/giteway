@@ -14,9 +14,7 @@ import org.kwet.giteway.model.CommitterActivity;
 import org.kwet.giteway.model.TimelineData;
 import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.StatisticsCalculator;
-import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration
 public class StatisticsCalculatorTest {
 
 	private static List<Commit> commits;
@@ -24,9 +22,9 @@ public class StatisticsCalculatorTest {
 	private static User user1;
 
 	private static User user2;
-	
+
 	private static StatisticsCalculator statisticsCalculator = new StatisticsCalculatorImpl();
-	
+
 	@BeforeClass
 	public static void beforeClass() {
 
@@ -68,9 +66,9 @@ public class StatisticsCalculatorTest {
 
 	@Test
 	public void testCalculateActivity() {
-		
+
 		List<CommitterActivity> committerActivity = statisticsCalculator.calculateActivity(commits);
-		
+
 		assertNotNull(committerActivity);
 		assertEquals(2, committerActivity.size());
 		assertEquals(user2.getLogin(), committerActivity.get(0).getLogin());
@@ -78,12 +76,12 @@ public class StatisticsCalculatorTest {
 		assertEquals(user1.getLogin(), committerActivity.get(1).getLogin());
 		assertEquals(75, committerActivity.get(1).getPercentage());
 	}
-	
+
 	@Test
-	public void testGetTimeLine(){
-		
-		List<TimelineData> timeLine = statisticsCalculator.getTimeLine(commits,10);
-		
+	public void testGetTimeLine() {
+
+		List<TimelineData> timeLine = statisticsCalculator.getTimeLine(commits, 10);
+
 		assertNotNull(timeLine);
 		assertEquals(10, timeLine.size());
 		assertEquals(2, timeLine.get(0).getCommits());

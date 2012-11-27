@@ -34,43 +34,42 @@ public class RepositoryController {
 
 	@Autowired
 	private GitRepositoryConnector gitRepositoryConnector;
-	
+
 	@Autowired
 	private StatisticsCalculator statisticsCalculator;
-	
-	
+
 	@RequestMapping(value = "/{owner}/{name}", method = RequestMethod.GET)
-	public String home(Model model, @PathVariable String owner, @PathVariable String name) throws JsonGenerationException, JsonMappingException, IOException {
-		
-		
-		//Repository
-		Repository repository = gitRepositoryConnector.find(owner,name);
-		model.addAttribute("repository",repository);
-		
-		//Collaborators
+	public String home(Model model, @PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
+			JsonMappingException, IOException {
+
+		// Repository
+		Repository repository = gitRepositoryConnector.find(owner, name);
+		model.addAttribute("repository", repository);
+
+		// Collaborators
 		List<User> collaborators = gitRepositoryConnector.findCollaborators(repository);
-		model.addAttribute("collaborators",collaborators);
-		
+		model.addAttribute("collaborators", collaborators);
 
 		List<Commit> commits = gitRepositoryConnector.findCommits(repository);
-		
-		//Timeline
+
+		// Timeline
 		List<TimelineData> timelineDatas = statisticsCalculator.getTimeLine(commits);
 		ObjectMapper objectMapper = new ObjectMapper();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		objectMapper.writeValue(outputStream, timelineDatas);
 		String timelineJson = new String(outputStream.toByteArray());
-		model.addAttribute("timelineData",timelineJson);
-		logger.debug("timelineJson : "+timelineJson);
-		
-		//Committers activity
+		model.addAttribute("timelineData", timelineJson);
+		logger.debug("timelineJson : " + timelineJson);
+
+		// Committers activity
 		List<CommitterActivity> committerActivities = statisticsCalculator.calculateActivity(commits);
+		statisticsCalculator.concatLittleCommiters(committerActivities);
 		outputStream = new ByteArrayOutputStream();
 		objectMapper.writeValue(outputStream, committerActivities);
 		String committerActivityJson = new String(outputStream.toByteArray());
-		model.addAttribute("committerActivities",committerActivityJson);
-		logger.debug("committerActivityJson : "+committerActivityJson);
-		
+		model.addAttribute("committerActivities", committerActivityJson);
+		logger.debug("committerActivityJson : " + committerActivityJson);
+
 		return "repository";
 	}
 

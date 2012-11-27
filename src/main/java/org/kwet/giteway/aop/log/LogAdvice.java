@@ -18,20 +18,17 @@ public class LogAdvice {
 	@Around("execution(* org.kwet.giteway..*.*(..))")
 	public Object logAroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		
-		
-		if(log.isDebugEnabled()){
+		if (log.isDebugEnabled()) {
 			long start = new Date().getTime();
 			StringBuilder methodDesc = new StringBuilder(pjp.getSignature().toShortString());
 			log.debug("BEGIN : " + methodDesc.toString());
 			Object retVal = pjp.proceed();
 			long stop = new Date().getTime();
-			log.debug("END : " + pjp.getSignature().toShortString()+" - time : "+(stop-start));
+			log.debug("END : " + pjp.getSignature().toShortString() + " - time : " + (stop - start));
 			return retVal;
-		}else{
+		} else {
 			return pjp.proceed();
 		}
-		
-		
+
 	}
 }

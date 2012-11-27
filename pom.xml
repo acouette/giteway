@@ -15,21 +15,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>org.springframework.maven.milestone</id>
-			<name>Maven Central Compatible Spring Milestone Repository</name>
-			<url>http://repo.springsource.org/libs-milestone/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-
-	</repositories>
-
 	<dependencies>
 
 		<!-- Spring -->
@@ -57,13 +42,13 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
@@ -162,25 +147,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test-mvc</artifactId>
-			<version>1.0.0.M1</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.springframework.social</groupId>
-		    <artifactId>spring-social-core</artifactId>
-		    <version>1.0.2.RELEASE</version>
-		</dependency> 
-		
-		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.2.1</version>
 		</dependency>
-            
-
 
 		<dependency>
 			<groupId>com.googlecode.lambdaj</groupId>
@@ -224,17 +194,17 @@
 					<mainClass>org.test.int1.Main</mainClass>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
-			        <groupId>org.mortbay.jetty</groupId>
-			        <artifactId>maven-jetty-plugin</artifactId>
-			        <version>6.1.10</version>
-			        <configuration>
-			          <stopPort>9966</stopPort>
-			          <stopKey>foo</stopKey>
-			        </configuration>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.10</version>
+				<configuration>
+					<stopPort>9966</stopPort>
+					<stopKey>foo</stopKey>
+				</configuration>
 			</plugin>
 		</plugins>
-		
+
 	</build>
 </project>

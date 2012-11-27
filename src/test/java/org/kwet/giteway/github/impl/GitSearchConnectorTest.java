@@ -20,7 +20,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		restTemplate = new RestTemplate();
-		//gitSearchConnector = new GitSearchConnectorImpl(restTemplate);
+		// gitSearchConnector = new GitSearchConnectorImpl(restTemplate);
 	}
 
 	@Test

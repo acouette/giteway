@@ -38,13 +38,13 @@ public class Commit implements Serializable, Comparable<Commit> {
 		}
 		commit.setMessage(message);
 	}
-	
-	public Date getDate(){
+
+	public Date getDate() {
 		return commit.getCommitter().getDate();
 	}
-	
-	public void setDate(Date date){
-		
+
+	public void setDate(Date date) {
+
 		if (commit == null) {
 			commit = new CommitDetail();
 		}
@@ -58,11 +58,5 @@ public class Commit implements Serializable, Comparable<Commit> {
 	public int compareTo(Commit o) {
 		return this.getDate().compareTo(o.getDate());
 	}
-	
-	
-	
-	
-	
-	
 
 }

@@ -28,6 +28,4 @@ public class GithubRequestException extends RuntimeException {
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
 }

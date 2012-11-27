@@ -3,10 +3,10 @@ package org.kwet.giteway.model;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class CommitterActivity implements Serializable{
+public class CommitterActivity implements Serializable {
 
 	private String login;
-	
+
 	private int percentage;
 
 	public String getLogin() {
@@ -35,7 +35,5 @@ public class CommitterActivity implements Serializable{
 	public String toString() {
 		return "CommitterActivity [login=" + login + ", percentage=" + percentage + "]";
 	}
-	
-	
-	
+
 }

@@ -32,11 +32,11 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 
 		Map<String, Integer> totalByUser = new HashMap<>();
 		for (Commit commit : commits) {
-			if(commit.getCommitter()==null){
+			if (commit.getCommitter() == null) {
 				continue;
 			}
 			String login = commit.getCommitter().getLogin();
-			
+
 			if (totalByUser.containsKey(login)) {
 				totalByUser.put(login, totalByUser.get(login) + 1);
 			} else {
@@ -96,6 +96,27 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		}
 
 		return results;
+	}
+
+	@Override
+	public void concatLittleCommiters(List<CommitterActivity> committerActivities) {
+		List<CommitterActivity> littleCommiters = filter(having(on(CommitterActivity.class).getPercentage(), lessThan(3)),
+				committerActivities);
+
+		if (littleCommiters.size() < 2) {
+			return;
+		}
+
+		committerActivities.removeAll(littleCommiters);
+
+		int otherPercentage = 0;
+
+		for (CommitterActivity committerActivity : littleCommiters) {
+			otherPercentage += committerActivity.getPercentage();
+		}
+
+		CommitterActivity other = new CommitterActivity("others", otherPercentage);
+		committerActivities.add(other);
 	}
 
 }
