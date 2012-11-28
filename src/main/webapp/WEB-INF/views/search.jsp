@@ -5,12 +5,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<title>Giteway</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/style.css" />
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.watermark.min.js"></script>
 		<script type="text/javascript">
 		
 		$(document).ready(function(){
@@ -31,13 +31,15 @@
 				}
 			});
 			
-			$('#extraresults').hide();
+			$('.hidable').hide();
+			$('#keyword').watermark('Search a git repository');
 			
 		});
 		
-		function toggleExtra(){
-			$("#extraresults").fadeToggle();
-		}
+		var showExtra = function(){
+			$('.hidable').show();
+			$('#extralink').hide();
+		};
 		
 		</script>
 	</head>
@@ -68,8 +70,10 @@
 								<th style="width: 25%">Username</th>
 								<th style="width: 50%">Description</th>
 							</tr>
-							<c:forEach var="repository" items="${repositories}" end="9">
-								<tr id="${repository.name}${repository.username}">
+							<c:forEach var="repository" items="${repositories}" varStatus="status">
+								<tr
+								<c:if test="${ status.index > 9}">
+											class="hidable"</c:if>>
 									<td><a href="${pageContext.request.contextPath}/repository/${repository.username}/${repository.name}">${repository.name}</a></td>
 									<td>${repository.username}</td>
 									<td>${repository.description}</td>
@@ -78,17 +82,8 @@
 						</table>
 						<c:if test="${ fn:length(repositories) >10}">
 							<div>
-								<a href="javascript:toggleExtra()" id="extralink">see more results...</a>
+								<a href="javascript:showExtra()" id="extralink">see more results...</a>
 							</div>
-							<table id="extraresults" class="searchTable">
-								<c:forEach var="repository" items="${repositories}" begin="10">
-									<tr id="${repository.name}${repository.username}">
-										<td style="width: 25%"><a href="${pageContext.request.contextPath}/repository/${repository.username}/${repository.name}">${repository.name}</a></td>
-										<td style="width: 25%">${repository.username}</td>
-										<td style="width: 50%">${repository.description}</td>
-									</tr>
-								</c:forEach>
-							</table>
 						</c:if>
 					</div>
 				</c:if>

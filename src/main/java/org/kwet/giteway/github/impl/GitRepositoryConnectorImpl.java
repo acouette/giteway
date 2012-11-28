@@ -27,25 +27,23 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 	}
 
 	@Override
-	public List<User> findCollaborators(Repository repository) {
-		checkRepository(repository);
-		return Arrays.asList(gitHttpClient.executeRequest(GET_COLLABORATORS, User[].class, repository.getOwner().getLogin(),
-				repository.getName()));
+	public List<User> findCollaborators(String owner, String name) {
+		checkRepository(owner, name);
+		return Arrays.asList(gitHttpClient.executeRequest(GET_COLLABORATORS, User[].class, owner, name));
 	}
 
 	@Override
-	public List<Commit> findCommits(Repository repository) {
-		checkRepository(repository);
-		return Arrays.asList(gitHttpClient.executeRequest(GET_COMMITS, Commit[].class, repository.getOwner().getLogin(),
-				repository.getName()));
+	public List<Commit> findCommits(String owner, String name) {
+		checkRepository(owner, name);
+		return Arrays.asList(gitHttpClient.executeRequest(GET_COMMITS, Commit[].class, owner, name));
 	}
 
-	private void checkRepository(Repository repository) {
-		if (repository == null) {
-			throw new IllegalArgumentException("Repository can not be null !");
+	private void checkRepository(String owner, String name) {
+		if (owner == null) {
+			throw new IllegalArgumentException("owner can not be null !");
 		}
-		if (repository.getOwner() == null) {
-			throw new IllegalArgumentException("Owner can not be null !");
+		if (name == null) {
+			throw new IllegalArgumentException("name can not be null !");
 		}
 	}
 }

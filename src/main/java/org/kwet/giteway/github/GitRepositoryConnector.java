@@ -10,7 +10,7 @@ public interface GitRepositoryConnector {
 
 	Repository find(String owner, String name);
 
-	List<User> findCollaborators(Repository repository);
+	List<User> findCollaborators(String owner, String name);
 
-	List<Commit> findCommits(Repository repository);
+	List<Commit> findCommits(String owner, String name);
 }

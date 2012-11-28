@@ -1,4 +1,4 @@
-package org.kwet.giteway.utils;
+package org.kwet.giteway.http;
 
 public interface GitHttpClient {
 

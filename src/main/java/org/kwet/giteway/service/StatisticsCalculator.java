@@ -9,8 +9,6 @@ import org.kwet.giteway.model.TimelineData;
 public interface StatisticsCalculator {
 
 	List<CommitterActivity> calculateActivity(List<Commit> commits);
-	
-	void concatLittleCommiters(List<CommitterActivity> committerActivities);
 
 	List<TimelineData> getTimeLine(List<Commit> commits);
 

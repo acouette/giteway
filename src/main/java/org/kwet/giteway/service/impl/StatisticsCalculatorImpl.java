@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.lessThan;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +31,13 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 			return committerActivities;
 		}
 
+		double validCommits = 0;
 		Map<String, Integer> totalByUser = new HashMap<>();
 		for (Commit commit : commits) {
 			if (commit.getCommitter() == null) {
 				continue;
 			}
+			validCommits++;
 			String login = commit.getCommitter().getLogin();
 
 			if (totalByUser.containsKey(login)) {
@@ -45,9 +48,17 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		}
 
 		for (String login : totalByUser.keySet()) {
-			int percentage = (int) ((totalByUser.get(login) / (double) commits.size()) * 100);
+			int percentage = (int) ((totalByUser.get(login) / validCommits) * 100);
 			committerActivities.add(new CommitterActivity(login, percentage));
 		}
+
+		Collections.sort(committerActivities, new Comparator<CommitterActivity>() {
+
+			@Override
+			public int compare(CommitterActivity o1, CommitterActivity o2) {
+				return o1.getPercentage() > o2.getPercentage() ? 1 : 0;
+			}
+		});
 
 		return committerActivities;
 	}
@@ -77,46 +88,22 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		for (int i = 0; i < sectionCount; i++) {
 
 			long startTimeSection = firstCommit + i * step;
-			long endTimeSection = firstCommit + (i + 1) * step;
-
-			List<Commit> filteredCommits1 = filter(having(on(Commit.class).getDate().getTime(), greaterThanOrEqualTo(startTimeSection)),
-					commits);
-
-			int commitCount;
+			long endTimeSection;
 			if (i != sectionCount - 1) {
-				List<Commit> filteredCommits2 = filter(having(on(Commit.class).getDate().getTime(), lessThan(endTimeSection)),
-						filteredCommits1);
-				commitCount = filteredCommits2.size();
+				endTimeSection = firstCommit + (i + 1) * step;
 			} else {
-				commitCount = filteredCommits1.size();
+				endTimeSection = Long.MAX_VALUE;
 			}
 
+			List<Commit> filtered1 = filter(having(on(Commit.class).getDate().getTime(), greaterThanOrEqualTo(startTimeSection)), commits);
+			List<Commit> filtered2 = filter(having(on(Commit.class).getDate().getTime(), lessThan(endTimeSection)), filtered1);
+
+			int commitCount = filtered2.size();
 			results.add(new TimelineData(startTimeSection, commitCount));
 
 		}
 
 		return results;
-	}
-
-	@Override
-	public void concatLittleCommiters(List<CommitterActivity> committerActivities) {
-		List<CommitterActivity> littleCommiters = filter(having(on(CommitterActivity.class).getPercentage(), lessThan(3)),
-				committerActivities);
-
-		if (littleCommiters.size() < 2) {
-			return;
-		}
-
-		committerActivities.removeAll(littleCommiters);
-
-		int otherPercentage = 0;
-
-		for (CommitterActivity committerActivity : littleCommiters) {
-			otherPercentage += committerActivity.getPercentage();
-		}
-
-		CommitterActivity other = new CommitterActivity("others", otherPercentage);
-		committerActivities.add(other);
 	}
 
 }

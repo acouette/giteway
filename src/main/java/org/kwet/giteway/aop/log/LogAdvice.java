@@ -24,7 +24,7 @@ public class LogAdvice {
 			log.debug("BEGIN : " + methodDesc.toString());
 			Object retVal = pjp.proceed();
 			long stop = new Date().getTime();
-			log.debug("END : " + pjp.getSignature().toShortString() + " - time : " + (stop - start));
+			log.debug("END : " + pjp.getSignature().toShortString() + " (Executuion time : " + (stop - start)+")");
 			return retVal;
 		} else {
 			return pjp.proceed();

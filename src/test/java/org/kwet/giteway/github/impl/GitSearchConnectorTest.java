@@ -4,14 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kwet.giteway.exception.GithubRequestException;
 import org.kwet.giteway.github.GitSearchConnector;
 import org.kwet.giteway.model.RepositorySearch;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.client.RestTemplate;
 
 public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
@@ -19,8 +19,8 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 	@Before
 	public void before() {
-		restTemplate = new RestTemplate();
-		// gitSearchConnector = new GitSearchConnectorImpl(restTemplate);
+		gitSearchConnector = new GitSearchConnectorImpl();
+		((GitSearchConnectorImpl)gitSearchConnector).setGitHttpClient(gitHttpClient);
 	}
 
 	@Test
@@ -59,14 +59,14 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 			fail("expected HttpMessageNotReadableException");
 
-		} catch (HttpMessageNotReadableException e) {
+		} catch (GithubRequestException e) {
 		}
 	}
 
-	private List<RepositorySearch> searchRepositoryByKeyword(String keyword, String responseFile) {
+	private List<RepositorySearch> searchRepositoryByKeyword(String keyword, String responseFile) throws IllegalStateException, IOException {
 
 		String url = GitSearchConnectorImpl.GET_REPOSITORIES_BY_KEYWORD.replace("{keyword}", keyword);
-		configureRestTemplateMock(url, responseFile);
+		configureHttpClient(url, responseFile);
 		return gitSearchConnector.searchRepositoryByKeyword(keyword);
 	}
 

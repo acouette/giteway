@@ -3,6 +3,7 @@ package org.kwet.giteway.github.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,7 +13,6 @@ import org.kwet.giteway.github.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
-import org.springframework.web.client.RestTemplate;
 
 public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
@@ -31,20 +31,19 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
 	@Before
 	public void before() {
-		restTemplate = new RestTemplate();
-		// gitRepositoryConnector = new
-		// GitRepositoryConnectorImpl(restTemplate);
+		gitRepositoryConnector = new GitRepositoryConnectorImpl();
+		((GitRepositoryConnectorImpl)gitRepositoryConnector).setGitHttpClient(gitHttpClient);
 	}
 
 	@Test
-	public void testFind() {
+	public void testFind() throws IllegalStateException, IOException {
 		String name = "Hello-World";
 		String owner = "octocat";
 		String responseFile = "repo";
 
 		String url = GitRepositoryConnectorImpl.GET_REPOSITORY.replace("{owner}", owner).replace("{name}", name);
 
-		configureRestTemplateMock(url, responseFile);
+		configureHttpClient(url, responseFile);
 
 		Repository repository = gitRepositoryConnector.find(owner, name);
 		assertNotNull(repository);
@@ -69,13 +68,13 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 				collaborator.getAvatarUrl());
 	}
 
-	private List<User> findCollaborators(String responseFile) {
+	private List<User> findCollaborators(String responseFile) throws IllegalStateException, IOException {
 
 		String url = GitRepositoryConnectorImpl.GET_COLLABORATORS.replace("{owner}", repository.getOwner().getLogin()).replace("{name}",
 				repository.getName());
 
-		configureRestTemplateMock(url, responseFile);
-		return gitRepositoryConnector.findCollaborators(repository);
+		configureHttpClient(url, responseFile);
+		return gitRepositoryConnector.findCollaborators(repository.getOwner().getLogin(),repository.getName());
 	}
 
 	@Test
@@ -95,12 +94,12 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
 	}
 
-	private List<Commit> findCommits(String responseFile) {
+	private List<Commit> findCommits(String responseFile) throws IllegalStateException, IOException {
 
 		String url = GitRepositoryConnectorImpl.GET_COMMITS.replace("{owner}", repository.getOwner().getLogin()).replace("{name}",
 				repository.getName());
-		configureRestTemplateMock(url, responseFile);
-		return gitRepositoryConnector.findCommits(repository);
+		configureHttpClient(url, responseFile);
+		return gitRepositoryConnector.findCommits(repository.getOwner().getLogin(),repository.getName());
 	}
 
 }

@@ -45,6 +45,15 @@ public class User implements Serializable {
 		return "User [id=" + id + ", login=" + login + "]";
 	}
 
+	public User() {
+	}
+	
+	public User(long id, String login) {
+		super();
+		this.id = id;
+		this.login = login;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

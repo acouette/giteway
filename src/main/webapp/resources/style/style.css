@@ -31,8 +31,8 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 h2 {
-	font: normal 175% 'century gothic', arial, sans-serif;
-	color: #B60000;
+	font: normal 250% 'century gothic', arial, sans-serif;
+	color: #A4AA04;
 }
 
 h3 {
@@ -235,17 +235,16 @@ table tr td {
 	border-top: 1px solid #FFF;
 }
 
-
 div.float {
 	float: left;
 	width: 285px;
 }
 
-div.float p{
+div.float p {
 	text-align: center;
 }
 
-div.float img{
+div.float img {
 	padding-left: 90px;
 }
 
@@ -257,8 +256,24 @@ div.spacer {
 	clear: both;
 }
 
-.timeline {
+#timeline-chart {
 	margin-left: 100px;
 	margin-top: 20px;
 	margin-bottom: 20px;
+	width: 600px;
+	height: 300px;
 }
+
+#committer-activities-chart{
+	margin-left: 120px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width:600px;
+	height:450px;
+}
+
+#repo-description{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+

@@ -17,7 +17,7 @@
 		<property name="maxTotal" value="5"/>
 	</bean>
 	
-	<bean id="gitHttpClient" class="org.kwet.giteway.utils.GitHttpClientImpl" c:cm-ref="poolingClientConnectionManager"/>
+	<bean id="gitHttpClient" class="org.kwet.giteway.http.GitHttpClientImpl" c:cm-ref="poolingClientConnectionManager"/>
 	
 	<!-- Github API connector -->
 	<context:component-scan base-package="org.kwet.giteway.github" />

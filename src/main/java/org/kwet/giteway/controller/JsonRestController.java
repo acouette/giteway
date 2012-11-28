@@ -10,27 +10,17 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.github.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.CommitterActivity;
-import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.TimelineData;
-import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.StatisticsCalculator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * Handles requests for the application home page.
- */
 @Controller
-@RequestMapping(value = "/repository")
-public class RepositoryController {
-
-	private static final Logger logger = LoggerFactory.getLogger(RepositoryController.class);
+@RequestMapping(value = "/rest")
+public class JsonRestController {
 
 	@Autowired
 	private GitRepositoryConnector gitRepositoryConnector;
@@ -38,19 +28,12 @@ public class RepositoryController {
 	@Autowired
 	private StatisticsCalculator statisticsCalculator;
 
-	@RequestMapping(value = "/{owner}/{name}", method = RequestMethod.GET)
-	public String home(Model model, @PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
-			JsonMappingException, IOException {
+	@RequestMapping("/timeline/{owner}/{name}/json")
+	public @ResponseBody
+	String getTimeLineData(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException, JsonMappingException,
+			IOException {
 
-		// Repository
-		Repository repository = gitRepositoryConnector.find(owner, name);
-		model.addAttribute("repository", repository);
-
-		// Collaborators
-		List<User> collaborators = gitRepositoryConnector.findCollaborators(owner,name);
-		model.addAttribute("collaborators", collaborators);
-
-		List<Commit> commits = gitRepositoryConnector.findCommits(owner,name);
+		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name);
 
 		// Timeline
 		List<TimelineData> timelineDatas = statisticsCalculator.getTimeLine(commits);
@@ -58,18 +41,26 @@ public class RepositoryController {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		objectMapper.writeValue(outputStream, timelineDatas);
 		String timelineJson = new String(outputStream.toByteArray());
-		model.addAttribute("timelineData", timelineJson);
-		logger.debug("timelineJson : " + timelineJson);
+		return timelineJson;
+		//TODO : manage json return code
+	}
+
+	@RequestMapping("/committers/activities/{owner}/{name}/json")
+	public @ResponseBody
+	String getCommitterActivities(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException, JsonMappingException,
+			IOException {
+
+		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name);
 
 		// Committers activity
 		List<CommitterActivity> committerActivities = statisticsCalculator.calculateActivity(commits);
-		outputStream = new ByteArrayOutputStream();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.writeValue(outputStream, committerActivities);
 		String committerActivityJson = new String(outputStream.toByteArray());
-		model.addAttribute("committerActivities", committerActivityJson);
-		logger.debug("committerActivityJson : " + committerActivityJson);
+		return committerActivityJson;
 
-		return "repository";
+		//TODO : manage json return code
 	}
 
 }

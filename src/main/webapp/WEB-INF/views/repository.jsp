@@ -25,9 +25,15 @@
 
 	});
 	
-	function toggleCollaborators(){
+
+	var toggleCollaborators = function(){
+		if($("#collaborators").is(":visible")){
+			$("#toggleCollaborators").text('Show all collaborators');
+		}else{
+			$("#toggleCollaborators").text('Hide all collaborators');
+		}
 		$("#collaborators").fadeToggle();
-	}
+	};
 	
 	</script>
 </head>
@@ -38,43 +44,43 @@
 		<div id="content_header"></div>
 		<div id="site_content">
 			<div id="content">
-				<h1>Repository : ${repository.name}</h1>
-				Owner : ${repository.owner.login}<br/>
-				Description : ${repository.description}<br/>
-				
-				
-				
-				<h3>- Commits history</h3>
-				<div id="timeline" class="timeline">
-					<div id="timeline-chart" style="width:600px;height:300px"></div>
+			
+				<h2>${repository.name}</h2>
+				<div id="repo-description">
+					Owner : ${repository.owner.login}<br/>
+					Description : ${repository.description}<br/>
 				</div>
 				
-				<div id="committer-activities">
-					<div id="committer-activities-chart" style="width:600px;height:300px"></div>
+				<h3>Commits history</h3>
+				<div id="timeline-chart"></div>
 				
-				</div>
+				<h3>Committers stats</h3>
+				<div id="committer-activities-chart"></div>
 				
-				<br/>
-				<a href="javascript:toggleCollaborators()">Show all committers</a>
-				<br/>
-				<br/>
+				<c:if test="${not empty collaborators}">
 				
-			    <div id="collaborators" class="container">
-			    	<c:forEach  var="user" items="${collaborators}" varStatus="status">
-				    	<c:if test="${(status.count - 1) % 3==0}">
-				    		<div class="spacer">
-							  &nbsp;
-							</div>
-				    	</c:if>
-		    			<div class="float">
-		    				<img src="${user.avatarUrl}" alt="img not available" height="100" width="100"/>
-		    				<p>${user.login}</p>
-		    			</div>
-			    	</c:forEach>
-		    		<div class="spacer">
-					  &nbsp;
-					</div>
-			    </div>
+					<br/>
+					<a href="javascript:toggleCollaborators()" id="toggleCollaborators">Show all collaborators</a>
+					<br/>
+					<br/>
+					
+				    <div id="collaborators" class="container">
+				    	<c:forEach  var="user" items="${collaborators}" varStatus="status">
+					    	<c:if test="${(status.count - 1) % 3==0}">
+					    		<div class="spacer">
+								  &nbsp;
+								</div>
+					    	</c:if>
+			    			<div class="float">
+			    				<img src="${user.avatarUrl}" alt="img not available" height="100" width="100"/>
+			    				<p>${user.login}</p>
+			    			</div>
+				    	</c:forEach>
+			    		<div class="spacer">
+						  &nbsp;
+						</div>
+				    </div>
+				</c:if>
 			</div>
 		</div>
 		
