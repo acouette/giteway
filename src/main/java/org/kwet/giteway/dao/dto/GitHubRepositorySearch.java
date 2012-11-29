@@ -1,9 +1,12 @@
-package org.kwet.giteway.model;
+package org.kwet.giteway.dao.dto;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 @SuppressWarnings("serial")
-public class Repository implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class GitHubRepositorySearch implements Serializable {
 
 	private String name;
 

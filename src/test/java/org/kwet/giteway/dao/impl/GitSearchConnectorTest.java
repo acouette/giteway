@@ -1,4 +1,4 @@
-package org.kwet.giteway.github.impl;
+package org.kwet.giteway.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kwet.giteway.exception.GithubRequestException;
-import org.kwet.giteway.github.GitSearchConnector;
-import org.kwet.giteway.model.RepositorySearch;
+import org.kwet.giteway.dao.GitSearchConnector;
+import org.kwet.giteway.model.GitewayRequestException;
+import org.kwet.giteway.model.Repository;
 
 public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
@@ -28,11 +28,11 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 		String keyword = "matchingKeyword";
 		String responseFile = "search-repos";
-		List<RepositorySearch> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
+		List<Repository> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(1, repositorySearchs.size());
-		RepositorySearch repo0 = repositorySearchs.get(0);
+		Repository repo0 = repositorySearchs.get(0);
 		assertEquals("playframework-elasticsearch", repo0.getName());
 		assertEquals("feliperazeek", repo0.getUsername());
 		assertEquals("Integrate Elastic Search in a Play! Framework Application.", repo0.getDescription());
@@ -43,7 +43,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 		String keyword = "notMatchingKeyword";
 		String responseFile = "search-repos-empty";
-		List<RepositorySearch> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
+		List<Repository> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(0, repositorySearchs.size());
@@ -59,11 +59,11 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 			fail("expected HttpMessageNotReadableException");
 
-		} catch (GithubRequestException e) {
+		} catch (GitewayRequestException e) {
 		}
 	}
 
-	private List<RepositorySearch> searchRepositoryByKeyword(String keyword, String responseFile) throws IllegalStateException, IOException {
+	private List<Repository> searchRepositoryByKeyword(String keyword, String responseFile) throws IllegalStateException, IOException {
 
 		String url = GitSearchConnectorImpl.GET_REPOSITORIES_BY_KEYWORD.replace("{keyword}", keyword);
 		configureHttpClient(url, responseFile);

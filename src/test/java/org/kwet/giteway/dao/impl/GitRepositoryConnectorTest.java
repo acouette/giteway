@@ -1,4 +1,4 @@
-package org.kwet.giteway.github.impl;
+package org.kwet.giteway.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kwet.giteway.github.GitRepositoryConnector;
+import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
@@ -24,9 +24,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	public static void beforeClass() {
 		repository = new Repository();
 		repository.setName("play!");
-		User user = new User();
-		user.setLogin("Zenexity");
-		repository.setOwner(user);
+		repository.setUsername("Zenexity");
 	}
 
 	@Before
@@ -48,7 +46,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		Repository repository = gitRepositoryConnector.find(owner, name);
 		assertNotNull(repository);
 
-		assertEquals("octocat", repository.getOwner().getLogin());
+		assertEquals("octocat", repository.getUsername());
 
 	}
 
@@ -61,7 +59,6 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		assertNotNull(collaborators);
 		assertEquals(2, collaborators.size());
 		User collaborator = collaborators.get(0);
-		assertEquals(301810l, collaborator.getId());
 		assertEquals("cbeams", collaborator.getLogin());
 		assertEquals(
 				"https://secure.gravatar.com/avatar/29490cd51d5a93b61cc946844f471589?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png",
@@ -70,11 +67,11 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
 	private List<User> findCollaborators(String responseFile) throws IllegalStateException, IOException {
 
-		String url = GitRepositoryConnectorImpl.GET_COLLABORATORS.replace("{owner}", repository.getOwner().getLogin()).replace("{name}",
+		String url = GitRepositoryConnectorImpl.GET_COLLABORATORS.replace("{owner}", repository.getUsername()).replace("{name}",
 				repository.getName());
 
 		configureHttpClient(url, responseFile);
-		return gitRepositoryConnector.findCollaborators(repository.getOwner().getLogin(),repository.getName());
+		return gitRepositoryConnector.findCollaborators(repository.getUsername(),repository.getName());
 	}
 
 	@Test
@@ -87,19 +84,17 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		assertEquals(2, commits.size());
 		Commit commit = commits.get(0);
 		assertEquals("Set the ApplicationContext prop of ExceptionResolver...", commit.getMessage());
-		assertNotNull(commit.getCommitter());
-		assertEquals("rstoyanchev", commit.getCommitter().getLogin());
-		assertEquals(401908, commit.getCommitter().getId());
+		assertEquals("rstoyanchev", commit.getLogin());
 		assertEquals(1353701572000L, commit.getDate().getTime());
 
 	}
 
 	private List<Commit> findCommits(String responseFile) throws IllegalStateException, IOException {
 
-		String url = GitRepositoryConnectorImpl.GET_COMMITS.replace("{owner}", repository.getOwner().getLogin()).replace("{name}",
+		String url = GitRepositoryConnectorImpl.GET_COMMITS.replace("{owner}", repository.getUsername()).replace("{name}",
 				repository.getName());
 		configureHttpClient(url, responseFile);
-		return gitRepositoryConnector.findCommits(repository.getOwner().getLogin(),repository.getName());
+		return gitRepositoryConnector.findCommits(repository.getUsername(),repository.getName());
 	}
 
 }

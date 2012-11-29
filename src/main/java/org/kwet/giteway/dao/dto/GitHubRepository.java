@@ -1,4 +1,4 @@
-package org.kwet.giteway.model;
+package org.kwet.giteway.dao.dto;
 
 import java.io.Serializable;
 
@@ -6,13 +6,21 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RepositorySearch implements Serializable {
+public class GitHubRepository implements Serializable {
+
+	private GitHubUser owner;
 
 	private String name;
 
-	private String username;
-
 	private String description;
+
+	public GitHubUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(GitHubUser owner) {
+		this.owner = owner;
+	}
 
 	public String getName() {
 		return name;
@@ -20,14 +28,6 @@ public class RepositorySearch implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getDescription() {
@@ -39,16 +39,11 @@ public class RepositorySearch implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "Repository [name=" + name + ", username=" + username + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
 		return result;
 	}
 
@@ -60,16 +55,16 @@ public class RepositorySearch implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RepositorySearch other = (RepositorySearch) obj;
+		GitHubRepository other = (GitHubRepository) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (username == null) {
-			if (other.username != null)
+		if (owner == null) {
+			if (other.owner != null)
 				return false;
-		} else if (!username.equals(other.username))
+		} else if (!owner.equals(other.owner))
 			return false;
 		return true;
 	}

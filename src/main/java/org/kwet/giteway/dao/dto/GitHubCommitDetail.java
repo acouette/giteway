@@ -1,4 +1,4 @@
-package org.kwet.giteway.model;
+package org.kwet.giteway.dao.dto;
 
 import java.io.Serializable;
 
@@ -6,11 +6,11 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CommitDetail implements Serializable {
+public class GitHubCommitDetail implements Serializable {
 
 	private String message;
 
-	private Commiter committer;
+	private GitHubCommitCommitter committer;
 
 	public String getMessage() {
 		return message;
@@ -20,12 +20,15 @@ public class CommitDetail implements Serializable {
 		this.message = message;
 	}
 
-	public Commiter getCommitter() {
+	public GitHubCommitCommitter getCommitter() {
 		return committer;
 	}
 
-	public void setCommitter(Commiter committer) {
+	public void setCommitter(GitHubCommitCommitter committer) {
 		this.committer = committer;
 	}
+
+	
+	
 
 }

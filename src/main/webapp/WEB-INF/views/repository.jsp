@@ -47,7 +47,7 @@
 			
 				<h2>${repository.name}</h2>
 				<div id="repo-description">
-					Owner : ${repository.owner.login}<br/>
+					Owner : ${repository.username}<br/>
 					Description : ${repository.description}<br/>
 				</div>
 				

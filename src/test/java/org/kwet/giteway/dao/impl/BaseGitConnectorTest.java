@@ -1,4 +1,4 @@
-package org.kwet.giteway.github.impl;
+package org.kwet.giteway.dao.impl;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -12,7 +12,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.kwet.giteway.http.GitHttpClientImpl;
+import org.kwet.giteway.dao.http.GitHttpClientImpl;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 

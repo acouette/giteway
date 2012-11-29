@@ -25,6 +25,9 @@ public class CommitterActivity implements Serializable {
 		this.percentage = percentage;
 	}
 
+	public CommitterActivity() {
+	}
+
 	public CommitterActivity(String login, int percentage) {
 		super();
 		this.login = login;

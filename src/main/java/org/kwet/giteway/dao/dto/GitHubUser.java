@@ -1,18 +1,22 @@
-package org.kwet.giteway.model;
+package org.kwet.giteway.dao.dto;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("serial")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class GitHubUser implements Serializable {
 
 	private long id;
 
 	private String login;
 
+	@JsonProperty("avatar_url")
 	private String avatarUrl;
 
-	long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -34,11 +38,6 @@ public class User implements Serializable {
 
 	public void setAvatarUrl(String avatarUrl) {
 		this.avatarUrl = avatarUrl;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", login=" + login + "]";
 	}
 
 }
