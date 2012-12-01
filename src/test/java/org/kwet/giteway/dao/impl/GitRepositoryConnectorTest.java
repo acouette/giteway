@@ -24,7 +24,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	public static void beforeClass() {
 		repository = new Repository();
 		repository.setName("play!");
-		repository.setUsername("Zenexity");
+		repository.setOwner("Zenexity");
 	}
 
 	@Before
@@ -39,14 +39,12 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		String owner = "octocat";
 		String responseFile = "repo";
 
-		String url = GitRepositoryConnectorImpl.GET_REPOSITORY.replace("{owner}", owner).replace("{name}", name);
-
-		configureHttpClient(url, responseFile);
+		configureHttpClient(responseFile);
 
 		Repository repository = gitRepositoryConnector.find(owner, name);
 		assertNotNull(repository);
 
-		assertEquals("octocat", repository.getUsername());
+		assertEquals("octocat", repository.getOwner());
 
 	}
 
@@ -66,12 +64,8 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	}
 
 	private List<User> findCollaborators(String responseFile) throws IllegalStateException, IOException {
-
-		String url = GitRepositoryConnectorImpl.GET_COLLABORATORS.replace("{owner}", repository.getUsername()).replace("{name}",
-				repository.getName());
-
-		configureHttpClient(url, responseFile);
-		return gitRepositoryConnector.findCollaborators(repository.getUsername(),repository.getName());
+		configureHttpClient(responseFile);
+		return gitRepositoryConnector.findCollaborators(repository.getOwner(),repository.getName());
 	}
 
 	@Test
@@ -84,17 +78,15 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		assertEquals(2, commits.size());
 		Commit commit = commits.get(0);
 		assertEquals("Set the ApplicationContext prop of ExceptionResolver...", commit.getMessage());
-		assertEquals("rstoyanchev", commit.getLogin());
+		assertEquals("rstoyanchev", commit.getCommiter().getLogin());
 		assertEquals(1353701572000L, commit.getDate().getTime());
 
 	}
 
 	private List<Commit> findCommits(String responseFile) throws IllegalStateException, IOException {
 
-		String url = GitRepositoryConnectorImpl.GET_COMMITS.replace("{owner}", repository.getUsername()).replace("{name}",
-				repository.getName());
-		configureHttpClient(url, responseFile);
-		return gitRepositoryConnector.findCommits(repository.getUsername(),repository.getName());
+		configureHttpClient(responseFile);
+		return gitRepositoryConnector.findCommits(repository.getOwner(),repository.getName(),100);
 	}
 
 }

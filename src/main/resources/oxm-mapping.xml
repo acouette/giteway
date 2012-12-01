@@ -5,10 +5,10 @@
 			<bind-xml name="committerActivity" />
 		</field>
 	</class>
-	<class name="org.kwet.giteway.model.CommitterActivity" identity="login">
+	<class name="org.kwet.giteway.model.CommitterActivity" identity="committer">
 		<map-to xml="committerActivity" />
-		<field name="login" type="string">
-			<bind-xml name="login" node="element" />
+		<field name="committer" type="org.kwet.giteway.model.User">
+			<bind-xml name="user" />
 		</field>
 		<field name="percentage" type="integer">
 			<bind-xml name="percentage" node="element" />
@@ -30,6 +30,16 @@
 		</field>
 		<field name="commitCount" type="integer">
 			<bind-xml name="commitCount" node="element" />
+		</field>
+	</class>
+	
+	<class name="org.kwet.giteway.model.User">
+		<map-to xml="user"/>
+		<field name="login" type="string">
+			<bind-xml name="login" node="element" />
+		</field>
+		<field name="avatarUrl" type="string">
+			<bind-xml name="avatarUrl" node="element" />
 		</field>
 	</class>
 	

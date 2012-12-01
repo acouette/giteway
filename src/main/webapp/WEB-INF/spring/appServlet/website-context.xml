@@ -27,7 +27,7 @@
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
 	<view-controller path="/" view-name="search" />
 	
-	<beans:bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
 	
+	<beans:bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
 	
 </beans:beans>

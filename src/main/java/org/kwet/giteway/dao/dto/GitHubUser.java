@@ -5,6 +5,10 @@ import java.io.Serializable;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * @author Antoine Couette
+ *
+ */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubUser implements Serializable {

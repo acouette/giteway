@@ -26,6 +26,7 @@
 			
 			//Stop a form submit if the keyword is empty
 			$("form").submit(function() {
+				$("#keyword").val($("#keyword").val().replace('/', ''));
 				if($("#keyword").val().length==0){
 					return false;
 				}
@@ -74,8 +75,8 @@
 								<tr
 								<c:if test="${ status.index > 9}">
 											class="hidable"</c:if>>
-									<td><a href="${pageContext.request.contextPath}/repository/${repository.username}/${repository.name}">${repository.name}</a></td>
-									<td>${repository.username}</td>
+									<td><a href="${pageContext.request.contextPath}/repository/${repository.owner}/${repository.name}">${repository.name}</a></td>
+									<td>${repository.owner}</td>
 									<td>${repository.description}</td>
 								</tr>
 							</c:forEach>

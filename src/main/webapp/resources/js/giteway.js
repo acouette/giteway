@@ -13,16 +13,26 @@ var drawTimeLine = function(jsonData, placeholder) {
 			chartData[i] = [ arrayData[i].start, arrayData[i].commitCount ];
 		}
 	}
+	
+	var timeformat;
+	if(step<1000*60*60*10){
+		timeformat = "%d-%m<br/> %H:%M";
+	}else{
+		timeformat = "%d-%b<br/>%y";
+	}
+	
 	var options = {
 		xaxis : {
 			mode : "time",
-			timeformat : "%d-%b-%y",
+			timeformat : timeformat,
 			monthNames : [ "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec" ]
 		},
 		bars : {
 			show : true,
-			barWidth : step
-		}
+			barWidth : step,
+			fillColor: "rgba(164, 170, 4, 0.3)"
+		},
+		colors: [ "rgba(164, 170, 4, 1)"]
 	};
 
 	$.plot($(placeholder), [chartData], options);
@@ -35,7 +45,7 @@ var drawCommitterActivities = function(jsonData, placeholder) {
 	var chartData = new Array();
 	for ( var i = 0; i < arrayData.length; i++) {
 		chartData[i] = {
-			label : arrayData[i].login,
+			label : arrayData[i].committer.login,
 			data : [ [ 1, arrayData[i].percentage ] ]
 		};
 	}

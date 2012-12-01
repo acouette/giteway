@@ -5,6 +5,10 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+/**
+ * @author Antoine Couette
+ *
+ */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubCommitCommitter implements Serializable {

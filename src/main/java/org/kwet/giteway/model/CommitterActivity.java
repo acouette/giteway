@@ -5,16 +5,17 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class CommitterActivity implements Serializable {
 
-	private String login;
+	private User committer;
 
 	private int percentage;
+	
 
-	public String getLogin() {
-		return login;
+	public User getCommitter() {
+		return committer;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setCommitter(User committer) {
+		this.committer = committer;
 	}
 
 	public int getPercentage() {
@@ -28,15 +29,15 @@ public class CommitterActivity implements Serializable {
 	public CommitterActivity() {
 	}
 
-	public CommitterActivity(String login, int percentage) {
+	public CommitterActivity(User committer, int percentage) {
 		super();
-		this.login = login;
+		this.committer = committer;
 		this.percentage = percentage;
 	}
 
 	@Override
 	public String toString() {
-		return "CommitterActivity [login=" + login + ", percentage=" + percentage + "]";
+		return "CommitterActivity [committer=" + committer + ", percentage=" + percentage + "]";
 	}
 
 }

@@ -8,7 +8,7 @@ public class Commit implements Serializable, Comparable<Commit> {
 
 	private String message;
 
-	private String login;
+	private User commiter;
 
 	private Date date;
 
@@ -16,20 +16,20 @@ public class Commit implements Serializable, Comparable<Commit> {
 		return message;
 	}
 
-	public String getLogin() {
-		return login;
-	}
-
 	public Date getDate() {
 		return date;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public User getCommiter() {
+		return commiter;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setCommiter(User commiter) {
+		this.commiter = commiter;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public void setDate(Date date) {
@@ -43,7 +43,7 @@ public class Commit implements Serializable, Comparable<Commit> {
 
 	@Override
 	public String toString() {
-		return "Commit [message=" + message + ", login=" + login + ", date=" + date + "]";
+		return "Commit [message=" + message + ", commiter=" + commiter + ", date=" + date + "]";
 	}
 
 }

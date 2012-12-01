@@ -20,7 +20,7 @@
 	$(document).ready(function(){
 		$("#collaborators").hide();
 
-		drawTimeLine('${timelineData}','#timeline-chart');
+		drawTimeLine('${timelineChunks}','#timeline-chart');
 		drawCommitterActivities('${committerActivities}',"#committer-activities-chart");
 
 	});
@@ -47,7 +47,7 @@
 			
 				<h2>${repository.name}</h2>
 				<div id="repo-description">
-					Owner : ${repository.username}<br/>
+					Owner : ${repository.owner}<br/>
 					Description : ${repository.description}<br/>
 				</div>
 				

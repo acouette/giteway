@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 
+/**
+ * @author Antoine Couette
+ *
+ */
 @SuppressWarnings("serial")
 public class GitHubRepositories implements Serializable{
 

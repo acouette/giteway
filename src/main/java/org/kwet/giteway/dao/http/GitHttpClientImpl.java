@@ -50,7 +50,7 @@ public class GitHttpClientImpl implements GitHttpClient {
 	 * @see org.kwet.giteway.http.GitHttpClient#executeRequest(java.lang.String, java.lang.Class, java.lang.Object[])
 	 */
 	@Override
-	public <T> T executeRequest(String uriString, Class<T> responseType, Object... urlVariables) {
+	public <T> T executeGetRequest(String uriString, Class<T> responseType, Object... urlVariables) {
 
 		// create the request
 		URI uri = buildURI(uriString, urlVariables);
@@ -119,11 +119,6 @@ public class GitHttpClientImpl implements GitHttpClient {
 	protected URI buildURI(String uri, Object... urlVariables) {
 		UriTemplate uriTemplate = new UriTemplate(uri);
 		return uriTemplate.expand(urlVariables);
-	}
-
-	
-	public void setHttpClient(HttpClient httpClient) {
-		this.httpClient = httpClient;
 	}
 
 }

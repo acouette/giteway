@@ -7,7 +7,7 @@ public class Repository implements Serializable {
 
 	private String name;
 
-	private String username;
+	private String owner;
 
 	private String description;
 
@@ -19,12 +19,12 @@ public class Repository implements Serializable {
 		this.name = name;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getOwner() {
+		return owner;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 
 	public String getDescription() {
@@ -37,7 +37,7 @@ public class Repository implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Repository [name=" + name + ", username=" + username + "]";
+		return "Repository [name=" + name + ", owner=" + owner + "]";
 	}
 
 }

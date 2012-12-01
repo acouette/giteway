@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class RestController.
+ * The RestController handles restful calls. It provides application statisctics throw a WS API :
+ * If client requests Application/xml as response type, the service will provide an xml response
+ * If client requests Application/json as a response type, the service will provide a json response
  * 
  * @author Antoine Couette
  *
@@ -32,31 +34,33 @@ public class RestController {
 	@Autowired
 	private StatisticsCalculator statisticsCalculator;
 
+	private static int COMMIT_LIMIT = 100;
+	
 	/**
-	 * Gets the time line data.
+	 * Returns the timeline data stats.
 	 *
-	 * @param owner the owner
-	 * @param name the name
-	 * @return the time line data
+	 * @param owner the repository owner
+	 * @param name the repository name
+	 * @return the time line data as json or xml
 	 * @throws JsonGenerationException the json generation exception
 	 * @throws JsonMappingException the json mapping exception
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@RequestMapping("/timeline/{owner}/{name}")
 	public @ResponseBody
-	Timeline getTimeLineData(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
+	Timeline getTimeLine(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
 			JsonMappingException, IOException {
 
-		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name);
+		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
 		return new Timeline(statisticsCalculator.getTimeLine(commits));
 	}
 
 	/**
-	 * Gets the committer activities.
+	 * Gets the committer activities stats.
 	 *
-	 * @param owner the owner
-	 * @param name the name
-	 * @return the committer activities
+	 * @param owner the repository owner
+	 * @param name the repository name
+	 * @return the committer activities as json or xml
 	 * @throws JsonGenerationException the json generation exception
 	 * @throws JsonMappingException the json mapping exception
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -66,7 +70,7 @@ public class RestController {
 	CommitterActivities getCommitterActivities(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
 			JsonMappingException, IOException {
 
-		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name);
+		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
 		return new CommitterActivities(statisticsCalculator.calculateActivity(commits));
 	}
 

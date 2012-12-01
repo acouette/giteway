@@ -20,7 +20,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		gitSearchConnector = new GitSearchConnectorImpl();
-		((GitSearchConnectorImpl)gitSearchConnector).setGitHttpClient(gitHttpClient);
+		((GitSearchConnectorImpl) gitSearchConnector).setGitHttpClient(gitHttpClient);
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		assertEquals(1, repositorySearchs.size());
 		Repository repo0 = repositorySearchs.get(0);
 		assertEquals("playframework-elasticsearch", repo0.getName());
-		assertEquals("feliperazeek", repo0.getUsername());
+		assertEquals("feliperazeek", repo0.getOwner());
 		assertEquals("Integrate Elastic Search in a Play! Framework Application.", repo0.getDescription());
 	}
 
@@ -65,8 +65,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 	private List<Repository> searchRepositoryByKeyword(String keyword, String responseFile) throws IllegalStateException, IOException {
 
-		String url = GitSearchConnectorImpl.GET_REPOSITORIES_BY_KEYWORD.replace("{keyword}", keyword);
-		configureHttpClient(url, responseFile);
+		configureHttpClient(responseFile);
 		return gitSearchConnector.searchRepositoryByKeyword(keyword);
 	}
 

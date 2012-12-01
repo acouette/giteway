@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.kwet.giteway.dao.http.GitHttpClientImpl;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public abstract class BaseGitConnectorTest {
 
@@ -26,11 +27,12 @@ public abstract class BaseGitConnectorTest {
 		gitHttpClient = new GitHttpClientImpl();
 	}
 
-	protected void configureHttpClient(String url, String responseFile) throws IllegalStateException, IOException {
+	protected void configureHttpClient(String responseFile) throws IllegalStateException, IOException {
 		
 		
 		httpClient = mock(HttpClient.class);
-		gitHttpClient.setHttpClient(httpClient);
+		ReflectionTestUtils.setField(gitHttpClient, "httpClient", httpClient);
+		
 		HttpResponse httpResponse = mock(HttpResponse.class);
 		StatusLine statusLine = mock(StatusLine.class);
 		HttpEntity httpEntity = mock(HttpEntity.class);
@@ -44,13 +46,6 @@ public abstract class BaseGitConnectorTest {
 		
 		when(httpClient.execute(any(HttpGet.class))).thenReturn(httpResponse);
 		
-		/*
-		 * MockRestServiceServer mockServer =
-		 * MockRestServiceServer.createServer(restTemplate);
-		 * mockServer.expect(requestTo(url)).andExpect(method(GET))
-		 * .andRespond(withSuccess(jsonResource(responseFile),
-		 * MediaType.APPLICATION_JSON));
-		 */
 	}
 
 	protected Resource jsonResource(String filename) {

@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.kwet.giteway.model.Repository;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface GitSearchConnector.
+ * The Interface GitSearchConnector provides an API to search for repositories
  * 
  * @author Antoine Couette
  *
@@ -16,8 +15,8 @@ public interface GitSearchConnector {
 	/**
 	 * Search repository by keyword.
 	 *
-	 * @param keyword the keyword
-	 * @return the list
+	 * @param keyword : the search keyword
+	 * @return the matching repository list
 	 */
 	List<Repository> searchRepositoryByKeyword(String keyword);
 

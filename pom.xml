@@ -185,6 +185,13 @@
 			<version>1.9.5-rc1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		
 	</dependencies>
 	<build>
 		<plugins>

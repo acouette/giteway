@@ -33,7 +33,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	@Override
 	public List<Repository> searchRepositoryByKeyword(String keyword) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
-		GitHubRepositories gitHubRepositories = gitHttpClient.executeRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
+		GitHubRepositories gitHubRepositories = gitHttpClient.executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
 		List<Repository> repositories = new ArrayList<>();
 		for (GitHubRepositorySearch gr : gitHubRepositories.getRepositories()) {
 			Repository repository = DtoToModel.getRepository(gr);
