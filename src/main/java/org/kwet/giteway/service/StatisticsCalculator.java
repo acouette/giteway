@@ -40,5 +40,12 @@ public interface StatisticsCalculator {
 	 * @return the time line chunks
 	 */
 	List<TimelineChunk> getTimeLine(List<Commit> commits, int sectionCount);
+	
+	/**
+	 * Returns the number of days covered by thue chunk
+	 * @param timelineChunk
+	 * @return
+	 */
+	double getChunkDurationInDays(TimelineChunk timelineChunk);
 
 }

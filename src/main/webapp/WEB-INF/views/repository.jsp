@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.flot.pie.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway.js"></script>
 	
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
@@ -52,11 +53,12 @@
 				</div>
 				
 				<h3>Commits history</h3>
-				<div id="timeline-chart"></div>
+				<div id="timeline-chart" ></div>
+				<p class="chart-comment">This timeline shows the number of commits per period of ${chunkDuration} days.</p>
 				
 				<h3>Committers stats</h3>
 				<div id="committer-activities-chart"></div>
-				
+				<p class="chart-comment">This pie chart represents the committer's collaboration over the last ${commitCount} commits.</p>
 				<c:if test="${not empty collaborators}">
 				
 					<br/>

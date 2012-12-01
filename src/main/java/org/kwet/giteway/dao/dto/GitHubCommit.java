@@ -31,7 +31,5 @@ public class GitHubCommit implements Serializable {
 	public void setCommitter(GitHubUser committer) {
 		this.committer = committer;
 	}
-	
-	
 
 }

@@ -3,6 +3,7 @@ package org.kwet.giteway.controller.website;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -75,11 +76,14 @@ public class RepositoryController {
 
 		//find the commits
 		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
-
+		model.addAttribute("commitCount", commits.size());
+		
 		// Calculate Timeline stats
 		List<TimelineChunk> timelineChunks = statisticsCalculator.getTimeLine(commits);
 		model.addAttribute("timelineChunks", buildJsonString(timelineChunks));
-		
+		double chunkDuration = statisticsCalculator.getChunkDurationInDays(timelineChunks.get(0));
+		String chunkDurationFormatted = String.format(Locale.ENGLISH,"%4.1f", chunkDuration);
+		model.addAttribute("chunkDuration", chunkDurationFormatted);
 
 		// Calculate Committers activity stats
 		List<CommitterActivity> committerActivities = statisticsCalculator.calculateActivity(commits);

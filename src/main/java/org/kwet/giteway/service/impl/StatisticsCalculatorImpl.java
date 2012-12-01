@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.kwet.giteway.dao.dto.GitHubCommit;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.CommitterActivity;
 import org.kwet.giteway.model.TimelineChunk;
@@ -38,12 +39,16 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	public List<CommitterActivity> calculateActivity(List<Commit> commits) {
 
 		Validate.notNull(commits, "commits can not be null");
-
+		
 		// First : create a map to define the number of commits per user
 		Map<User, Integer> totalByUser = new HashMap<>();
 		for (Commit commit : commits) {
 			User committer = commit.getCommiter();
-
+			
+			if(committer==null){
+				committer = getUndefinedUser();
+			}
+			
 			if (totalByUser.containsKey(committer)) {
 				totalByUser.put(committer, totalByUser.get(committer) + 1);
 			} else {
@@ -67,6 +72,16 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		});
 
 		return committerActivities;
+	}
+	
+	/**
+	 * Builds an undefined user if none were found
+	 * @return
+	 */
+	private User getUndefinedUser(){
+		User user = new User();
+		user.setLogin("undefined");
+		return user;
 	}
 
 	/*
@@ -130,6 +145,12 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		}
 
 		return results;
+	}
+
+	@Override
+	public double getChunkDurationInDays(TimelineChunk timelineChunk) {
+		long duration = timelineChunk.getEnd() - timelineChunk.getStart();
+		return (double)duration / (1000L*60L*60L*24L);
 	}
 
 }

@@ -61,7 +61,7 @@ var drawCommitterActivities = function(jsonData, placeholder) {
 					}
 				},
 				combine : {
-					threshold : 0.03
+					threshold : 0.04
 				}
 			}
 		},

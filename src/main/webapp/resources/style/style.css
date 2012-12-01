@@ -39,18 +39,6 @@ h3 {
 	font: normal 165% 'century gothic', arial, sans-serif;
 }
 
-h4,h5,h6 {
-	margin: 0;
-	padding: 0 0 5px 0;
-	font: normal 120% arial, sans-serif;
-	color: #B60000;
-}
-
-h5,h6 {
-	font: italic 95% arial, sans-serif;
-	color: #888;
-}
-
 h6 {
 	color: #362C20;
 }
@@ -84,13 +72,6 @@ a:hover {
 	margin: 20px auto;
 }
 
-blockquote {
-	margin: 20px 0;
-	padding: 10px 20px 0 20px;
-	border: 1px solid #E5E5DB;
-	background: #FFF;
-}
-
 #main,#logo,#menubar,#content_header,#site_content,#content_footer,#footer
 	{
 	margin-left: auto;
@@ -119,12 +100,6 @@ blockquote {
 	position: absolute;
 	top: 10px;
 	left: 0;
-}
-
-#lang {
-	position: absolute;
-	top: 10px;
-	right: 0;
 }
 
 #logo h1,#logo h2 {
@@ -210,8 +185,19 @@ blockquote {
 	width: 250px;
 }
 
-.searchbar input[type="submit"] {
-	padding: 5px 5px;
+/* Remove button padding in FF */
+#submitKeyword::-moz-focus-inner {
+    border:0;
+    padding: 0px 0px;
+}
+
+#submitKeyword{
+    padding: 3px 5px 3px 5px;
+}
+
+input[type="submit"]::-moz-focus-inner { 
+    border: 0px;
+    padding: 5px 5px;
 }
 
 .searchTable {
@@ -275,5 +261,10 @@ div.spacer {
 #repo-description{
 	margin-top: 20px;
 	margin-bottom: 20px;
+}
+
+.chart-comment{
+	text-align: center;
+	font-style: italic;
 }
 

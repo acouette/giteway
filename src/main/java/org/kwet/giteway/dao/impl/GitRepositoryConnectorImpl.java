@@ -1,11 +1,7 @@
 package org.kwet.giteway.dao.impl;
 
-import static ch.lambdaj.Lambda.filter;
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
-import static org.hamcrest.Matchers.notNullValue;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
@@ -35,7 +31,7 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 
 	static final String GET_COLLABORATORS = buildUrl(GET_BASE + "/collaborators");
 
-	static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page={count}";
+	static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page=100";
 
 	/*
 	 * (non-Javadoc)
@@ -76,10 +72,8 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 	public List<Commit> findCommits(String owner, String name, int max) {
 		checkRepository(owner, name);
 		GitHubCommit[] commitWrappers = gitHttpClient.executeGetRequest(GET_COMMITS, GitHubCommit[].class, owner, name, max);
-		List<GitHubCommit> filteredWrappers = filter(
-				having(on(GitHubCommit.class).getCommit(), notNullValue()).and(having(on(GitHubCommit.class).getCommitter(), notNullValue())),
-				commitWrappers);
-
+		List<GitHubCommit> filteredWrappers = Arrays.asList(commitWrappers);
+		
 		List<Commit> commits = new ArrayList<>();
 		for (GitHubCommit gc : filteredWrappers) {
 			Commit c = DtoToModel.getCommit(gc);

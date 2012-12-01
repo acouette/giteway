@@ -11,6 +11,8 @@
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/style.css" />
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.watermark.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.9.2.custom.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/jquery-ui-1.9.2.custom.min.css" />	
 		<script type="text/javascript">
 		
 		$(document).ready(function(){
@@ -35,11 +37,31 @@
 			$('.hidable').hide();
 			$('#keyword').watermark('Search a git repository');
 			
+			$('#keyword').keyup(function(){
+				defineAutocomplete();
+			});
+			
+			
 		});
 		
 		var showExtra = function(){
 			$('.hidable').show();
 			$('#extralink').hide();
+		};
+		
+		var defineAutocomplete = function(){
+			//Autocomplete
+			if($("#keyword").val().length>2){
+
+				$('#keyword').autocomplete({
+		            source: "${pageContext.request.contextPath}/autocomplete/"+$('#keyword').val(),
+		            minLength: 2,
+		            select: function( event, ui ) {
+		            	$("#keyword").val(ui.item.value);
+		            	$("form").submit();
+		            }
+		        });
+			}
 		};
 		
 		</script>
@@ -54,7 +76,7 @@
 			<div id="content">
 				<div id="searchBar" class="center searchbar">
 					<form action="${pageContext.request.contextPath}/search" method="post">
-						<input id="keyword" name="keyword" type="text" value="${keyword}"/>
+						<input id="keyword" name="keyword" type="text"autocomplete="off"  value="${keyword}" />
 						<input id="submitKeyword" type="submit" value="Search"/>
 					</form>
 				</div>

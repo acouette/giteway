@@ -11,6 +11,9 @@ import org.kwet.giteway.model.User;
 public class DtoToModel {
 
 	public static User getUser(GitHubUser gitHubUser) {
+		if(gitHubUser==null){
+			return null;
+		}
 		User user = new User();
 		user.setLogin(gitHubUser.getLogin());
 		user.setAvatarUrl(gitHubUser.getAvatarUrl());
@@ -18,6 +21,9 @@ public class DtoToModel {
 	}
 
 	public static Repository getRepository(GitHubRepositorySearch gitHubRepositorySearch) {
+		if(gitHubRepositorySearch==null){
+			return null;
+		}
 		Repository repository = new Repository();
 		repository.setName(gitHubRepositorySearch.getName());
 		repository.setDescription(gitHubRepositorySearch.getDescription());
@@ -26,6 +32,9 @@ public class DtoToModel {
 	}
 
 	public static Repository getRepository(GitHubRepository gitHubRepository) {
+		if(gitHubRepository==null){
+			return null;
+		}
 		Repository repository = new Repository();
 		repository.setName(gitHubRepository.getName());
 		repository.setOwner(gitHubRepository.getOwner().getLogin());
@@ -34,6 +43,9 @@ public class DtoToModel {
 	}
 
 	public static Commit getCommit(GitHubCommit gitHubCommit) {
+		if(gitHubCommit==null){
+			return null;
+		}
 		Commit commit = new Commit();
 		commit.setCommiter(getUser(gitHubCommit.getCommitter()));
 		commit.setMessage(gitHubCommit.getCommit().getMessage());

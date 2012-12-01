@@ -19,5 +19,14 @@ public interface GitSearchConnector {
 	 * @return the matching repository list
 	 */
 	List<Repository> searchRepositoryByKeyword(String keyword);
+	
+	/**
+	 * Search repository names by keyword.
+	 * 
+	 * @param keyword : the search keyword
+	 * @param limit of repositories returned
+	 * @return the matching repository list
+	 */
+	List<String> searchRepositoryNames(String keyword, int limit);
 
 }
