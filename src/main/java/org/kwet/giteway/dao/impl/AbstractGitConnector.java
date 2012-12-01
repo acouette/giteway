@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * The Class AbstractGitConnector.
  * 
- * @author Antoine Couette
+ * @author a.couette
  * 
  */
 public class AbstractGitConnector {
@@ -27,10 +27,12 @@ public class AbstractGitConnector {
 	}
 
 	@Autowired
-	protected GitHttpClient gitHttpClient;
+	private GitHttpClient gitHttpClient;
 
-	public void setGitHttpClient(GitHttpClient gitHttpClient) {
-		this.gitHttpClient = gitHttpClient;
+	public GitHttpClient getGitHttpClient() {
+		return gitHttpClient;
 	}
+	
+	
 
 }

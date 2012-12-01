@@ -6,7 +6,7 @@ import java.util.Date;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 @SuppressWarnings("serial")

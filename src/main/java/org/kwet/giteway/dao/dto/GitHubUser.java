@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 @SuppressWarnings("serial")

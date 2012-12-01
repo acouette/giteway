@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 /**
  * The Class GitSearchConnectorImpl.
  * 
- * @author Antoine Couette
+ * @author a.couette
  * 
  */
 @Component
@@ -34,7 +34,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	@Override
 	public List<Repository> searchRepositoryByKeyword(String keyword) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
-		GitHubRepositories gitHubRepositories = gitHttpClient.executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
+		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
 		List<Repository> repositories = new ArrayList<>();
 		for (GitHubRepositorySearch gr : gitHubRepositories.getRepositories()) {
 			Repository repository = DtoToModel.getRepository(gr);
@@ -48,7 +48,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	public List<String> searchRepositoryNames(String keyword, int limit) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		
-		GitHubRepositories gitHubRepositories = gitHttpClient.executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
+		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
 		List<String> repositoryNames = new ArrayList<>();
 		int i = 0;
 		for (GitHubRepositorySearch gr : gitHubRepositories.getRepositories()) {

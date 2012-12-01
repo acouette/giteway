@@ -11,7 +11,7 @@ package org.kwet.giteway.dao.http;
  *  2. Deserialization
  *  	a. Jackson (Json To Object)
  * 
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 public interface GitHttpClient {

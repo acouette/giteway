@@ -1,7 +1,7 @@
 package org.kwet.giteway.model;
 
 /**
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 @SuppressWarnings("serial")

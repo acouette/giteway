@@ -19,7 +19,7 @@ public class StatisticsCalculatorTest {
 
 	private List<Commit> baseCommitList;
 
-	private static StatisticsCalculator statisticsCalculator = new StatisticsCalculatorImpl();
+	private StatisticsCalculator statisticsCalculator = new StatisticsCalculatorImpl();
 
 	private User user1;
 
@@ -73,6 +73,27 @@ public class StatisticsCalculatorTest {
 		assertEquals(75, committerActivity.get(0).getPercentage());
 		assertEquals(user2, committerActivity.get(1).getCommitter());
 		assertEquals(25, committerActivity.get(1).getPercentage());
+	}
+	
+	@Test
+	public void testCalculateActivityWithUndefinedUser() {
+		Commit commit5 = new Commit();
+		commit5.setMessage("commit5");
+		commit5.setCommiter(null);
+		commit5.setDate(new Date(99));
+		
+		baseCommitList.add(commit5);
+
+		List<CommitterActivity> committerActivity = statisticsCalculator.calculateActivity(baseCommitList);
+
+		assertNotNull(committerActivity);
+		assertEquals(3, committerActivity.size());
+		assertEquals(user1, committerActivity.get(0).getCommitter());
+		assertEquals(60, committerActivity.get(0).getPercentage());
+		assertEquals("undefined", committerActivity.get(1).getCommitter().getLogin());
+		assertEquals(20, committerActivity.get(1).getPercentage());
+		assertEquals(user2, committerActivity.get(2).getCommitter());
+		assertEquals(20, committerActivity.get(2).getPercentage());
 	}
 	
 	@Test

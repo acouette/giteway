@@ -13,6 +13,7 @@ import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
@@ -30,7 +31,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		gitRepositoryConnector = new GitRepositoryConnectorImpl();
-		((GitRepositoryConnectorImpl)gitRepositoryConnector).setGitHttpClient(gitHttpClient);
+		ReflectionTestUtils.setField(gitRepositoryConnector, "gitHttpClient",gitHttpClient);
 	}
 
 	@Test

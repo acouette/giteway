@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,6 +11,7 @@ import org.junit.Test;
 import org.kwet.giteway.dao.GitSearchConnector;
 import org.kwet.giteway.model.GitewayRequestException;
 import org.kwet.giteway.model.Repository;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
@@ -20,7 +20,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 	@Before
 	public void before() {
 		gitSearchConnector = new GitSearchConnectorImpl();
-		((GitSearchConnectorImpl) gitSearchConnector).setGitHttpClient(gitHttpClient);
+		ReflectionTestUtils.setField(gitSearchConnector, "gitHttpClient",gitHttpClient);
 	}
 
 	@Test
@@ -28,7 +28,8 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 		String keyword = "matchingKeyword";
 		String responseFile = "search-repos";
-		List<Repository> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
+		configureHttpClient(responseFile);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(1, repositorySearchs.size());
@@ -43,7 +44,8 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 		String keyword = "notMatchingKeyword";
 		String responseFile = "search-repos-empty";
-		List<Repository> repositorySearchs = searchRepositoryByKeyword(keyword, responseFile);
+		configureHttpClient(responseFile);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(0, repositorySearchs.size());
@@ -55,18 +57,42 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 
 			String keyword = "anyKeyword";
 			String responseFile = "search-repos-unexpected";
-			searchRepositoryByKeyword(keyword, responseFile);
+			configureHttpClient(responseFile);
+			gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 			fail("expected HttpMessageNotReadableException");
 
 		} catch (GitewayRequestException e) {
 		}
 	}
-
-	private List<Repository> searchRepositoryByKeyword(String keyword, String responseFile) throws IllegalStateException, IOException {
-
+	
+	@Test
+	public void testSearchRepositoryNamesSingle() throws Exception{
+		String keyword = "play";
+		String responseFile = "search-repos";
 		configureHttpClient(responseFile);
-		return gitSearchConnector.searchRepositoryByKeyword(keyword);
+		List<String> repositoryNames = gitSearchConnector.searchRepositoryNames(keyword, 5);
+
+		assertNotNull(repositoryNames);
+		assertEquals(1, repositoryNames.size());
+		assertEquals("playframework-elasticsearch", repositoryNames.get(0));
 	}
+	
+	@Test
+	public void testSearchRepositoryNamesMulti() throws Exception{
+		String keyword = "play";
+		String responseFile = "search-repos-autocomplete";
+		configureHttpClient(responseFile);
+		List<String> repositoryNames = gitSearchConnector.searchRepositoryNames(keyword, 5);
+
+		assertNotNull(repositoryNames);
+		assertEquals(5, repositoryNames.size());
+		assertEquals("playframework-1", repositoryNames.get(0));
+		assertEquals("playframework-2", repositoryNames.get(1));
+		assertEquals("playframework-3", repositoryNames.get(2));
+		assertEquals("playframework-4", repositoryNames.get(3));
+		assertEquals("playframework-elasticsearch", repositoryNames.get(4));
+	}
+
 
 }

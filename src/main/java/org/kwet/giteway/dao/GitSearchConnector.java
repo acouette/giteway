@@ -7,7 +7,7 @@ import org.kwet.giteway.model.Repository;
 /**
  * The Interface GitSearchConnector provides an API to search for repositories
  * 
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 public interface GitSearchConnector {

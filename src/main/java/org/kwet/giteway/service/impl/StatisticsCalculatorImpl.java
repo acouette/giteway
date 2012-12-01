@@ -3,7 +3,8 @@ package org.kwet.giteway.service.impl;
 import static ch.lambdaj.Lambda.filter;
 import static ch.lambdaj.Lambda.having;
 import static ch.lambdaj.Lambda.on;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.kwet.giteway.dao.dto.GitHubCommit;
 import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.CommitterActivity;
 import org.kwet.giteway.model.TimelineChunk;
@@ -24,12 +24,14 @@ import org.springframework.stereotype.Service;
 /**
  * The Class StatisticsCalculatorImpl.
  * 
- * @author Antoine Couette
+ * @author a.couette
  * 
  */
 @Service
 public class StatisticsCalculatorImpl implements StatisticsCalculator {
 
+	private static final int DEFAULT_SECTION_COUNT = 20;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,7 +61,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		// Convert the map to a list of CommitterActivity defining the percentage per user
 		List<CommitterActivity> committerActivities = new ArrayList<>();
 		for (User user : totalByUser.keySet()) {
-			int percentage = (int) ((totalByUser.get(user) * 100) / commits.size());
+			int percentage = (totalByUser.get(user) * 100) / commits.size();
 			committerActivities.add(new CommitterActivity(user, percentage));
 		}
 
@@ -91,8 +93,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	 */
 	@Override
 	public List<TimelineChunk> getTimeLine(List<Commit> commits) {
-		int sectionCount = 20;
-		return getTimeLine(commits, sectionCount);
+		return getTimeLine(commits, DEFAULT_SECTION_COUNT);
 	}
 
 	/*
@@ -147,10 +148,20 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		return results;
 	}
 
+	private static final long MS_IN_A_DAY = 1000L*60L*60L*24L;
+	
 	@Override
 	public double getChunkDurationInDays(TimelineChunk timelineChunk) {
 		long duration = timelineChunk.getEnd() - timelineChunk.getStart();
-		return (double)duration / (1000L*60L*60L*24L);
+		return (double)duration / MS_IN_A_DAY;
+	}
+
+	@Override
+	public double getTimeLineDurationInDays(List<TimelineChunk> timelineChunks) {
+		
+		long start = timelineChunks.get(0).getStart();
+		long end = timelineChunks.get(timelineChunks.size()-1).getEnd();
+		return (double)(end-start)/MS_IN_A_DAY;
 	}
 
 }

@@ -42,10 +42,10 @@ import org.springframework.util.Assert;
  * <p>By default, this converter supports {@code application/json}. This can be overridden by setting the
  * {@link #setSupportedMediaTypes(List) supportedMediaTypes} property.
  *
- *	Antoine Couette : I rewrote this class to enable pretty print (ugly I agree :)) 
+ *	a.couette : I rewrote this class to enable pretty print (ugly I agree :)) 
  *
  * @author Arjen Poutsma
- * @author Antoine Couette
+ * @author a.couette
  * @since 3.0
  * @see org.springframework.web.servlet.view.json.MappingJacksonJsonView
  */
@@ -118,7 +118,7 @@ public class PrettyMappingJacksonHttpMessageConverter extends AbstractHttpMessag
 
 	@Override
 	protected Object readInternal(Class<?> clazz, HttpInputMessage inputMessage)
-			throws IOException, HttpMessageNotReadableException {
+			throws IOException {
 
 		JavaType javaType = getJavaType(clazz);
 		try {
@@ -131,7 +131,7 @@ public class PrettyMappingJacksonHttpMessageConverter extends AbstractHttpMessag
 
 	@Override
 	protected void writeInternal(Object object, HttpOutputMessage outputMessage)
-			throws IOException, HttpMessageNotWritableException {
+			throws IOException {
 
 		JsonEncoding encoding = getJsonEncoding(outputMessage.getHeaders().getContentType());
 		JsonGenerator jsonGenerator =
@@ -140,7 +140,7 @@ public class PrettyMappingJacksonHttpMessageConverter extends AbstractHttpMessag
 			if (this.prefixJson) {
 				jsonGenerator.writeRaw("{} && ");
 			}
-			//added by Antoine Couette to enable prettyprint
+			//added by a.couette to enable prettyprint
 			jsonGenerator.useDefaultPrettyPrinter();
 			this.objectMapper.writeValue(jsonGenerator, object);
 		}

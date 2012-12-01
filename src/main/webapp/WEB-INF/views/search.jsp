@@ -9,10 +9,11 @@
 		<title>Giteway</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/style.css" />
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/jquery-ui-1.9.2.custom.min.css"/>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.watermark.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.9.2.custom.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/jquery-ui-1.9.2.custom.min.css" />	
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway.js"></script>
 		<script type="text/javascript">
 		
 		$(document).ready(function(){
@@ -49,6 +50,7 @@
 			$('#extralink').hide();
 		};
 		
+
 		var defineAutocomplete = function(){
 			//Autocomplete
 			if($("#keyword").val().length>2){

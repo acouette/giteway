@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 // TODO: Auto-generated Javadoc
 /**
- * The RestController handles restful calls. It provides application statisctics throw a WS API :
- * If client requests Application/xml as response type, the service will provide an xml response
- * If client requests Application/json as a response type, the service will provide a json response
+ * The RestController handles restful calls. It provides application statisctics throw a WS API : If
+ * client requests Application/xml as response type, the service will provide an xml response If
+ * client requests Application/json as a response type, the service will provide a json response
  * 
- * @author Antoine Couette
- *
+ * @author a.couette
+ * 
  */
 @Controller
 public class RestController {
@@ -34,11 +34,11 @@ public class RestController {
 	@Autowired
 	private StatisticsCalculator statisticsCalculator;
 
-	private static int COMMIT_LIMIT = 100;
-	
+	private static final int COMMIT_LIMIT = 100;
+
 	/**
 	 * Returns the timeline data stats.
-	 *
+	 * 
 	 * @param owner the repository owner
 	 * @param name the repository name
 	 * @return the time line data as json or xml
@@ -47,9 +47,8 @@ public class RestController {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@RequestMapping("/timeline/{owner}/{name}")
-	public @ResponseBody
-	Timeline getTimeLine(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
-			JsonMappingException, IOException {
+	@ResponseBody
+	public Timeline getTimeLine(@PathVariable String owner, @PathVariable String name) {
 
 		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
 		return new Timeline(statisticsCalculator.getTimeLine(commits));
@@ -57,7 +56,7 @@ public class RestController {
 
 	/**
 	 * Gets the committer activities stats.
-	 *
+	 * 
 	 * @param owner the repository owner
 	 * @param name the repository name
 	 * @return the committer activities as json or xml
@@ -66,9 +65,8 @@ public class RestController {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@RequestMapping("/activity/{owner}/{name}")
-	public @ResponseBody
-	CommitterActivities getCommitterActivities(@PathVariable String owner, @PathVariable String name) throws JsonGenerationException,
-			JsonMappingException, IOException {
+	@ResponseBody
+	public CommitterActivities getCommitterActivities(@PathVariable String owner, @PathVariable String name) {
 
 		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
 		return new CommitterActivities(statisticsCalculator.calculateActivity(commits));

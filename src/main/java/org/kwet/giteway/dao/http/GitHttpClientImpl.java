@@ -22,17 +22,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriTemplate;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GitHttpClientImpl.
  * 
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 public class GitHttpClientImpl implements GitHttpClient {
 
 	
-	private static final Logger logger = LoggerFactory.getLogger(GitHttpClientImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(GitHttpClientImpl.class);
 
 	
 	private HttpClient httpClient;
@@ -80,7 +79,7 @@ public class GitHttpClientImpl implements GitHttpClient {
 				try {
 					inputStream.close();
 				} catch (IOException e) {
-					logger.warn("Could not close the InputStream");
+					LOG.warn("Could not close the InputStream");
 				}
 			}
 			getRequest.releaseConnection();

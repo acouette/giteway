@@ -53,12 +53,16 @@
 				</div>
 				
 				<h3>Commits history</h3>
+				<p class="chart-comment">
+				Total number of commits : ${commitCount}<br/>
+				Total timeline duration : ${timelineDuration} day(s)<br/>
+				Interval duration : ${chunkDuration} day(s)</p>
 				<div id="timeline-chart" ></div>
-				<p class="chart-comment">This timeline shows the number of commits per period of ${chunkDuration} day(s).</p>
+				
 				
 				<h3>Committers stats</h3>
+				<p class="chart-comment">This pie chart represents the committers' collaboration over the last ${commitCount} commits.</p>
 				<div id="committer-activities-chart"></div>
-				<p class="chart-comment">This pie chart represents the committer's collaboration over the last ${commitCount} commits.</p>
 				<c:if test="${not empty collaborators}">
 				
 					<br/>

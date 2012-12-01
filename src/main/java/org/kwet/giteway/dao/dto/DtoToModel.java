@@ -5,11 +5,15 @@ import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
 
 /**
- * @author Antoine Couette
+ * @author a.couette
  *
  */
-public class DtoToModel {
+public final class DtoToModel {
 
+	private DtoToModel(){
+		
+	}
+	
 	public static User getUser(GitHubUser gitHubUser) {
 		if(gitHubUser==null){
 			return null;

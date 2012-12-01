@@ -5,7 +5,7 @@ import java.util.List;
 
 
 /**
- * @author Antoine Couette
+ * @author a.couette
  *
  */
 @SuppressWarnings("serial")

@@ -9,7 +9,7 @@ import org.kwet.giteway.model.TimelineChunk;
 /**
  * The Interface StatisticsCalculator.
  * 
- * @author Antoine Couette
+ * @author a.couette
  * 
  */
 public interface StatisticsCalculator {
@@ -42,10 +42,17 @@ public interface StatisticsCalculator {
 	List<TimelineChunk> getTimeLine(List<Commit> commits, int sectionCount);
 	
 	/**
-	 * Returns the number of days covered by thue chunk
+	 * Returns the number of days covered by the chunk
 	 * @param timelineChunk
 	 * @return
 	 */
 	double getChunkDurationInDays(TimelineChunk timelineChunk);
+	
+	/**
+	 * Returns the number of days covered by the timeline
+	 * @param timelineChunks
+	 * @return
+	 */
+	double getTimeLineDurationInDays(List<TimelineChunk> timelineChunks);
 
 }

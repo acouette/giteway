@@ -10,7 +10,7 @@ import org.kwet.giteway.model.User;
  * The Interface GitRepositoryConnector provide an API to retrieve data about a particular
  * Repository
  * 
- * @author Antoine Couette
+ * @author a.couette
  * 
  */
 public interface GitRepositoryConnector {
@@ -18,28 +18,28 @@ public interface GitRepositoryConnector {
 	/**
 	 * Find a repository by owner and name
 	 * 
-	 * @param owner : the repository owner
-	 * @param name : the repository name
+	 * @param repositoryOwner : the repository owner
+	 * @param repositoryName : the repository name
 	 * @return the matching repository
 	 */
-	Repository find(String owner, String name);
+	Repository find(String repositoryOwner, String repositoryName);
 
 	/**
 	 * Find collaborators by repository
 	 * 
-	 * @param owner : the repository owner
-	 * @param name : the repository name
+	 * @param repositoryOwner : the repository owner
+	 * @param repositoryName : the repository name
 	 * @return the list of collaborators
 	 */
-	List<User> findCollaborators(String owner, String name);
+	List<User> findCollaborators(String repositoryOwner, String repositoryName);
 
 	/**
 	 * Find commits by repository
 	 * 
-	 * @param owner : the repository owner
-	 * @param name : the repository name
-	 * @param max : number of commits to return
+	 * @param repositoryOwner : the repository owner
+	 * @param repositoryName : the repository name
+	 * @param limit : number of commits to return
 	 * @return the list of commits
 	 */
-	List<Commit> findCommits(String owner, String name, int max);
+	List<Commit> findCommits(String repositoryOwner, String repositoryName, int limit);
 }

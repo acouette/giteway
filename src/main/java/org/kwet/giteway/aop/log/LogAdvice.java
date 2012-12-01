@@ -13,14 +13,14 @@ import org.springframework.stereotype.Component;
  * The Class LogAdvice : logs call to all the methods in giteway when debug mode is set. It also
  * provides the execution time of the method calls.
  * 
- * @author Antoine Couette
+ * @author a.couette
  */
 @Aspect
 @Component
 public class LogAdvice {
 
 	/** The log. */
-	private static Logger log = LoggerFactory.getLogger(LogAdvice.class);
+	private static Logger LOG = LoggerFactory.getLogger(LogAdvice.class);
 
 	/**
 	 * Log around advice.
@@ -32,13 +32,12 @@ public class LogAdvice {
 	@Around("execution(* org.kwet.giteway..*.*(..))")
 	public Object logAroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
 
-		if (log.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			long start = new Date().getTime();
-			StringBuilder methodDesc = new StringBuilder(pjp.getSignature().toShortString());
-			log.debug("BEGIN : " + methodDesc.toString());
+			LOG.debug("BEGIN : " + pjp.getSignature().toShortString());
 			Object retVal = pjp.proceed();
 			long stop = new Date().getTime();
-			log.debug("END : " + pjp.getSignature().toShortString() + " (Execution time : " + (stop - start) + " ms)");
+			LOG.debug("END : " + pjp.getSignature().toShortString() + " (Execution time : " + (stop - start) + " ms)");
 			return retVal;
 		} else {
 			return pjp.proceed();
