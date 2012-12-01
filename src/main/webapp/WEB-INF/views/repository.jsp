@@ -54,7 +54,7 @@
 				
 				<h3>Commits history</h3>
 				<div id="timeline-chart" ></div>
-				<p class="chart-comment">This timeline shows the number of commits per period of ${chunkDuration} days.</p>
+				<p class="chart-comment">This timeline shows the number of commits per period of ${chunkDuration} day(s).</p>
 				
 				<h3>Committers stats</h3>
 				<div id="committer-activities-chart"></div>
