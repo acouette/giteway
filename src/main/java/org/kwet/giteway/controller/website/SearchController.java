@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 
  */
 @Controller
+@RequestMapping(value="/search")
 public class SearchController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
@@ -41,7 +42,7 @@ public class SearchController {
 	 * @param keyword : the search keyword
 	 * @return the redirect url
 	 */
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public String handleForm(Model model, @RequestParam String keyword) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Handling search form request with keyword : " + keyword);
@@ -57,7 +58,7 @@ public class SearchController {
 	 * @param keyword : the search keyword
 	 * @return the string
 	 */
-	@RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{keyword}", method = RequestMethod.GET)
 	public String handleSearch(Model model, @PathVariable String keyword) {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Start handling restful search request with keyword : " + keyword);
@@ -88,8 +89,8 @@ public class SearchController {
 	 * @throws IOException
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/autocomplete/{keyword}", method = RequestMethod.GET)
-	public String handleAutocomplete(Model model, @PathVariable String keyword) throws IOException {
+	@RequestMapping(value = "/autosuggest/{keyword}", method = RequestMethod.GET)
+	public String handleAutosuggest(Model model, @PathVariable String keyword) throws IOException {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handling autocomplete with keyword : " + keyword);
@@ -99,7 +100,7 @@ public class SearchController {
 		String result = objectMapper.writeValueAsString(repositories);
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Done handling autocomplete with keyword : " + keyword + ". returning : " + result);
+			LOG.debug("Done handling autosuggest with keyword : " + keyword + ". returning : " + result);
 		}
 
 		return objectMapper.writeValueAsString(repositories);

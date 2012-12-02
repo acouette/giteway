@@ -52,15 +52,15 @@
 					Description : ${repository.description}<br/>
 				</div>
 				
-				<h3>Commits history</h3>
+				<ul><li><h3>Commits history</h3></li></ul>
 				<p class="chart-comment">
-				Total number of commits : ${commitCount}<br/>
+				Number of commits displayed : ${commitCount}<br/>
 				Total timeline duration : ${timelineDuration} day(s)<br/>
 				Interval duration : ${chunkDuration} day(s)</p>
 				<div id="timeline-chart" ></div>
 				
 				
-				<h3>Committers stats</h3>
+				<ul><li><h3>Committers stats</h3></li></ul>
 				<p class="chart-comment">This pie chart represents the committers' collaboration over the last ${commitCount} commits.</p>
 				<div id="committer-activities-chart"></div>
 				<c:if test="${not empty collaborators}">

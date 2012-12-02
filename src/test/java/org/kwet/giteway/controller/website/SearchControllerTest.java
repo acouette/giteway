@@ -86,7 +86,7 @@ public class SearchControllerTest {
 		ReflectionTestUtils.setField(searchController, "objectMapper", objectMapper);
 
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		String result = searchController.handleAutocomplete(uiModel, "foo");
+		String result = searchController.handleAutosuggest(uiModel, "foo");
 		Assert.assertEquals("[\"foobar\",\"foobob\"]", result);
 
 	}

@@ -72,3 +72,18 @@ var drawCommitterActivities = function(jsonData, placeholder) {
 
 	$.plot($(placeholder), chartData, options);
 };
+
+//Autosuggest
+var defineAutosuggest = function(placeholder){
+	if($(placeholder).val().length>2){
+
+		$(placeholder).autocomplete({
+            source: "autosuggest/"+$(placeholder).val(),
+            minLength: 2,
+            select: function( event, ui ) {
+            	$(placeholder).val(ui.item.value);
+            	$("form").submit();
+            }
+        });
+	}
+};

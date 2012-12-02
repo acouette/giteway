@@ -19,13 +19,12 @@
 		$(document).ready(function(){
 			
 			//Checks for empty keyword every 500ms to clear the result grid
-			var checkKey = function(){
+			setInterval(function(){
 				if($("#keyword").val().length==0){
 					$('.searchResult').html('');
 					
 				}
-			};
-			setInterval(checkKey,500);
+			},500);
 			
 			//Stop a form submit if the keyword is empty
 			$("form").submit(function() {
@@ -35,36 +34,24 @@
 				}
 			});
 			
-			$('.hidable').hide();
-			$('#keyword').watermark('Search a git repository');
+			//By default hide results at index>n
+			$(".hidable").hide();
 			
-			$('#keyword').keyup(function(){
-				defineAutocomplete();
+			$("#keyword").watermark('Search a git repository');
+			
+			//Autosuggest
+			$("#keyword").keyup(function(){
+				defineAutosuggest("#keyword");
 			});
 			
 			
 		});
 		
 		var showExtra = function(){
-			$('.hidable').show();
-			$('#extralink').hide();
+			$(".hidable").show();
+			$("#extralink").hide();
 		};
 		
-
-		var defineAutocomplete = function(){
-			//Autocomplete
-			if($("#keyword").val().length>2){
-
-				$('#keyword').autocomplete({
-		            source: "${pageContext.request.contextPath}/autocomplete/"+$('#keyword').val(),
-		            minLength: 2,
-		            select: function( event, ui ) {
-		            	$("#keyword").val(ui.item.value);
-		            	$("form").submit();
-		            }
-		        });
-			}
-		};
 		
 		</script>
 	</head>
@@ -75,47 +62,46 @@
 			<%@include file="header.jsp" %>
 			<div id="content_header"></div>
 			<div id="site_content">
-			<div id="content">
-				<div id="searchBar" class="center searchbar">
-					<form action="${pageContext.request.contextPath}/search" method="post">
-						<input id="keyword" name="keyword" type="text"autocomplete="off"  value="${keyword}" />
-						<input id="submitKeyword" type="submit" value="Search"/>
-					</form>
-				</div>
-				<c:if test="${noResult}">
-					<div class="searchResult">
-						Your keyword did not match any repository
+				<div id="content">
+					<div id="searchBar" class="center searchbar">
+						<form action="${pageContext.request.contextPath}/search" method="post">
+							<input id="keyword" name="keyword" type="text" autocomplete="off" value="${keyword}" />
+							<input id="submitKeyword" type="submit" value="Search"/>
+						</form>
 					</div>
-				</c:if>
-				<c:if test="${not empty repositories}">
-					<div class="searchResult">
-						<table class="searchTable">
-							<tr>
-								<th style="width: 25%">Name</th>
-								<th style="width: 25%">Username</th>
-								<th style="width: 50%">Description</th>
-							</tr>
-							<c:forEach var="repository" items="${repositories}" varStatus="status">
-								<tr
-								<c:if test="${ status.index > 9}">
-											class="hidable"</c:if>>
-									<td><a href="${pageContext.request.contextPath}/repository/${repository.owner}/${repository.name}">${repository.name}</a></td>
-									<td>${repository.owner}</td>
-									<td>${repository.description}</td>
+					<c:if test="${noResult}">
+						<div class="searchResult">
+							Your keyword - ${keyword} - did not match any repositories
+						</div>
+					</c:if>
+					<c:if test="${not empty repositories}">
+						<div class="searchResult">
+							<table class="searchTable">
+								<tr>
+									<th style="width: 25%">Name</th>
+									<th style="width: 25%">Username</th>
+									<th style="width: 50%">Description</th>
 								</tr>
-							</c:forEach>
-						</table>
-						<c:if test="${ fn:length(repositories) >10}">
-							<div>
-								<a href="javascript:showExtra()" id="extralink">see more results...</a>
-							</div>
-						</c:if>
-					</div>
-				</c:if>
+								<c:forEach var="repository" items="${repositories}" varStatus="status">
+									<tr
+									<c:if test="${ status.index > 9}">
+												class="hidable"</c:if>>
+										<td><a href="${pageContext.request.contextPath}/repository/${repository.owner}/${repository.name}">${repository.name}</a></td>
+										<td>${repository.owner}</td>
+										<td>${repository.description}</td>
+									</tr>
+								</c:forEach>
+							</table>
+							<c:if test="${ fn:length(repositories) >10}">
+								<div>
+									<a href="javascript:showExtra()" id="extralink">see more results...</a>
+								</div>
+							</c:if>
+						</div>
+					</c:if>
+				</div>
 			</div>
-		</div>
-	
-		<div id="content_footer"></div>
+		
 			<div id="footer">
 				<a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
 			</div>
