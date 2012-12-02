@@ -42,7 +42,7 @@ import org.springframework.util.Assert;
  * <p>By default, this converter supports {@code application/json}. This can be overridden by setting the
  * {@link #setSupportedMediaTypes(List) supportedMediaTypes} property.
  *
- *	a.couette : I rewrote this class to enable pretty print (ugly I agree :)) 
+ *	a.couette : I rewrote this class to enable pretty print (ugly I agree but I found no other way :)) 
  *
  * @author Arjen Poutsma
  * @author a.couette
@@ -140,7 +140,7 @@ public class PrettyMappingJacksonHttpMessageConverter extends AbstractHttpMessag
 			if (this.prefixJson) {
 				jsonGenerator.writeRaw("{} && ");
 			}
-			//added by a.couette to enable prettyprint
+			/**added by a.couette to enable prettyprint**/
 			jsonGenerator.useDefaultPrettyPrinter();
 			this.objectMapper.writeValue(jsonGenerator, object);
 		}

@@ -26,28 +26,21 @@ import org.springframework.web.util.UriTemplate;
  * The Class GitHttpClientImpl.
  * 
  * @author a.couette
- *
+ * 
  */
 public class GitHttpClientImpl implements GitHttpClient {
 
-	
 	private static final Logger LOG = LoggerFactory.getLogger(GitHttpClientImpl.class);
 
-	
 	private HttpClient httpClient;
 
-	
 	public GitHttpClientImpl() {
 	}
 
-	
 	public GitHttpClientImpl(PoolingClientConnectionManager cm) {
 		this.httpClient = new DefaultHttpClient(cm);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.kwet.giteway.http.GitHttpClient#executeRequest(java.lang.String, java.lang.Class, java.lang.Object[])
-	 */
 	@Override
 	public <T> T executeGetRequest(String uriString, Class<T> responseType, Object... urlVariables) {
 
@@ -64,8 +57,8 @@ public class GitHttpClientImpl implements GitHttpClient {
 			// Check the status
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() != 200) {
-				throw new GitewayRequestException("HTTP error code : " + statusLine.getStatusCode() + ". Reason : "
-						+ statusLine.getReasonPhrase() + ". Uri : " + uri);
+				throw new GitewayRequestException("HTTP error code : " + statusLine.getStatusCode() + ". Reason : " + statusLine.getReasonPhrase()
+						+ ". Uri : " + uri);
 			}
 
 			// Parse the response
@@ -87,15 +80,14 @@ public class GitHttpClientImpl implements GitHttpClient {
 		return returnValue;
 
 	}
-	
-	
+
 	/**
 	 * Builds the request.
-	 *
+	 * 
 	 * @param uri the uri
 	 * @return the http get
 	 */
-	protected HttpGet buildRequest(URI uri){
+	protected HttpGet buildRequest(URI uri) {
 		HttpGet getRequest = new HttpGet(uri);
 		getRequest.addHeader("accept", "application/json");
 		String proxyHost = System.getProperty("http.proxyHost");
@@ -107,10 +99,9 @@ public class GitHttpClientImpl implements GitHttpClient {
 		return getRequest;
 	}
 
-	
 	/**
 	 * Builds the uri.
-	 *
+	 * 
 	 * @param uri the uri
 	 * @param urlVariables the url variables
 	 * @return the uri
@@ -118,6 +109,10 @@ public class GitHttpClientImpl implements GitHttpClient {
 	protected URI buildURI(String uri, Object... urlVariables) {
 		UriTemplate uriTemplate = new UriTemplate(uri);
 		return uriTemplate.expand(urlVariables);
+	}
+
+	public void setHttpClient(HttpClient httpClient) {
+		this.httpClient = httpClient;
 	}
 
 }

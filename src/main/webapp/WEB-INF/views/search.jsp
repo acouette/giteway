@@ -37,11 +37,12 @@
 			//By default hide results at index>n
 			$(".hidable").hide();
 			
+			//Add watermark in search input
 			$("#keyword").watermark('Search a git repository');
 			
 			//Autosuggest
 			$("#keyword").keyup(function(){
-				defineAutosuggest("#keyword");
+				defineAutosuggest("#keyword","${pageContext.request.contextPath}/search/autosuggest/");
 			});
 			
 			
@@ -63,17 +64,20 @@
 			<div id="content_header"></div>
 			<div id="site_content">
 				<div id="content">
+					<!-- The search panel -->
 					<div id="searchBar" class="center searchbar">
 						<form action="${pageContext.request.contextPath}/search" method="post">
 							<input id="keyword" name="keyword" type="text" autocomplete="off" value="${keyword}" />
 							<input id="submitKeyword" type="submit" value="Search"/>
 						</form>
 					</div>
+					<!-- The no result panel -->
 					<c:if test="${noResult}">
 						<div class="searchResult">
 							Your keyword - ${keyword} - did not match any repositories
 						</div>
 					</c:if>
+					<!-- The result panel -->
 					<c:if test="${not empty repositories}">
 						<div class="searchResult">
 							<table class="searchTable">
@@ -101,7 +105,8 @@
 					</c:if>
 				</div>
 			</div>
-		
+			
+			<div id="content_footer"></div>
 			<div id="footer">
 				<a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
 			</div>

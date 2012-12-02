@@ -15,9 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
+import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
-import org.kwet.giteway.service.StatisticsCalculator;
 import org.kwet.giteway.service.impl.StatisticsCalculatorImpl;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ExtendedModelMap;
@@ -80,9 +80,12 @@ public class RepositoryControllerTest {
 		commit2.setCommiter(user2);
 		commit2.setDate(new Date(5));
 
-		List<Commit> commits = new ArrayList<>();
-		commits.add(commit1);
-		commits.add(commit2);
+		List<Commit> commitList = new ArrayList<>();
+		commitList.add(commit1);
+		commitList.add(commit2);
+		
+		Commits commits = new Commits("yo", "ya");
+		commits.setCommitList(commitList);
 
 		when(gitRepositoryConnector.findCommits(owner, "giteway", 100)).thenReturn(commits);
 
@@ -90,7 +93,9 @@ public class RepositoryControllerTest {
 		ReflectionTestUtils.setField(repositoryController, "gitRepositoryConnector", gitRepositoryConnector);
 
 		// Here we will not mock the statisticCalculator. It is not a purely unit test
-		StatisticsCalculator statisticsCalculator = new StatisticsCalculatorImpl();
+		StatisticsCalculatorImpl statisticsCalculator = new StatisticsCalculatorImpl();
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
 		ReflectionTestUtils.setField(repositoryController, "statisticsCalculator", statisticsCalculator);
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -105,11 +110,7 @@ public class RepositoryControllerTest {
 
 		Assert.assertEquals(users, uiModel.get("collaborators"));
 
-		Assert.assertEquals(2, uiModel.get("commitCount"));
-
-		Assert.assertNotNull(uiModel.get("timelineChunks"));
-		Assert.assertNotNull(uiModel.get("chunkDuration"));
-		Assert.assertNotNull(uiModel.get("timelineDuration"));
+		Assert.assertNotNull(uiModel.get("timeline"));
 		Assert.assertNotNull(uiModel.get("committerActivities"));
 
 	}

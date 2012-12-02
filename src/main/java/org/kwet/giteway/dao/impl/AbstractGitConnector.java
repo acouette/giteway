@@ -3,9 +3,8 @@ package org.kwet.giteway.dao.impl;
 import org.kwet.giteway.dao.http.GitHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AbstractGitConnector.
+ * The Class AbstractGitConnector provides an abstract class to extends for GitHub Connectors
  * 
  * @author a.couette
  * 
@@ -17,7 +16,7 @@ public class AbstractGitConnector {
 	private static final String CREDENTIALS = "?client_id=afd1b5696c7f02a5393e&client_secret=bdeedc27efd87f502bd6b932781836f514da201a";
 
 	/**
-	 * Builds the url.
+	 * utility method used by subclasses to build there URLS. Abstract the base URL and credentials
 	 * 
 	 * @param rawUrl the raw url
 	 * @return the string
@@ -29,9 +28,15 @@ public class AbstractGitConnector {
 	@Autowired
 	private GitHttpClient gitHttpClient;
 
-	public GitHttpClient getGitHttpClient() {
+	
+	protected GitHttpClient getGitHttpClient() {
 		return gitHttpClient;
 	}
+
+	public void setGitHttpClient(GitHttpClient gitHttpClient) {
+		this.gitHttpClient = gitHttpClient;
+	}
+	
 	
 	
 

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping>
 	<class name="org.kwet.giteway.model.CommitterActivities">
-		<field name="committerActivities" type="org.kwet.giteway.model.CommitterActivity" collection="arraylist">
+		<field name="commitCount" type="integer">
+			<bind-xml name="commitCount" node="element" />
+		</field>
+		<field name="committerActivityList" type="org.kwet.giteway.model.CommitterActivity"
+			collection="arraylist">
 			<bind-xml name="committerActivity" />
 		</field>
 	</class>
@@ -14,14 +18,24 @@
 			<bind-xml name="percentage" node="element" />
 		</field>
 	</class>
-	
+
 	<class name="org.kwet.giteway.model.Timeline">
-		<field name="timelineChunks" type="org.kwet.giteway.model.TimelineChunk" collection="arraylist">
-			<bind-xml name="timelineChunk" />
+		<field name="commitCount" type="integer">
+			<bind-xml name="commitCount" node="element" />
+		</field>
+		<field name="timelineDays" type="double">
+			<bind-xml name="commitCount" node="element" />
+		</field>
+		<field name="intervalDays" type="double">
+			<bind-xml name="commitCount" node="element" />
+		</field>
+		<field name="timelineIntervals" type="org.kwet.giteway.model.TimelineInterval"
+			collection="arraylist">
+			<bind-xml name="timelineInterval" />
 		</field>
 	</class>
-	<class name="org.kwet.giteway.model.TimelineChunk" identity="start">
-		<map-to xml="timelineChunk" />
+	<class name="org.kwet.giteway.model.TimelineInterval" identity="start">
+		<map-to xml="timelineInterval" />
 		<field name="start" type="long">
 			<bind-xml name="start" node="element" />
 		</field>
@@ -32,9 +46,9 @@
 			<bind-xml name="commitCount" node="element" />
 		</field>
 	</class>
-	
+
 	<class name="org.kwet.giteway.model.User">
-		<map-to xml="user"/>
+		<map-to xml="user" />
 		<field name="login" type="string">
 			<bind-xml name="login" node="element" />
 		</field>
@@ -42,5 +56,5 @@
 			<bind-xml name="avatarUrl" node="element" />
 		</field>
 	</class>
-	
+
 </mapping>

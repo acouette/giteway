@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 
@@ -19,14 +20,17 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+		
+		//collaborator panel hidden on load
 		$("#collaborators").hide();
-
-		drawTimeLine('${timelineChunks}','#timeline-chart');
-		drawCommitterActivities('${committerActivities}',"#committer-activities-chart");
+		
+		//draw the chats
+		drawTimeLine('${timelineIntervalsJson}','#timeline-chart');
+		drawCommitterActivities('${committerActivitiesJson}',"#committer-activities-chart");
 
 	});
 	
-
+	//function used to toggle the collaborator panel
 	var toggleCollaborators = function(){
 		if($("#collaborators").is(":visible")){
 			$("#toggleCollaborators").text('Show all collaborators');
@@ -46,23 +50,27 @@
 		<div id="site_content">
 			<div id="content">
 			
+				<!-- Title and basic attributes -->
 				<h2>${repository.name}</h2>
 				<div id="repo-description">
 					Owner : ${repository.owner}<br/>
 					Description : ${repository.description}<br/>
 				</div>
 				
+				<!-- Timeline -->
 				<ul><li><h3>Commits history</h3></li></ul>
 				<p class="chart-comment">
-				Number of commits displayed : ${commitCount}<br/>
-				Total timeline duration : ${timelineDuration} day(s)<br/>
-				Interval duration : ${chunkDuration} day(s)</p>
+				Number of commits displayed : ${timeline.commitCount}<br/>
+				Total timeline duration : <fmt:formatNumber type="number" maxFractionDigits="1" value="${timeline.timelineDays}"/> day(s)<br/>
+				Interval duration : <fmt:formatNumber type="number" maxFractionDigits="1" value="${timeline.intervalDays}"/> day(s)</p>
 				<div id="timeline-chart" ></div>
 				
-				
-				<ul><li><h3>Committers stats</h3></li></ul>
-				<p class="chart-comment">This pie chart represents the committers' collaboration over the last ${commitCount} commits.</p>
+				<!-- Committers statistics -->
+				<ul><li><h3>Committers statistics</h3></li></ul>
+				<p class="chart-comment">This pie chart represents the committers' collaboration on the last ${committerActivities.commitCount} commits.</p>
 				<div id="committer-activities-chart"></div>
+				
+				<!-- The collaborators panel -->
 				<c:if test="${not empty collaborators}">
 				
 					<br/>

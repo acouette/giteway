@@ -2,6 +2,8 @@ package org.kwet.giteway.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,31 +11,41 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
+import org.kwet.giteway.model.Commits;
+import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.CommitterActivity;
-import org.kwet.giteway.model.TimelineChunk;
+import org.kwet.giteway.model.Timeline;
+import org.kwet.giteway.model.TimelineInterval;
 import org.kwet.giteway.model.User;
-import org.kwet.giteway.service.StatisticsCalculator;
 
 public class StatisticsCalculatorTest {
 
-	private List<Commit> baseCommitList;
+	private Commits commits;
 
-	private StatisticsCalculator statisticsCalculator = new StatisticsCalculatorImpl();
+	private StatisticsCalculatorImpl statisticsCalculator = new StatisticsCalculatorImpl();
+	
+	private GitRepositoryConnector gitRepositoryConnector;
 
 	private User user1;
 
 	private User user2;
+	
+	private static final String repositoryOwner = "springsource";
+	
+	private static final String repositoryName = "springframework";
+	
 
 	@Before
-	public void beforeClass() {
+	public void before() {
 
 		user1 = new User();
 		user1.setLogin("couettos");
 
 		user2 = new User();
 		user2.setLogin("pipin");
-
+		
 		Commit commit1 = new Commit();
 		commit1.setMessage("commit1");
 		commit1.setCommiter(user1);
@@ -54,25 +66,36 @@ public class StatisticsCalculatorTest {
 		commit4.setCommiter(user2);
 		commit4.setDate(new Date(99));
 
-		baseCommitList = new ArrayList<>();
+		List<Commit> baseCommitList = new ArrayList<>();
 		baseCommitList.add(commit1);
 		baseCommitList.add(commit2);
 		baseCommitList.add(commit3);
 		baseCommitList.add(commit4);
+		
+		commits = new Commits(repositoryOwner, repositoryName);
+		commits.setCommitList(baseCommitList);
 
 	}
 
 	@Test
 	public void testCalculateActivity() {
 
-		List<CommitterActivity> committerActivity = statisticsCalculator.calculateActivity(baseCommitList);
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
 
-		assertNotNull(committerActivity);
-		assertEquals(2, committerActivity.size());
-		assertEquals(user1, committerActivity.get(0).getCommitter());
-		assertEquals(75, committerActivity.get(0).getPercentage());
-		assertEquals(user2, committerActivity.get(1).getCommitter());
-		assertEquals(25, committerActivity.get(1).getPercentage());
+		assertNotNull(committerActivities);
+		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
+		assertNotNull(committerActivityList);
+		assertEquals(2, committerActivityList.size());
+		assertEquals(user1, committerActivityList.get(0).getCommitter());
+		assertEquals(75, committerActivityList.get(0).getPercentage());
+		assertEquals(user2, committerActivityList.get(1).getCommitter());
+		assertEquals(25, committerActivityList.get(1).getPercentage());
+		assertEquals(4, committerActivities.getCommitCount());
 	}
 	
 	@Test
@@ -82,159 +105,215 @@ public class StatisticsCalculatorTest {
 		commit5.setCommiter(null);
 		commit5.setDate(new Date(99));
 		
-		baseCommitList.add(commit5);
+		commits.getCommitList().add(commit5);
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 
-		List<CommitterActivity> committerActivity = statisticsCalculator.calculateActivity(baseCommitList);
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
 
-		assertNotNull(committerActivity);
-		assertEquals(3, committerActivity.size());
-		assertEquals(user1, committerActivity.get(0).getCommitter());
-		assertEquals(60, committerActivity.get(0).getPercentage());
-		assertEquals("undefined", committerActivity.get(1).getCommitter().getLogin());
-		assertEquals(20, committerActivity.get(1).getPercentage());
-		assertEquals(user2, committerActivity.get(2).getCommitter());
-		assertEquals(20, committerActivity.get(2).getPercentage());
+		assertNotNull(committerActivities);
+		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
+		assertNotNull(committerActivityList);
+		assertEquals(3, committerActivityList.size());
+		assertEquals(user1, committerActivityList.get(0).getCommitter());
+		assertEquals(60, committerActivityList.get(0).getPercentage());
+		assertEquals("undefined", committerActivityList.get(1).getCommitter().getLogin());
+		assertEquals(20, committerActivityList.get(1).getPercentage());
+		assertEquals(user2, committerActivityList.get(2).getCommitter());
+		assertEquals(20, committerActivityList.get(2).getPercentage());
+		assertEquals(5, committerActivities.getCommitCount());
 	}
 	
 	@Test
 	public void testCalculateActivityOneCommit() {
 
-		List<Commit> commits = new ArrayList<>();
+		List<Commit> commitList = new ArrayList<>();
 		
 		Commit commit = new Commit();
 		commit.setMessage("commit");
 		commit.setCommiter(user2);
 		commit.setDate(new Date(100));
-		commits.add(commit);
+		commitList.add(commit);
+		commits.setCommitList(commitList);
 		
-		List<CommitterActivity> committerActivity = statisticsCalculator.calculateActivity(commits);
+		
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
 
-		assertNotNull(committerActivity);
-		assertEquals(1, committerActivity.size());
-		assertEquals(user2, committerActivity.get(0).getCommitter());
-		assertEquals(100, committerActivity.get(0).getPercentage());
+		assertNotNull(committerActivities);
+		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
+		assertNotNull(committerActivityList);
+		assertEquals(1, committerActivityList.size());
+		assertEquals(user2, committerActivityList.get(0).getCommitter());
+		assertEquals(100, committerActivityList.get(0).getPercentage());
+		assertEquals(1, committerActivities.getCommitCount());
 	}
 
 	@Test
 	public void testGetTimeLine100ms() {
 
-		List<TimelineChunk> timeLine = statisticsCalculator.getTimeLine(baseCommitList, 10);
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
 
-		assertNotNull(timeLine);
-		assertEquals(3, timeLine.size());
+		assertNotNull(timeline);
+		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
+		assertNotNull(timelineIntervals);
 		
-		assertEquals(2, timeLine.get(0).getCommitCount());
-		assertEquals(0L, timeLine.get(0).getStart());
-		assertEquals(9L, timeLine.get(0).getEnd());
+		assertEquals(3, timelineIntervals.size());
 		
-		assertEquals(1L, timeLine.get(1).getCommitCount());
-		assertEquals(20L, timeLine.get(1).getStart());
-		assertEquals(29L, timeLine.get(1).getEnd());
+		assertEquals(2, timelineIntervals.get(0).getCommitCount());
+		assertEquals(0L, timelineIntervals.get(0).getStart());
+		assertEquals(9L, timelineIntervals.get(0).getEnd());
 		
-		assertEquals(1L, timeLine.get(2).getCommitCount());
-		assertEquals(90L, timeLine.get(2).getStart());
-		assertEquals(99L, timeLine.get(2).getEnd());
+		assertEquals(1L, timelineIntervals.get(1).getCommitCount());
+		assertEquals(20L, timelineIntervals.get(1).getStart());
+		assertEquals(29L, timelineIntervals.get(1).getEnd());
+		
+		assertEquals(1L, timelineIntervals.get(2).getCommitCount());
+		assertEquals(90L, timelineIntervals.get(2).getStart());
+		assertEquals(99L, timelineIntervals.get(2).getEnd());
 	}
 	
 	@Test
 	public void testGetTimeLine101ms() {
-
-		List<Commit> commits = new ArrayList<>();
-		commits.addAll(baseCommitList);
 		
 		Commit commit5 = new Commit();
 		commit5.setMessage("commit4");
 		commit5.setCommiter(user2);
 		commit5.setDate(new Date(100));
-		commits.add(commit5);
 		
-		List<TimelineChunk> timeLine = statisticsCalculator.getTimeLine(commits, 10);
+		commits.getCommitList().add(commit5);
+		
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
 
-		assertNotNull(timeLine);
-		assertEquals(3, timeLine.size());
+		assertNotNull(timeline);
+		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
+		assertNotNull(timelineIntervals);
 		
-		assertEquals(2, timeLine.get(0).getCommitCount());
-		assertEquals(0L, timeLine.get(0).getStart());
-		assertEquals(10L, timeLine.get(0).getEnd());
+		assertEquals(3, timelineIntervals.size());
 		
-		assertEquals(1L, timeLine.get(1).getCommitCount());
-		assertEquals(11L, timeLine.get(1).getStart());
-		assertEquals(21L, timeLine.get(1).getEnd());
+		assertEquals(2, timelineIntervals.get(0).getCommitCount());
+		assertEquals(0L, timelineIntervals.get(0).getStart());
+		assertEquals(10L, timelineIntervals.get(0).getEnd());
 		
-		assertEquals(2L, timeLine.get(2).getCommitCount());
-		assertEquals(99L, timeLine.get(2).getStart());
-		assertEquals(109L, timeLine.get(2).getEnd());
+		assertEquals(1L, timelineIntervals.get(1).getCommitCount());
+		assertEquals(11L, timelineIntervals.get(1).getStart());
+		assertEquals(21L, timelineIntervals.get(1).getEnd());
+		
+		assertEquals(2L, timelineIntervals.get(2).getCommitCount());
+		assertEquals(99L, timelineIntervals.get(2).getStart());
+		assertEquals(109L, timelineIntervals.get(2).getEnd());
 	}
 	
 	@Test
 	public void testGetTimeLineSectionOneElement() {
-		List<Commit> commits = new ArrayList<>();
+		List<Commit> commitList = new ArrayList<>();
 		Commit commit = new Commit();
 		commit.setMessage("commit");
 		commit.setCommiter(user1);
 		commit.setDate(new Date(1000));
-		commits.add(commit);
+		commitList.add(commit);
+		commits.setCommitList(commitList);
 		
-		List<TimelineChunk> timeLine = statisticsCalculator.getTimeLine(commits, 10);
-		assertNotNull(timeLine);
-		assertEquals(1,timeLine.size());
-		TimelineChunk timelineChunk = timeLine.get(0);
-		assertEquals(1,timelineChunk.getCommitCount());
-		assertEquals(1000,timelineChunk.getStart());
-		assertEquals(1000,timelineChunk.getEnd());
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		
+		assertNotNull(timeline);
+		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
+		assertNotNull(timelineIntervals);
+		
+		assertEquals(1,timelineIntervals.size());
+		TimelineInterval timelineInterval = timelineIntervals.get(0);
+		assertEquals(1,timelineInterval.getCommitCount());
+		assertEquals(1000,timelineInterval.getStart());
+		assertEquals(1000,timelineInterval.getEnd());
 	}
 	
 	@Test
 	public void testGetTimeLineSectionTwoElements() {
-		List<Commit> subCommits = new ArrayList<>();
+		List<Commit> commitList = new ArrayList<>();
 		Commit commit = new Commit();
 		commit.setMessage("commit");
 		commit.setCommiter(user1);
 		commit.setDate(new Date(1000));
-		subCommits.add(commit);
+		commitList.add(commit);
 		
 		Commit commit2 = new Commit();
 		commit2.setMessage("commit");
 		commit2.setCommiter(user1);
 		commit2.setDate(new Date(2000));
-		subCommits.add(commit2);
+		commitList.add(commit2);
 		
-		List<TimelineChunk> timeLine = statisticsCalculator.getTimeLine(subCommits, 10);
-		assertNotNull(timeLine);
-		assertEquals(2,timeLine.size());
-		TimelineChunk timelineChunk = timeLine.get(0);
-		assertEquals(1,timelineChunk.getCommitCount());
-		assertEquals(1000,timelineChunk.getStart());
-		assertEquals(1100,timelineChunk.getEnd());
+		commits.setCommitList(commitList);
+		
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		
+		assertNotNull(timeline);
+		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
+		assertNotNull(timelineIntervals);
+		
+		assertEquals(2,timelineIntervals.size());
+		TimelineInterval timelineInterval = timelineIntervals.get(0);
+		assertEquals(1,timelineInterval.getCommitCount());
+		assertEquals(1000,timelineInterval.getStart());
+		assertEquals(1100,timelineInterval.getEnd());
 		
 
-		TimelineChunk timelineChunk2 = timeLine.get(1);
-		assertEquals(1,timelineChunk2.getCommitCount());
-		assertEquals(1909,timelineChunk2.getStart());
-		assertEquals(2009,timelineChunk2.getEnd());
+		TimelineInterval timelineInterval2 = timelineIntervals.get(1);
+		assertEquals(1,timelineInterval2.getCommitCount());
+		assertEquals(1909,timelineInterval2.getStart());
+		assertEquals(2009,timelineInterval2.getEnd());
 	}
 	
 	
 	@Test
 	public void testGetTimeLineSectionLoad() {
-		List<Commit> subCommits = new ArrayList<>();
+		List<Commit> manyCommits = new ArrayList<>();
 		
 		for(int i = 0;i<1000; i++){
 			Commit commit = new Commit();
 			commit.setMessage("commit");
 			commit.setCommiter(user1);
 			commit.setDate(new Date(i));
-			subCommits.add(commit);
+			manyCommits.add(commit);
 		}
+
+		commits.setCommitList(manyCommits);
 		
-		List<TimelineChunk> timeLine = statisticsCalculator.getTimeLine(subCommits, 10);
-		assertNotNull(timeLine);
-		assertEquals(10,timeLine.size());
+		gitRepositoryConnector = mock(GitRepositoryConnector.class);
+		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
+		
+		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		
+		assertNotNull(timeline);
+		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
+		assertNotNull(timelineIntervals);
+		
+		assertEquals(10,timelineIntervals.size());
 		for(int i = 0;i<10;i++){
-			TimelineChunk timelineChunk = timeLine.get(i);
-			assertEquals(100,timelineChunk.getCommitCount());
-			assertEquals(100*i,timelineChunk.getStart());
-			assertEquals(100*(i+1)-1,timelineChunk.getEnd());
+			TimelineInterval timelineInterval = timelineIntervals.get(i);
+			assertEquals(100,timelineInterval.getCommitCount());
+			assertEquals(100*i,timelineInterval.getStart());
+			assertEquals(100*(i+1)-1,timelineInterval.getEnd());
 		}
 	}
 

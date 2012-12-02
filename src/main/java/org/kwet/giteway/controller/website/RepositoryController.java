@@ -3,14 +3,12 @@ package org.kwet.giteway.controller.website;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.dao.GitRepositoryConnector;
-import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.CommitterActivity;
+import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.Repository;
-import org.kwet.giteway.model.TimelineChunk;
+import org.kwet.giteway.model.Timeline;
 import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.StatisticsCalculator;
 import org.slf4j.Logger;
@@ -43,7 +41,6 @@ public class RepositoryController {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	private static final int COMMIT_LIMIT = 100;
 
 	/**
 	 * Handles http restful get requests from /repository/{owner}/{name}. 
@@ -73,27 +70,16 @@ public class RepositoryController {
 		List<User> collaborators = gitRepositoryConnector.findCollaborators(owner, name);
 		model.addAttribute("collaborators", collaborators);
 
-		//find the commits
-		List<Commit> commits = gitRepositoryConnector.findCommits(owner, name, COMMIT_LIMIT);
-		model.addAttribute("commitCount", commits.size());
-		
 		// Calculate Timeline stats
-		List<TimelineChunk> timelineChunks = statisticsCalculator.getTimeLine(commits);
-		model.addAttribute("timelineChunks", buildJsonString(timelineChunks));
+		Timeline timeline = statisticsCalculator.getTimeLine(owner,name);
+		model.addAttribute("timeline", timeline);
+		model.addAttribute("timelineIntervalsJson", buildJsonString(timeline.getTimelineIntervals()));
 		
-		//get chunkDuration
-		double chunkDuration = statisticsCalculator.getChunkDurationInDays(timelineChunks.get(0));
-		String chunkDurationFormatted = String.format(Locale.ENGLISH,"%4.1f", chunkDuration);
-		model.addAttribute("chunkDuration", chunkDurationFormatted);
-		
-		//getTimelineDuration
-		double timelineDuration = statisticsCalculator.getTimeLineDurationInDays(timelineChunks);
-		String timelineDurationFormatted = String.format(Locale.ENGLISH,"%4.1f", timelineDuration);
-		model.addAttribute("timelineDuration", timelineDurationFormatted);
 
 		// Calculate Committers activity stats
-		List<CommitterActivity> committerActivities = statisticsCalculator.calculateActivity(commits);
-		model.addAttribute("committerActivities", buildJsonString(committerActivities));
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(owner, name);
+		model.addAttribute("committerActivities", timeline);
+		model.addAttribute("committerActivitiesJson", buildJsonString(committerActivities.getCommitterActivityList()));
 
 		if(LOG.isInfoEnabled()){
 			LOG.info("Done handling repository stats request : Owner : ["+owner+"], Name : ["+name+"]");

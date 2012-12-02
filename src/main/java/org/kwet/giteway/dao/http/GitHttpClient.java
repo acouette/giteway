@@ -1,15 +1,8 @@
 package org.kwet.giteway.dao.http;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Interface GitHttpClient provides an API to request over http
- * It encapsulate 2 aspects :
- * 	1. HTTP  
- * 		a. HttpConnection polling
- *  	b. Http Request
- *  	c. Response analyse
- *  2. Deserialization
- *  	a. Jackson (Json To Object)
+ * It supports HttpConnection polling
  * 
  * @author a.couette
  *
@@ -17,15 +10,13 @@ package org.kwet.giteway.dao.http;
 public interface GitHttpClient {
 
 	/**
-	 * Execute request.
-	 * This method
+	 * Execute http get request, analyse the repsonse and deserialize the message thanks to jackson
 	 *
-	 * @param <T> the generic type
-	 * @param uri the uri
+	 * @param uri the uri to request
 	 * @param responseType the response type
-	 * @param urlVariables the url variables
-	 * @return the t
+	 * @param urlParameters the url parameters to replace in the string
+	 * @return the deserialized object
 	 */
-	<T> T executeGetRequest(String uri, Class<T> responseType, Object... urlVariables);
+	<T> T executeGetRequest(String uri, Class<T> responseType, Object... urlParameters);
 
 }

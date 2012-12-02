@@ -4,27 +4,39 @@
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-	
+
 	<!-- AOP -->
 	<aop:aspectj-autoproxy />
 	<context:component-scan base-package="org.kwet.giteway.aop" />
-	
+
 	<!-- Http Utils -->
-	<bean id="poolingClientConnectionManager" class="org.apache.http.impl.conn.PoolingClientConnectionManager">
-		<property name="maxTotal" value="5"/>
+	<bean id="poolingClientConnectionManager"
+		class="org.apache.http.impl.conn.PoolingClientConnectionManager">
+		<property name="maxTotal" value="5" />
 	</bean>
-	
-	<bean id="gitHttpClient" class="org.kwet.giteway.dao.http.GitHttpClientImpl" c:cm-ref="poolingClientConnectionManager"/>
-	
+
+	<bean id="gitHttpClient" class="org.kwet.giteway.dao.http.GitHttpClientImpl"
+		c:cm-ref="poolingClientConnectionManager" />
+
 	<!-- Github API connector -->
 	<context:component-scan base-package="org.kwet.giteway.dao" />
-	
+
 	<!-- Services -->
 	<context:component-scan base-package="org.kwet.giteway.service" />
-	
-	
-	
+
+	<!-- Caching -->
+	<cache:annotation-driven />
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache" />
+
+	<!-- Ehcache library setup -->
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:config-location="classpath:ehcache.xml" />
+
 </beans>

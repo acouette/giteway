@@ -14,11 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
+import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
+import org.kwet.giteway.model.Commits;
+import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.CommitterActivity;
-import org.kwet.giteway.model.TimelineChunk;
+import org.kwet.giteway.model.Timeline;
+import org.kwet.giteway.model.TimelineInterval;
 import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.StatisticsCalculator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,137 +36,136 @@ import org.springframework.stereotype.Service;
 public class StatisticsCalculatorImpl implements StatisticsCalculator {
 
 	private static final int DEFAULT_SECTION_COUNT = 20;
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.service.StatisticsCalculator#calculateActivity(java.util.List)
-	 */
+
+	private static final int COMMIT_LIMIT = 100;
+
+	private static final long MS_IN_A_DAY = 1000L * 60L * 60L * 24L;
+
+	@Autowired
+	private GitRepositoryConnector repositoryConnector;
+
 	@Override
-	public List<CommitterActivity> calculateActivity(List<Commit> commits) {
+	public CommitterActivities calculateActivity(String repositoryOwner, String repositoryName) {
+
+		Commits commits = repositoryConnector.findCommits(repositoryOwner, repositoryName, COMMIT_LIMIT);
 
 		Validate.notNull(commits, "commits can not be null");
-		
+		Validate.notNull(commits.getCommitList(), "commit list can not be null");
+
 		// First : create a map to define the number of commits per user
 		Map<User, Integer> totalByUser = new HashMap<>();
-		for (Commit commit : commits) {
+		for (Commit commit : commits.getCommitList()) {
 			User committer = commit.getCommiter();
-			
-			if(committer==null){
+
+			if (committer == null) {
 				committer = getUndefinedUser();
 			}
-			
+
 			if (totalByUser.containsKey(committer)) {
 				totalByUser.put(committer, totalByUser.get(committer) + 1);
 			} else {
 				totalByUser.put(committer, 1);
 			}
 		}
+		
+		int commitCount = commits.getCommitList().size();
 
 		// Convert the map to a list of CommitterActivity defining the percentage per user
-		List<CommitterActivity> committerActivities = new ArrayList<>();
+		List<CommitterActivity> committerActivityList = new ArrayList<>();
 		for (User user : totalByUser.keySet()) {
-			int percentage = (totalByUser.get(user) * 100) / commits.size();
-			committerActivities.add(new CommitterActivity(user, percentage));
+			int percentage = (totalByUser.get(user) * 100) / commitCount;
+			committerActivityList.add(new CommitterActivity(user, percentage));
 		}
 
 		// Sorts the list by percentage
-		Collections.sort(committerActivities, new Comparator<CommitterActivity>() {
+		Collections.sort(committerActivityList, new Comparator<CommitterActivity>() {
 			@Override
 			public int compare(CommitterActivity o1, CommitterActivity o2) {
 				return o1.getPercentage() < o2.getPercentage() ? 1 : -1;
 			}
 		});
 
+		CommitterActivities committerActivities = new CommitterActivities();
+		committerActivities.setCommitterActivityList(committerActivityList);
+		committerActivities.setCommitCount(commitCount);
+		
 		return committerActivities;
 	}
-	
+
 	/**
 	 * Builds an undefined user if none were found
+	 * 
 	 * @return
 	 */
-	private User getUndefinedUser(){
+	private User getUndefinedUser() {
 		User user = new User();
 		user.setLogin("undefined");
 		return user;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.service.StatisticsCalculator#getTimeLine(java.util.List)
-	 */
 	@Override
-	public List<TimelineChunk> getTimeLine(List<Commit> commits) {
-		return getTimeLine(commits, DEFAULT_SECTION_COUNT);
+	public Timeline getTimeLine(String repositoryOwner, String repositoryName) {
+		return getTimeLine(repositoryOwner, repositoryName, DEFAULT_SECTION_COUNT);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.service.StatisticsCalculator#getTimeLine(java.util.List, int)
-	 */
 	@Override
-	public List<TimelineChunk> getTimeLine(List<Commit> commits, int sectionCount) {
+	public Timeline getTimeLine(String repositoryOwner, String repositoryName, int sectionCount) {
 
-		
-		Validate.isTrue(sectionCount>0,"sectionCount can not be null or negative");
+		Validate.isTrue(sectionCount > 0, "sectionCount can not be null or negative");
+
+		Commits commits = repositoryConnector.findCommits(repositoryOwner, repositoryName, COMMIT_LIMIT);
 		Validate.notNull(commits, "commits can not be null");
+		Validate.notNull(commits.getCommitList(), "commit list can not be null");
 
-		List<TimelineChunk> results = new ArrayList<>();
-		
-		if(commits.isEmpty()){
-			return results;
+		Timeline timeline = new Timeline();
+
+		List<TimelineInterval> timelineIntervals = new ArrayList<>();
+		timeline.setTimelineIntervals(timelineIntervals);
+		timeline.setCommitCount(commits.getCommitList().size());
+
+		if (commits.getCommitList().isEmpty()) {
+			return timeline;
 		}
-		
+
+		List<Commit> commitList = commits.getCommitList();
+
 		// Sorts the commits (by date)
-		Collections.sort(commits);
+		Collections.sort(commitList);
 
-		long firstCommit = commits.get(0).getDate().getTime();
-		long lastCommit = commits.get(commits.size() - 1).getDate().getTime();
-		long timelineDuration = (lastCommit - firstCommit)+1;
-		long chunkDuration = timelineDuration / sectionCount;
-		if(timelineDuration%sectionCount!=0){
-			chunkDuration++;
+		long firstCommit = commitList.get(0).getDate().getTime();
+		long lastCommit = commitList.get(commitList.size() - 1).getDate().getTime();
+		long timelineDays = (lastCommit - firstCommit) + 1;
+		long intervalDays = timelineDays / sectionCount;
+		if (timelineDays % sectionCount != 0) {
+			intervalDays++;
 		}
-		
-		
-		for (int i = 0; i < sectionCount; i++) {
-			// Define start/end of chunk
-			long startTimeChunk = firstCommit + i * chunkDuration;
-			long endTimeChunk = (firstCommit + (i + 1) * chunkDuration) - 1;
-			
-			
-			// Filter commits which belong to this chunk
-			List<Commit> filtered = filter(
-					having(on(Commit.class).getDate().getTime(), greaterThanOrEqualTo(startTimeChunk)).and(
-							having(on(Commit.class).getDate().getTime(), lessThanOrEqualTo(endTimeChunk))), commits);
 
-			// Creates the chunks from calculated attributes if commits were found
+		for (int i = 0; i < sectionCount; i++) {
+			// Define start/end of interval
+			long startTimeInterval = firstCommit + i * intervalDays;
+			long endTimeInterval = (firstCommit + (i + 1) * intervalDays) - 1;
+
+			// Filter commitList which belong to this interval
+			List<Commit> filtered = filter(
+					having(on(Commit.class).getDate().getTime(), greaterThanOrEqualTo(startTimeInterval)).and(
+							having(on(Commit.class).getDate().getTime(), lessThanOrEqualTo(endTimeInterval))), commitList);
+
+			// Creates the intervals from calculated attributes if commits were found
 			int commitCount = filtered.size();
-			if(commitCount>0){
-				results.add(new TimelineChunk(startTimeChunk, endTimeChunk , commitCount));
+			if (commitCount > 0) {
+				timelineIntervals.add(new TimelineInterval(startTimeInterval, endTimeInterval, commitCount));
 			}
 
 		}
 
-		return results;
+		timeline.setIntervalDays((double) intervalDays / MS_IN_A_DAY);
+		timeline.setTimelineDays((double) timelineDays / MS_IN_A_DAY);
+
+		return timeline;
 	}
 
-	private static final long MS_IN_A_DAY = 1000L*60L*60L*24L;
-	
-	@Override
-	public double getChunkDurationInDays(TimelineChunk timelineChunk) {
-		long duration = timelineChunk.getEnd() - timelineChunk.getStart();
-		return (double)duration / MS_IN_A_DAY;
-	}
-
-	@Override
-	public double getTimeLineDurationInDays(List<TimelineChunk> timelineChunks) {
-		
-		long start = timelineChunks.get(0).getStart();
-		long end = timelineChunks.get(timelineChunks.size()-1).getEnd();
-		return (double)(end-start)/MS_IN_A_DAY;
+	public void setRepositoryConnector(GitRepositoryConnector repositoryConnector) {
+		this.repositoryConnector = repositoryConnector;
 	}
 
 }

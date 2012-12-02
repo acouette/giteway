@@ -11,11 +11,12 @@ import org.kwet.giteway.dao.dto.GitHubCommit;
 import org.kwet.giteway.dao.dto.GitHubRepository;
 import org.kwet.giteway.dao.dto.GitHubUser;
 import org.kwet.giteway.model.Commit;
+import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GitRepositoryConnectorImpl.
  * 
@@ -25,20 +26,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class GitRepositoryConnectorImpl extends AbstractGitConnector implements GitRepositoryConnector {
 
-	static final String GET_BASE = "/repos/{owner}/{name}";
+	private static final String GET_BASE = "/repos/{owner}/{name}";
 
-	static final String GET_REPOSITORY = buildUrl(GET_BASE);
+	private static final String GET_REPOSITORY = buildUrl(GET_BASE);
 
-	static final String GET_COLLABORATORS = buildUrl(GET_BASE + "/collaborators");
+	private static final String GET_COLLABORATORS = buildUrl(GET_BASE + "/collaborators");
 
-	static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page={count}";
+	private static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page={count}";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.dao.GitRepositoryConnector#find(java.lang.String, java.lang.String)
-	 */
 	@Override
+	@Cacheable("repositories")
 	public Repository find(String repositoryOwner, String repositoryName) {
 		checkRepository(repositoryOwner, repositoryName);
 		GitHubRepository gitHubRepository = getGitHttpClient().executeGetRequest(GET_REPOSITORY, GitHubRepository.class, repositoryOwner,
@@ -46,13 +43,8 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 		return DtoToModel.getRepository(gitHubRepository);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.dao.GitRepositoryConnector#findCollaborators(java.lang .String,
-	 * java.lang.String)
-	 */
 	@Override
+	@Cacheable("users")
 	public List<User> findCollaborators(String repositoryOwner, String repositoryName) {
 		checkRepository(repositoryOwner, repositoryName);
 		GitHubUser[] gitHubUsers = getGitHttpClient().executeGetRequest(GET_COLLABORATORS, GitHubUser[].class, repositoryOwner, repositoryName);
@@ -65,25 +57,23 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 		return users;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.kwet.giteway.dao.GitRepositoryConnector#findCommits(java.lang.String,
-	 * java.lang.String)
-	 */
 	@Override
-	public List<Commit> findCommits(String repositoryOwner, String repositoryName, int limit) {
+	@Cacheable("commits")
+	public Commits findCommits(String repositoryOwner, String repositoryName, int limit) {
+
 		checkRepository(repositoryOwner, repositoryName);
 		GitHubCommit[] commitWrappers = getGitHttpClient().executeGetRequest(GET_COMMITS, GitHubCommit[].class, repositoryOwner, repositoryName,
 				limit);
 		List<GitHubCommit> filteredWrappers = Arrays.asList(commitWrappers);
 
-		List<Commit> commits = new ArrayList<>();
+		List<Commit> commitList = new ArrayList<>();
 		for (GitHubCommit gc : filteredWrappers) {
 			Commit c = DtoToModel.getCommit(gc);
-			commits.add(c);
+			commitList.add(c);
 		}
 
+		Commits commits = new Commits(repositoryOwner, repositoryName);
+		commits.setCommitList(commitList);
 		return commits;
 	}
 

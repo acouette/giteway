@@ -10,6 +10,7 @@ import org.kwet.giteway.dao.dto.DtoToModel;
 import org.kwet.giteway.dao.dto.GitHubRepositories;
 import org.kwet.giteway.dao.dto.GitHubRepositorySearch;
 import org.kwet.giteway.model.Repository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 // TODO: Auto-generated Javadoc
@@ -22,16 +23,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class GitSearchConnectorImpl extends AbstractGitConnector implements GitSearchConnector {
 
-	static final String GET_REPOSITORIES_BY_KEYWORD = buildUrl("/legacy/repos/search/{keyword}");
+	private static final String GET_REPOSITORIES_BY_KEYWORD = buildUrl("/legacy/repos/search/{keyword}");
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.kwet.giteway.dao.GitSearchConnector#searchRepositoryByKeyword(java
-	 * .lang.String)
-	 */
 	@Override
+	@Cacheable("repositories")
 	public List<Repository> searchRepositoryByKeyword(String keyword) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
@@ -45,6 +40,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	}
 
 	@Override
+	@Cacheable("autosuggests")
 	public List<String> searchRepositoryNames(String keyword, int limit) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		

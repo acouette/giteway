@@ -1,3 +1,6 @@
+/**
+ * Function used to draw the timeline. Based on Plot library
+ */
 var drawTimeLine = function(jsonData, placeholder) {
 
 	
@@ -39,6 +42,9 @@ var drawTimeLine = function(jsonData, placeholder) {
 
 };
 
+/**
+ * Function used to draw the commiter activities. Based on Plot library
+ */
 var drawCommitterActivities = function(jsonData, placeholder) {
 
 	var arrayData = jQuery.parseJSON(jsonData);
@@ -73,12 +79,15 @@ var drawCommitterActivities = function(jsonData, placeholder) {
 	$.plot($(placeholder), chartData, options);
 };
 
-//Autosuggest
-var defineAutosuggest = function(placeholder){
+/**
+ * Function triggered when a user is typing in the search bar
+ * Provides an ajax support to autosuggest repository names
+ */
+var defineAutosuggest = function(placeholder,url){
 	if($(placeholder).val().length>2){
 
 		$(placeholder).autocomplete({
-            source: "autosuggest/"+$(placeholder).val(),
+            source: url+$(placeholder).val(),
             minLength: 2,
             select: function( event, ui ) {
             	$(placeholder).val(ui.item.value);

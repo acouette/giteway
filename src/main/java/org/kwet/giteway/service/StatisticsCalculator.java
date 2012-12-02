@@ -1,10 +1,7 @@
 package org.kwet.giteway.service;
 
-import java.util.List;
-
-import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.CommitterActivity;
-import org.kwet.giteway.model.TimelineChunk;
+import org.kwet.giteway.model.CommitterActivities;
+import org.kwet.giteway.model.Timeline;
 
 /**
  * The Interface StatisticsCalculator.
@@ -17,42 +14,31 @@ public interface StatisticsCalculator {
 	/**
 	 * Calculate committer activity (percentage of commit)
 	 * 
-	 * @param the list commits to process
-	 * @return the list of percentage of commits per user
+	 * @param repositoryOwner : the owner of the repository on which we want to calculate user's activity
+	 * @param repositoryName : the repository name on which we want to calculate user's activity
+	 * @return CommitterActivities
 	 */
-	List<CommitterActivity> calculateActivity(List<Commit> commits);
+	CommitterActivities calculateActivity(String repositoryOwner, String repositoryName);
 
 	/**
 	 * Defines a timeline from the last and the first commit, splits it in sections, give the number
 	 * of commits within each section.
 	 * 
-	 * @param the list commits to process
-	 * @return the time line chunks
+	 * @param repositoryOwner : the owner of the repository on which we want to calculate user's activity
+	 * @param repositoryName : the repository name on which we want to calculate user's activity
+	 * @return the time line
 	 */
-	List<TimelineChunk> getTimeLine(List<Commit> commits);
+	Timeline getTimeLine(String repositoryOwner, String repositoryName);
 
 	/**
 	 * Defines a timeline from the last and the first commit, splits it in sections, give the number
 	 * of commits within each section.
 	 * 
-	 * @param the list commits to process
+	 * @param repositoryOwner : the owner of the repository on which we want to calculate user's activity
+	 * @param repositoryName : the repository name on which we want to calculate user's activity
 	 * @param sectionCount the number of section
-	 * @return the time line chunks
+	 * @return the time line
 	 */
-	List<TimelineChunk> getTimeLine(List<Commit> commits, int sectionCount);
-	
-	/**
-	 * Returns the number of days covered by the chunk
-	 * @param timelineChunk
-	 * @return
-	 */
-	double getChunkDurationInDays(TimelineChunk timelineChunk);
-	
-	/**
-	 * Returns the number of days covered by the timeline
-	 * @param timelineChunks
-	 * @return
-	 */
-	double getTimeLineDurationInDays(List<TimelineChunk> timelineChunks);
+	Timeline getTimeLine(String repositoryOwner, String repositoryName, int sectionCount);
 
 }

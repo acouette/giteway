@@ -4,18 +4,24 @@ import java.util.List;
 
 public class CommitterActivities {
 
-	private List<CommitterActivity> committerActivities;
+	private List<CommitterActivity> committerActivityList;
 
-	public List<CommitterActivity> getCommitterActivities() {
-		return committerActivities;
+	private int commitCount;
+
+	public List<CommitterActivity> getCommitterActivityList() {
+		return committerActivityList;
 	}
 
-	public void setCommitterActivities(List<CommitterActivity> committerActivities) {
-		this.committerActivities = committerActivities;
+	public void setCommitterActivityList(List<CommitterActivity> committerActivityList) {
+		this.committerActivityList = committerActivityList;
 	}
 
-	public CommitterActivities(List<CommitterActivity> committerActivities) {
-		this.committerActivities = committerActivities;
+	public int getCommitCount() {
+		return commitCount;
+	}
+
+	public void setCommitCount(int commitCount) {
+		this.commitCount = commitCount;
 	}
 
 	public CommitterActivities() {

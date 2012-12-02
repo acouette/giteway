@@ -3,7 +3,7 @@ package org.kwet.giteway.model;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
-public class TimelineChunk implements Serializable {
+public class TimelineInterval implements Serializable {
 
 	private long start;
 
@@ -11,10 +11,10 @@ public class TimelineChunk implements Serializable {
 
 	private int commitCount;
 
-	public TimelineChunk() {
+	public TimelineInterval() {
 	}
 
-	public TimelineChunk(long start, long end, int commitCount) {
+	public TimelineInterval(long start, long end, int commitCount) {
 		super();
 		this.start = start;
 		this.end = end;
@@ -47,7 +47,7 @@ public class TimelineChunk implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TimelineChunk [start=" + start + ", end=" + end + ", commitCount=" + commitCount + "]";
+		return "TimelineInterval [start=" + start + ", end=" + end + ", commitCount=" + commitCount + "]";
 	}
 	
 	
