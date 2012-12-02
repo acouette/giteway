@@ -56,7 +56,7 @@ public class SearchController {
 	 * 
 	 * @param model
 	 * @param keyword : the search keyword
-	 * @return the string
+	 * @return the search view
 	 */
 	@RequestMapping(value = "/{keyword}", method = RequestMethod.GET)
 	public String handleSearch(Model model, @PathVariable String keyword) {
@@ -71,6 +71,10 @@ public class SearchController {
 		if (repositories.isEmpty()) {
 			model.addAttribute("noResult", true);
 		} else {
+			if(repositories.size()>10){
+				repositories = repositories.subList(0, 10);
+				model.addAttribute("extraReposAvailable", true);
+			}
 			model.addAttribute("repositories", repositories);
 		}
 		if (LOG.isInfoEnabled()) {
@@ -78,6 +82,30 @@ public class SearchController {
 		}
 
 		return "search";
+	}
+	
+	/**
+	 * handleSearch ajax call to url : /search/extra/{keyword}
+	 * 
+	 * @param model
+	 * @param keyword : the search keyword
+	 * @return the serialized extra repos
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/extra/{keyword}", method = RequestMethod.GET)
+	@ResponseBody
+	public String handleExtraSearch(Model model, @PathVariable String keyword) throws IOException {
+		if (LOG.isInfoEnabled()) {
+			LOG.info("Handling restful rextra search request with keyword : " + keyword);
+		}
+		List<Repository> repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
+
+		if (repositories.size()>10) {
+			repositories = repositories.subList(10, repositories.size());
+			return objectMapper.writeValueAsString(repositories);
+		}
+
+		return "";
 	}
 
 	/**

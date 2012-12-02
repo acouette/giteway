@@ -49,6 +49,7 @@ public class SearchControllerTest {
 		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
 		Assert.assertEquals(2, repositoriesInModel.size());
 		Assert.assertNull(uiModel.get("noResult"));
+		Assert.assertNull((Boolean)uiModel.get("extraReposAvailable"));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -67,6 +68,7 @@ public class SearchControllerTest {
 		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
 		Assert.assertNull(repositoriesInModel);
 		Assert.assertEquals(true, uiModel.get("noResult"));
+		Assert.assertNull(uiModel.get("extraReposAvailable"));
 	}
 
 	@Test
@@ -89,6 +91,60 @@ public class SearchControllerTest {
 		String result = searchController.handleAutosuggest(uiModel, "foo");
 		Assert.assertEquals("[\"foobar\",\"foobob\"]", result);
 
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSearchRepositoryLimit() {
+
+		List<Repository> repositoryList = new ArrayList<>();
+
+		for(int i = 0;i<12;i++){
+			Repository repository = new Repository();
+			repository.setName("couettos");
+			repository.setName("giteway");
+			repositoryList.add(repository);
+		}
+
+		gitSearchConnector = mock(GitSearchConnector.class);
+		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(repositoryList);
+
+		SearchController searchController = new SearchController();
+
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
+
+		String result = searchController.handleSearch(uiModel, "test");
+		Assert.assertEquals("search", result);
+		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
+		Assert.assertEquals(10, repositoriesInModel.size());
+		Assert.assertTrue((Boolean)uiModel.get("extraReposAvailable"));
+		Assert.assertNull(uiModel.get("noResult"));
+	}
+	
+	@Test
+	public void testExtraReposSearch() throws Exception {
+		List<Repository> repositoryList = new ArrayList<>();
+
+		for(int i = 0;i<12;i++){
+			Repository repository = new Repository();
+			repository.setName("couettos");
+			repository.setName("giteway"+i);
+			repositoryList.add(repository);
+		}
+
+		gitSearchConnector = mock(GitSearchConnector.class);
+		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(repositoryList);
+
+		SearchController searchController = new SearchController();
+
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
+		ReflectionTestUtils.setField(searchController, "objectMapper", new ObjectMapper());
+		
+		String result = searchController.handleExtraSearch(uiModel, "test");
+		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":null,\"description\":null},{\"name\":\"giteway11\",\"owner\":null,\"description\":null}]", result);
 	}
 
 }

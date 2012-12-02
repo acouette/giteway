@@ -13,7 +13,6 @@ import org.kwet.giteway.model.Repository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class GitSearchConnectorImpl.
  * 

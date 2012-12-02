@@ -16,44 +16,40 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway.js"></script>
 		<script type="text/javascript">
 		
-		$(document).ready(function(){
-			
-			//Checks for empty keyword every 500ms to clear the result grid
-			setInterval(function(){
-				if($("#keyword").val().length==0){
-					$('.searchResult').html('');
-					
-				}
-			},500);
-			
-			//Stop a form submit if the keyword is empty
-			$("form").submit(function() {
-				$("#keyword").val($("#keyword").val().replace('/', ''));
-				if($("#keyword").val().length==0){
-					return false;
-				}
+			$(document).ready(function(){
+				
+				//Checks for empty keyword every 500ms to clear the result grid
+				setInterval(function(){
+					if($("#keyword").val().length==0){
+						$('.searchResult').html('');
+						
+					}
+				},500);
+				
+				//Stop a form submit if the keyword is empty
+				$("form").submit(function() {
+					$("#keyword").val($("#keyword").val().replace('/', ''));
+					if($("#keyword").val().length==0){
+						return false;
+					}
+				});
+				
+				//Add watermark in search input
+				$("#keyword").watermark('Search a git repository');
+				
+				//Autosuggest
+				$("#keyword").keyup(function(){
+					defineAutosuggest("#keyword","${pageContext.request.contextPath}/search/autosuggest/");
+				});
+				
+				
 			});
 			
-			//By default hide results at index>n
-			$(".hidable").hide();
-			
-			//Add watermark in search input
-			$("#keyword").watermark('Search a git repository');
-			
-			//Autosuggest
-			$("#keyword").keyup(function(){
-				defineAutosuggest("#keyword","${pageContext.request.contextPath}/search/autosuggest/");
-			});
+			var onClickExtraLink = function(){
+				getExtraRepositories("#searchTable", "#extralink", "${pageContext.request.contextPath}","${keyword}");
+			};
 			
 			
-		});
-		
-		var showExtra = function(){
-			$(".hidable").show();
-			$("#extralink").hide();
-		};
-		
-		
 		</script>
 	</head>
 
@@ -80,25 +76,23 @@
 					<!-- The result panel -->
 					<c:if test="${not empty repositories}">
 						<div class="searchResult">
-							<table class="searchTable">
+							<table class="searchTable" id="searchTable">
 								<tr>
 									<th style="width: 25%">Name</th>
-									<th style="width: 25%">Username</th>
+									<th style="width: 25%">Owner</th>
 									<th style="width: 50%">Description</th>
 								</tr>
 								<c:forEach var="repository" items="${repositories}" varStatus="status">
-									<tr
-									<c:if test="${ status.index > 9}">
-												class="hidable"</c:if>>
+									<tr>
 										<td><a href="${pageContext.request.contextPath}/repository/${repository.owner}/${repository.name}">${repository.name}</a></td>
 										<td>${repository.owner}</td>
 										<td>${repository.description}</td>
 									</tr>
 								</c:forEach>
 							</table>
-							<c:if test="${ fn:length(repositories) >10}">
+							<c:if test="${extraReposAvailable}">
 								<div>
-									<a href="javascript:showExtra()" id="extralink">see more results...</a>
+									<a href="javascript:onClickExtraLink()" id="extralink">see more results...</a>
 								</div>
 							</c:if>
 						</div>
