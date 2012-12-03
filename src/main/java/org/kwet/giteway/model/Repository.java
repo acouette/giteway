@@ -1,6 +1,9 @@
 package org.kwet.giteway.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @SuppressWarnings("serial")
 public class Repository implements Serializable {
@@ -10,6 +13,28 @@ public class Repository implements Serializable {
 	private String owner;
 
 	private String description;
+
+	private List<User> collaborators;
+
+	private List<Commit> commits;
+
+	@JsonIgnore
+	public List<User> getCollaborators() {
+		return collaborators;
+	}
+
+	public void setCollaborators(List<User> collaborators) {
+		this.collaborators = collaborators;
+	}
+
+	@JsonIgnore
+	public List<Commit> getCommits() {
+		return commits;
+	}
+
+	public void setCommits(List<Commit> commits) {
+		this.commits = commits;
+	}
 
 	public String getName() {
 		return name;
@@ -51,33 +76,40 @@ public class Repository implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj){
+		if (this == obj) {
 			return true;
 		}
-		if (obj == null){
+		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()){
+		if (getClass() != obj.getClass()) {
 			return false;
 		}
 		Repository other = (Repository) obj;
 		if (name == null) {
-			if (other.name != null){
+			if (other.name != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)){
+		} else if (!name.equals(other.name)) {
 			return false;
 		}
 		if (owner == null) {
-			if (other.owner != null){
+			if (other.owner != null) {
 				return false;
 			}
-		} else if (!owner.equals(other.owner)){
+		} else if (!owner.equals(other.owner)) {
 			return false;
 		}
 		return true;
 	}
-	
-	
+
+	public Repository(String owner, String name) {
+		super();
+		this.name = name;
+		this.owner = owner;
+	}
+
+	public Repository() {
+	}
 
 }

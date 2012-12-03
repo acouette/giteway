@@ -66,7 +66,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 
 	private List<User> findCollaborators(String responseFile) throws IllegalStateException, IOException {
 		configureHttpClient(responseFile);
-		return gitRepositoryConnector.findCollaborators(repository.getOwner(),repository.getName());
+		return gitRepositoryConnector.findCollaborators(repository);
 	}
 
 	@Test
@@ -87,7 +87,7 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 	private List<Commit> findCommits(String responseFile) throws IllegalStateException, IOException {
 
 		configureHttpClient(responseFile);
-		return gitRepositoryConnector.findCommits(repository.getOwner(),repository.getName(),100).getCommitList();
+		return gitRepositoryConnector.findCommits(repository,100);
 	}
 
 }

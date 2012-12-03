@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.impl.StatisticsCalculatorImpl;
@@ -59,16 +58,17 @@ public class RepositoryControllerTest {
 
 		when(gitRepositoryConnector.find(owner, name)).thenReturn(repository);
 
-		List<User> users = new ArrayList<>();
+		List<User> userList = new ArrayList<>();
 		User user1 = new User();
 		user1.setLogin("Couettos");
-		users.add(user1);
+		userList.add(user1);
 
 		User user2 = new User();
 		user2.setLogin("pipin");
-		users.add(user2);
+		userList.add(user2);
 
-		when(gitRepositoryConnector.findCollaborators(owner, name)).thenReturn(users);
+
+		when(gitRepositoryConnector.findCollaborators(repository)).thenReturn(userList);
 
 		Commit commit1 = new Commit();
 		commit1.setMessage("commit1");
@@ -83,19 +83,17 @@ public class RepositoryControllerTest {
 		List<Commit> commitList = new ArrayList<>();
 		commitList.add(commit1);
 		commitList.add(commit2);
-		
-		Commits commits = new Commits("yo", "ya");
-		commits.setCommitList(commitList);
 
-		when(gitRepositoryConnector.findCommits(owner, "giteway", 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commitList);
 
 		RepositoryController repositoryController = new RepositoryController();
 		ReflectionTestUtils.setField(repositoryController, "gitRepositoryConnector", gitRepositoryConnector);
 
-		// Here we will not mock the statisticCalculator. It is not a purely unit test
+		// Here we will not mock the statisticCalculator. It is not a purely
+		// unit test
 		StatisticsCalculatorImpl statisticsCalculator = new StatisticsCalculatorImpl();
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
-		
+
 		ReflectionTestUtils.setField(repositoryController, "statisticsCalculator", statisticsCalculator);
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -105,10 +103,10 @@ public class RepositoryControllerTest {
 		String result = repositoryController.getRepositoryStats(uiModel, owner, name);
 
 		Assert.assertEquals("repository", result);
-		
+
 		Assert.assertEquals(repository, uiModel.get("repository"));
 
-		Assert.assertEquals(users, uiModel.get("collaborators"));
+		Assert.assertEquals(userList, ((Repository)uiModel.get("repository")).getCollaborators());
 
 		Assert.assertNotNull(uiModel.get("timeline"));
 		Assert.assertNotNull(uiModel.get("committerActivities"));

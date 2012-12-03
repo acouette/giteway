@@ -1,8 +1,12 @@
 package org.kwet.giteway.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CommitterActivities {
+@SuppressWarnings("serial")
+public class CommitterActivities implements Serializable{
+	
+	private Repository repository;
 
 	private List<CommitterActivity> committerActivityList;
 
@@ -26,5 +30,15 @@ public class CommitterActivities {
 
 	public CommitterActivities() {
 	}
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+	
+	
 
 }

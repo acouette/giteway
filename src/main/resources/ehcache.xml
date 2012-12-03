@@ -3,11 +3,20 @@
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
 	monitoring="autodetect" dynamicConfig="true">
 
-
-	<cache name="commits" maxBytesLocalHeap="20m" eternal="false" timeToLiveSeconds="3600"/>
-	<cache name="users" maxBytesLocalHeap="10m" eternal="false" timeToLiveSeconds="3600"/>
-	<cache name="repositories" maxBytesLocalHeap="10m" eternal="false" timeToLiveSeconds="3600"/>
-	<cache name="autosuggests" maxBytesLocalHeap="10m" eternal="false" timeToLiveSeconds="86400"/>
+	<!-- Repository -->
+	<cache name="searchRespositories" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="3600" memoryStoreEvictionPolicy="LRU"/>
+	
+	<!-- List of commits -->
+	<cache name="commits" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="3600" memoryStoreEvictionPolicy="LRU"/>
+	
+	<!-- List of users -->
+	<cache name="users" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="3600" memoryStoreEvictionPolicy="LRU"/>
+	
+	<!-- List of repositories -->
+	<cache name="repositories" maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="3600" memoryStoreEvictionPolicy="LRU"/>
+	
+	<!-- List of String for suggestion -->
+	<cache name="autosuggests" maxEntriesLocalHeap="250" eternal="false" timeToLiveSeconds="86400" memoryStoreEvictionPolicy="LRU"/>
 
 
 </ehcache>

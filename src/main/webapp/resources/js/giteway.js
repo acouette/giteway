@@ -100,7 +100,7 @@ var defineAutosuggest = function(placeholder,url){
 /**
  * this method enable an ajax call to the server to retrieve extra repos
  */
-var getExtraRepositories = function(placeholder, linkplaceholder, contextPath, keyword){
+var getExtraRepositories = function(placeholder, contextPath, keyword, callback){
 	$.ajax({
 		  url: contextPath+"/search/extra/"+keyword,
 		  context: document.body
@@ -111,6 +111,5 @@ var getExtraRepositories = function(placeholder, linkplaceholder, contextPath, k
 				var link = "<a href='"+contextPath+"/repository/"+row.owner+"/"+row.name+"'>"+row.name+"</a>";
 				$(placeholder+' tr:last').after('<tr><td>'+link+'</td><td>'+row.owner+'</td><td>'+row.description+'</td></tr>');
 			}
-			$(linkplaceholder).hide();
 		});
 };

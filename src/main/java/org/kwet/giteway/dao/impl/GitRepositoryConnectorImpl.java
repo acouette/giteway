@@ -11,7 +11,6 @@ import org.kwet.giteway.dao.dto.GitHubCommit;
 import org.kwet.giteway.dao.dto.GitHubRepository;
 import org.kwet.giteway.dao.dto.GitHubUser;
 import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
 import org.springframework.cache.annotation.Cacheable;
@@ -37,7 +36,8 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 	@Override
 	@Cacheable("repositories")
 	public Repository find(String repositoryOwner, String repositoryName) {
-		checkRepository(repositoryOwner, repositoryName);
+		Validate.notEmpty(repositoryOwner, "Owner can not be empty or null");
+		Validate.notEmpty(repositoryName, "Repository name can not be empty or null");
 		GitHubRepository gitHubRepository = getGitHttpClient().executeGetRequest(GET_REPOSITORY, GitHubRepository.class, repositoryOwner,
 				repositoryName);
 		return DtoToModel.getRepository(gitHubRepository);
@@ -45,24 +45,23 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 
 	@Override
 	@Cacheable("users")
-	public List<User> findCollaborators(String repositoryOwner, String repositoryName) {
-		checkRepository(repositoryOwner, repositoryName);
-		GitHubUser[] gitHubUsers = getGitHttpClient().executeGetRequest(GET_COLLABORATORS, GitHubUser[].class, repositoryOwner, repositoryName);
+	public List<User> findCollaborators(Repository repository) {
+		checkRepository(repository);
+		GitHubUser[] gitHubUsers = getGitHttpClient().executeGetRequest(GET_COLLABORATORS, GitHubUser[].class, repository.getOwner(), repository.getName());
 		List<User> users = new ArrayList<>();
 		for (GitHubUser gw : gitHubUsers) {
 			User user = DtoToModel.getUser(gw);
 			users.add(user);
 		}
-
 		return users;
 	}
 
 	@Override
 	@Cacheable("commits")
-	public Commits findCommits(String repositoryOwner, String repositoryName, int limit) {
+	public List<Commit> findCommits(Repository repository, int limit) {
 
-		checkRepository(repositoryOwner, repositoryName);
-		GitHubCommit[] commitWrappers = getGitHttpClient().executeGetRequest(GET_COMMITS, GitHubCommit[].class, repositoryOwner, repositoryName,
+		checkRepository(repository);
+		GitHubCommit[] commitWrappers = getGitHttpClient().executeGetRequest(GET_COMMITS, GitHubCommit[].class, repository.getOwner(), repository.getName(),
 				limit);
 		List<GitHubCommit> filteredWrappers = Arrays.asList(commitWrappers);
 
@@ -71,20 +70,17 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 			Commit c = DtoToModel.getCommit(gc);
 			commitList.add(c);
 		}
-
-		Commits commits = new Commits(repositoryOwner, repositoryName);
-		commits.setCommitList(commitList);
-		return commits;
+		return commitList;
 	}
 
 	/**
 	 * Check repository.
 	 * 
-	 * @param owner the owner
-	 * @param name the name
+	 * @param repository
 	 */
-	private void checkRepository(String repositoryOwner, String repositoryName) {
-		Validate.notEmpty(repositoryOwner, "Owner can not be empty or null");
-		Validate.notEmpty(repositoryName, "Repository name can not be empty or null");
+	private void checkRepository(Repository repository) {
+		Validate.notNull(repository, "Repository can not null");
+		Validate.notEmpty(repository.getOwner(), "Owner can not be empty or null");
+		Validate.notEmpty(repository.getName(), "Repository name can not be empty or null");
 	}
 }

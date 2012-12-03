@@ -6,14 +6,14 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * @author a.couette
- *
+ * 
  */
 @SuppressWarnings("serial")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubCommit implements Serializable {
 
 	private GitHubCommitDetail commit;
-	
+
 	private GitHubUser committer;
 
 	public GitHubCommitDetail getCommit() {

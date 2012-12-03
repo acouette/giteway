@@ -33,7 +33,8 @@
 						return false;
 					}
 				});
-				
+				//hide animated gif
+				$("#load-gif").hide();
 				//Add watermark in search input
 				$("#keyword").watermark('Search a git repository');
 				
@@ -46,7 +47,13 @@
 			});
 			
 			var onClickExtraLink = function(){
-				getExtraRepositories("#searchTable", "#extralink", "${pageContext.request.contextPath}","${keyword}");
+				$("#load-gif").show();
+				getExtraRepositories("#searchTable", "${pageContext.request.contextPath}","${keyword}",extraLinksLoaded);
+			};
+			
+			var extraLinksLoaded = function(){
+				$("#load-gif").hide();
+				$("#extralink").hide();
 			};
 			
 			
@@ -92,7 +99,8 @@
 							</table>
 							<c:if test="${extraReposAvailable}">
 								<div>
-									<a href="javascript:onClickExtraLink()" id="extralink">see more results...</a>
+									<a  id="extralink" href="javascript:onClickExtraLink()">see more results...</a>
+									<img id="load-gif" alt="loading..." src="${pageContext.request.contextPath}/resources/style/loading-icon.gif"/>
 								</div>
 							</c:if>
 						</div>

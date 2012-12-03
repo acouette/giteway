@@ -42,7 +42,6 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	@Cacheable("autosuggests")
 	public List<String> searchRepositoryNames(String keyword, int limit) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
-		
 		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
 		List<String> repositoryNames = new ArrayList<>();
 		int i = 0;

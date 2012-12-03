@@ -16,9 +16,9 @@ import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.CommitterActivity;
+import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.Timeline;
 import org.kwet.giteway.model.TimelineInterval;
 import org.kwet.giteway.model.User;
@@ -45,16 +45,15 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	private GitRepositoryConnector repositoryConnector;
 
 	@Override
-	public CommitterActivities calculateActivity(String repositoryOwner, String repositoryName) {
+	public CommitterActivities calculateActivity(Repository repository) {
 
-		Commits commits = repositoryConnector.findCommits(repositoryOwner, repositoryName, COMMIT_LIMIT);
+		List<Commit> commitList = repositoryConnector.findCommits(repository, COMMIT_LIMIT);
 
-		Validate.notNull(commits, "commits can not be null");
-		Validate.notNull(commits.getCommitList(), "commit list can not be null");
+		Validate.notNull(commitList, "commit list can not be null");
 
 		// First : create a map to define the number of commits per user
 		Map<User, Integer> totalByUser = new HashMap<>();
-		for (Commit commit : commits.getCommitList()) {
+		for (Commit commit : commitList) {
 			User committer = commit.getCommiter();
 
 			if (committer == null) {
@@ -68,7 +67,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 			}
 		}
 		
-		int commitCount = commits.getCommitList().size();
+		int commitCount = commitList.size();
 
 		// Convert the map to a list of CommitterActivity defining the percentage per user
 		List<CommitterActivity> committerActivityList = new ArrayList<>();
@@ -88,6 +87,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		CommitterActivities committerActivities = new CommitterActivities();
 		committerActivities.setCommitterActivityList(committerActivityList);
 		committerActivities.setCommitCount(commitCount);
+		committerActivities.setRepository(repository);
 		
 		return committerActivities;
 	}
@@ -104,30 +104,28 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	}
 
 	@Override
-	public Timeline getTimeLine(String repositoryOwner, String repositoryName) {
-		return getTimeLine(repositoryOwner, repositoryName, DEFAULT_SECTION_COUNT);
+	public Timeline getTimeLine(Repository repository) {
+		return getTimeLine(repository, DEFAULT_SECTION_COUNT);
 	}
 
 	@Override
-	public Timeline getTimeLine(String repositoryOwner, String repositoryName, int sectionCount) {
+	public Timeline getTimeLine(Repository repository, int sectionCount) {
 
 		Validate.isTrue(sectionCount > 0, "sectionCount can not be null or negative");
 
-		Commits commits = repositoryConnector.findCommits(repositoryOwner, repositoryName, COMMIT_LIMIT);
-		Validate.notNull(commits, "commits can not be null");
-		Validate.notNull(commits.getCommitList(), "commit list can not be null");
+		List<Commit> commitList = repositoryConnector.findCommits(repository, COMMIT_LIMIT);
+		Validate.notNull(commitList, "commit list can not be null");
 
 		Timeline timeline = new Timeline();
 
 		List<TimelineInterval> timelineIntervals = new ArrayList<>();
 		timeline.setTimelineIntervals(timelineIntervals);
-		timeline.setCommitCount(commits.getCommitList().size());
+		timeline.setCommitCount(commitList.size());
 
-		if (commits.getCommitList().isEmpty()) {
+		if (commitList.isEmpty()) {
 			return timeline;
 		}
 
-		List<Commit> commitList = commits.getCommitList();
 
 		// Sorts the commits (by date)
 		Collections.sort(commitList);
@@ -160,6 +158,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 
 		timeline.setIntervalDays((double) intervalDays / MS_IN_A_DAY);
 		timeline.setTimelineDays((double) timelineDays / MS_IN_A_DAY);
+		timeline.setRepository(repository);
 
 		return timeline;
 	}

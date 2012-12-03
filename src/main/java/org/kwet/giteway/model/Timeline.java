@@ -4,14 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class Timeline implements Serializable{
+public class Timeline implements Serializable {
+
+	private Repository repository;
 
 	private List<TimelineInterval> timelineIntervals;
 
 	private double timelineDays;
 
 	private double intervalDays;
-	
+
 	private int commitCount;
 
 	public List<TimelineInterval> getTimelineIntervals() {
@@ -41,7 +43,14 @@ public class Timeline implements Serializable{
 	public void setIntervalDays(double intervalDays) {
 		this.intervalDays = intervalDays;
 	}
-	
+
+	public Repository getRepository() {
+		return repository;
+	}
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
 
 	public int getCommitCount() {
 		return commitCount;

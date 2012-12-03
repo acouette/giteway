@@ -13,16 +13,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.Commits;
 import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.CommitterActivity;
+import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.Timeline;
 import org.kwet.giteway.model.TimelineInterval;
 import org.kwet.giteway.model.User;
 
 public class StatisticsCalculatorTest {
 
-	private Commits commits;
+	private List<Commit> commits;
 
 	private StatisticsCalculatorImpl statisticsCalculator = new StatisticsCalculatorImpl();
 	
@@ -36,9 +36,12 @@ public class StatisticsCalculatorTest {
 	
 	private static final String repositoryName = "springframework";
 	
+	private static Repository repository;
 
 	@Before
 	public void before() {
+		repository = new Repository(repositoryOwner,repositoryName);
+		
 
 		user1 = new User();
 		user1.setLogin("couettos");
@@ -66,14 +69,12 @@ public class StatisticsCalculatorTest {
 		commit4.setCommiter(user2);
 		commit4.setDate(new Date(99));
 
-		List<Commit> baseCommitList = new ArrayList<>();
-		baseCommitList.add(commit1);
-		baseCommitList.add(commit2);
-		baseCommitList.add(commit3);
-		baseCommitList.add(commit4);
+		commits = new ArrayList<>();
+		commits.add(commit1);
+		commits.add(commit2);
+		commits.add(commit3);
+		commits.add(commit4);
 		
-		commits = new Commits(repositoryOwner, repositoryName);
-		commits.setCommitList(baseCommitList);
 
 	}
 
@@ -81,11 +82,11 @@ public class StatisticsCalculatorTest {
 	public void testCalculateActivity() {
 
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commits);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
 		
-		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repository);
 
 		assertNotNull(committerActivities);
 		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
@@ -105,12 +106,12 @@ public class StatisticsCalculatorTest {
 		commit5.setCommiter(null);
 		commit5.setDate(new Date(99));
 		
-		commits.getCommitList().add(commit5);
+		commits.add(commit5);
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commits);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 
-		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repository);
 
 		assertNotNull(committerActivities);
 		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
@@ -129,20 +130,19 @@ public class StatisticsCalculatorTest {
 	public void testCalculateActivityOneCommit() {
 
 		List<Commit> commitList = new ArrayList<>();
-		
+
 		Commit commit = new Commit();
 		commit.setMessage("commit");
 		commit.setCommiter(user2);
 		commit.setDate(new Date(100));
 		commitList.add(commit);
-		commits.setCommitList(commitList);
 		
 		
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commitList);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repositoryOwner, repositoryName);
+		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repository);
 
 		assertNotNull(committerActivities);
 		List<CommitterActivity> committerActivityList = committerActivities.getCommitterActivityList();
@@ -157,10 +157,10 @@ public class StatisticsCalculatorTest {
 	public void testGetTimeLine100ms() {
 
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commits);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		Timeline timeline = statisticsCalculator.getTimeLine(repository, 10);
 
 		assertNotNull(timeline);
 		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
@@ -189,13 +189,13 @@ public class StatisticsCalculatorTest {
 		commit5.setCommiter(user2);
 		commit5.setDate(new Date(100));
 		
-		commits.getCommitList().add(commit5);
+		commits.add(commit5);
 		
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commits);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		Timeline timeline = statisticsCalculator.getTimeLine(repository, 10);
 
 		assertNotNull(timeline);
 		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
@@ -224,13 +224,12 @@ public class StatisticsCalculatorTest {
 		commit.setCommiter(user1);
 		commit.setDate(new Date(1000));
 		commitList.add(commit);
-		commits.setCommitList(commitList);
 		
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commitList);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		Timeline timeline = statisticsCalculator.getTimeLine(repository, 10);
 		
 		assertNotNull(timeline);
 		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
@@ -258,13 +257,12 @@ public class StatisticsCalculatorTest {
 		commit2.setDate(new Date(2000));
 		commitList.add(commit2);
 		
-		commits.setCommitList(commitList);
 		
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(commitList);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		Timeline timeline = statisticsCalculator.getTimeLine(repository, 10);
 		
 		assertNotNull(timeline);
 		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();
@@ -296,13 +294,12 @@ public class StatisticsCalculatorTest {
 			manyCommits.add(commit);
 		}
 
-		commits.setCommitList(manyCommits);
 		
 		gitRepositoryConnector = mock(GitRepositoryConnector.class);
-		when(gitRepositoryConnector.findCommits(repositoryOwner, repositoryName, 100)).thenReturn(commits);
+		when(gitRepositoryConnector.findCommits(repository, 100)).thenReturn(manyCommits);
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 		
-		Timeline timeline = statisticsCalculator.getTimeLine(repositoryOwner, repositoryName, 10);
+		Timeline timeline = statisticsCalculator.getTimeLine(repository, 10);
 		
 		assertNotNull(timeline);
 		List<TimelineInterval> timelineIntervals = timeline.getTimelineIntervals();

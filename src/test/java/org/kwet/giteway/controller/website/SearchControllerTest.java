@@ -129,7 +129,7 @@ public class SearchControllerTest {
 
 		for(int i = 0;i<12;i++){
 			Repository repository = new Repository();
-			repository.setName("couettos");
+			repository.setOwner("couettos");
 			repository.setName("giteway"+i);
 			repositoryList.add(repository);
 		}
@@ -144,7 +144,8 @@ public class SearchControllerTest {
 		ReflectionTestUtils.setField(searchController, "objectMapper", new ObjectMapper());
 		
 		String result = searchController.handleExtraSearch(uiModel, "test");
-		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":null,\"description\":null},{\"name\":\"giteway11\",\"owner\":null,\"description\":null}]", result);
+		System.out.println(result);
+		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":\"couettos\",\"description\":null},{\"name\":\"giteway11\",\"owner\":\"couettos\",\"description\":null}]", result);
 	}
 
 }

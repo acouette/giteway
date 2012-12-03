@@ -2,7 +2,7 @@ package org.kwet.giteway.dao;
 
 import java.util.List;
 
-import org.kwet.giteway.model.Commits;
+import org.kwet.giteway.model.Commit;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
 
@@ -25,21 +25,19 @@ public interface GitRepositoryConnector {
 	Repository find(String repositoryOwner, String repositoryName);
 
 	/**
-	 * Find collaborators by repository
+	 * Find collaborators by repository. Also Populates the repository with the returned list
 	 * 
-	 * @param repositoryOwner : the repository owner
-	 * @param repositoryName : the repository name
+	 * @param repository
 	 * @return the list of collaborators
 	 */
-	List<User> findCollaborators(String repositoryOwner, String repositoryName);
+	List<User> findCollaborators(Repository repository);
 
 	/**
 	 * Find commits by repository
 	 * 
-	 * @param repositoryOwner : the repository owner
-	 * @param repositoryName : the repository name
+	 * @param repository
 	 * @param limit : number of commits to return
 	 * @return the list of commits
 	 */
-	Commits findCommits(String repositoryOwner, String repositoryName, int limit);
+	List<Commit> findCommits(Repository repository, int limit);
 }

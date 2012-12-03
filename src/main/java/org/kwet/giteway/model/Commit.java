@@ -5,7 +5,7 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 public class Commit implements Serializable, Comparable<Commit> {
-
+	
 	private String message;
 
 	private User commiter;
@@ -45,5 +45,6 @@ public class Commit implements Serializable, Comparable<Commit> {
 	public String toString() {
 		return "Commit [message=" + message + ", commiter=" + commiter + ", date=" + date + "]";
 	}
+	
 
 }

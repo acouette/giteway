@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mapping>
+	<class name="org.kwet.giteway.model.Repository">
+		<map-to xml="repository" />
+		<field name="name" type="string">
+			<bind-xml name="name" node="element" />
+		</field>
+		<field name="owner" type="string">
+			<bind-xml name="name" node="element" />
+		</field>
+		<field name="description" type="string">
+			<bind-xml name="name" node="element" />
+		</field>
+	</class>
+
 	<class name="org.kwet.giteway.model.CommitterActivities">
+		<field name="repository" type="org.kwet.giteway.model.Repository">
+			<bind-xml name="repository" />
+		</field>
 		<field name="commitCount" type="integer">
 			<bind-xml name="commitCount" node="element" />
 		</field>
@@ -20,14 +36,17 @@
 	</class>
 
 	<class name="org.kwet.giteway.model.Timeline">
+		<field name="repository" type="org.kwet.giteway.model.Repository">
+			<bind-xml name="repository" />
+		</field>
 		<field name="commitCount" type="integer">
 			<bind-xml name="commitCount" node="element" />
 		</field>
 		<field name="timelineDays" type="double">
-			<bind-xml name="commitCount" node="element" />
+			<bind-xml name="timelineDays" node="element" />
 		</field>
 		<field name="intervalDays" type="double">
-			<bind-xml name="commitCount" node="element" />
+			<bind-xml name="intervalDays" node="element" />
 		</field>
 		<field name="timelineIntervals" type="org.kwet.giteway.model.TimelineInterval"
 			collection="arraylist">
