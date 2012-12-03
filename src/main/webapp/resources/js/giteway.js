@@ -111,5 +111,6 @@ var getExtraRepositories = function(placeholder, contextPath, keyword, callback)
 				var link = "<a href='"+contextPath+"/repository/"+row.owner+"/"+row.name+"'>"+row.name+"</a>";
 				$(placeholder+' tr:last').after('<tr><td>'+link+'</td><td>'+row.owner+'</td><td>'+row.description+'</td></tr>');
 			}
+			callback();
 		});
 };

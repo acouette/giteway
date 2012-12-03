@@ -46,16 +46,17 @@
 				
 			});
 			
+			//ajax extralink request
 			var onClickExtraLink = function(){
 				$("#load-gif").show();
 				getExtraRepositories("#searchTable", "${pageContext.request.contextPath}","${keyword}",extraLinksLoaded);
 			};
-			
+
+			//callback when ajax completed
 			var extraLinksLoaded = function(){
 				$("#load-gif").hide();
 				$("#extralink").hide();
 			};
-			
 			
 		</script>
 	</head>
