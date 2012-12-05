@@ -29,6 +29,10 @@ public class SearchController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
+	private static final int EXTRA_RESULT_START = 10;
+	
+	private static final int SUGGEST_COUNT = 5;
+	
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -71,8 +75,8 @@ public class SearchController {
 		if (repositories.isEmpty()) {
 			model.addAttribute("noResult", true);
 		} else {
-			if(repositories.size()>10){
-				repositories = repositories.subList(0, 10);
+			if(repositories.size()>EXTRA_RESULT_START){
+				repositories = repositories.subList(0, EXTRA_RESULT_START);
 				model.addAttribute("extraReposAvailable", true);
 			}
 			model.addAttribute("repositories", repositories);
@@ -100,8 +104,8 @@ public class SearchController {
 		}
 		List<Repository> repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
 
-		if (repositories.size()>10) {
-			repositories = repositories.subList(10, repositories.size());
+		if (repositories.size()>EXTRA_RESULT_START) {
+			repositories = repositories.subList(EXTRA_RESULT_START, repositories.size());
 			return objectMapper.writeValueAsString(repositories);
 		}
 
@@ -124,7 +128,7 @@ public class SearchController {
 			LOG.debug("Handling autocomplete with keyword : " + keyword);
 		}
 
-		List<String> repositories = gitSearchConnector.searchRepositoryNames(keyword, 5);
+		List<String> repositories = gitSearchConnector.searchRepositoryNames(keyword, SUGGEST_COUNT);
 		String result = objectMapper.writeValueAsString(repositories);
 
 		if (LOG.isDebugEnabled()) {

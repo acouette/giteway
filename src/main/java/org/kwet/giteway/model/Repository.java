@@ -1,9 +1,6 @@
 package org.kwet.giteway.model;
 
 import java.io.Serializable;
-import java.util.List;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 
 @SuppressWarnings("serial")
 public class Repository implements Serializable {
@@ -14,27 +11,6 @@ public class Repository implements Serializable {
 
 	private String description;
 
-	private List<User> collaborators;
-
-	private List<Commit> commits;
-
-	@JsonIgnore
-	public List<User> getCollaborators() {
-		return collaborators;
-	}
-
-	public void setCollaborators(List<User> collaborators) {
-		this.collaborators = collaborators;
-	}
-
-	@JsonIgnore
-	public List<Commit> getCommits() {
-		return commits;
-	}
-
-	public void setCommits(List<Commit> commits) {
-		this.commits = commits;
-	}
 
 	public String getName() {
 		return name;

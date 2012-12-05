@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAdvice {
 
-	private static Logger LOG = LoggerFactory.getLogger(LogAdvice.class);
+	private static final Logger LOG = LoggerFactory.getLogger(LogAdvice.class);
 
 	/**
 	 * Log around advice used to log every cal to method in debug mode

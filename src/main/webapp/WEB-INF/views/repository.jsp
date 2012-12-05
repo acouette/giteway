@@ -71,7 +71,7 @@
 				<div id="committer-activities-chart"></div>
 				
 				<!-- The collaborators panel -->
-				<c:if test="${not empty repository.collaborators}">
+				<c:if test="${not empty collaborators}">
 				
 					<br/>
 					<a href="javascript:toggleCollaborators()" id="toggleCollaborators">Show all collaborators</a>
@@ -79,7 +79,7 @@
 					<br/>
 					
 				    <div id="collaborators" class="container">
-				    	<c:forEach  var="user" items="${repository.collaborators}" varStatus="status">
+				    	<c:forEach  var="user" items="${collaborators}" varStatus="status">
 					    	<c:if test="${(status.count - 1) % 3==0}">
 					    		<div class="spacer">
 								  &nbsp;

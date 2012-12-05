@@ -1,6 +1,5 @@
 package org.kwet.giteway.controller.ws;
 
-import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.Timeline;
@@ -24,9 +23,6 @@ public class RestController {
 
 	@Autowired
 	private StatisticsCalculator statisticsCalculator;
-	
-	@Autowired
-	private GitRepositoryConnector gitRepositoryConnector;
 
 	/**
 	 * Returns the timeline data stats.
@@ -38,7 +34,7 @@ public class RestController {
 	@RequestMapping("/timeline/{owner}/{name}")
 	@ResponseBody
 	public Timeline getTimeLine(@PathVariable String owner, @PathVariable String name) {
-		Repository repository = gitRepositoryConnector.find(owner,name);
+		Repository repository = new Repository(owner, name);
 		return statisticsCalculator.getTimeLine(repository);
 	}
 
@@ -52,7 +48,7 @@ public class RestController {
 	@RequestMapping("/activity/{owner}/{name}")
 	@ResponseBody
 	public CommitterActivities getCommitterActivities(@PathVariable String owner, @PathVariable String name) {
-		Repository repository = gitRepositoryConnector.find(owner,name);
+		Repository repository = new Repository(owner, name);
 		return statisticsCalculator.calculateActivity(repository);
 	}
 

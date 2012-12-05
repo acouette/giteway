@@ -106,7 +106,7 @@ public class RepositoryControllerTest {
 
 		Assert.assertEquals(repository, uiModel.get("repository"));
 
-		Assert.assertEquals(userList, ((Repository)uiModel.get("repository")).getCollaborators());
+		Assert.assertEquals(userList, uiModel.get("collaborators"));
 
 		Assert.assertNotNull(uiModel.get("timeline"));
 		Assert.assertNotNull(uiModel.get("committerActivities"));

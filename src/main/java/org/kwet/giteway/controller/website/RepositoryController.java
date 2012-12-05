@@ -2,12 +2,14 @@ package org.kwet.giteway.controller.website;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.dao.GitRepositoryConnector;
 import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.Timeline;
+import org.kwet.giteway.model.User;
 import org.kwet.giteway.service.StatisticsCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,12 +64,12 @@ public class RepositoryController {
 		
 		// find the repository
 		Repository repository = gitRepositoryConnector.find(owner, name);
+		model.addAttribute("repository", repository);
 
 		// populate the collaborators
-		repository.setCollaborators(gitRepositoryConnector.findCollaborators(repository));
-		
+		List<User> collaborators = gitRepositoryConnector.findCollaborators(repository);
+		model.addAttribute("collaborators", collaborators);
 
-		model.addAttribute("repository", repository);
 
 		// Calculate Timeline stats
 		Timeline timeline = statisticsCalculator.getTimeLine(repository);
