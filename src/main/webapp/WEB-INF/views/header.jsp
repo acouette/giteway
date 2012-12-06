@@ -7,7 +7,7 @@
 		<div id="logo">
 			<div id="logo_text">
 				<h1>
-					<a href="${pageContext.request.contextPath}">Git<span class="logo_colour">eway</span></a>
+					<a href="${pageContext.request.contextPath}/">Git<span class="logo_colour">eway</span></a>
 				</h1>
 				<h2></h2>
 			</div>

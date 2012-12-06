@@ -33,6 +33,9 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 
 	private static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page={count}";
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	@Cacheable("repositories")
 	public Repository find(String repositoryOwner, String repositoryName) {
@@ -43,6 +46,9 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 		return DtoToModel.getRepository(gitHubRepository);
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	@Cacheable("users")
 	public List<User> findCollaborators(Repository repository) {
@@ -56,6 +62,9 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 		return users;
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	@Cacheable("commits")
 	public List<Commit> findCommits(Repository repository, int limit) {

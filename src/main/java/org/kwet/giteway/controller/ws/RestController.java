@@ -31,7 +31,7 @@ public class RestController {
 	 * @param name the repository name
 	 * @return the time line data as json or xml
 	 */
-	@RequestMapping("/timeline/{owner}/{name}")
+	@RequestMapping("/repos/{owner}/{name}/timeline")
 	@ResponseBody
 	public Timeline getTimeLine(@PathVariable String owner, @PathVariable String name) {
 		Repository repository = new Repository(owner, name);
@@ -45,7 +45,7 @@ public class RestController {
 	 * @param name the repository name
 	 * @return the committer activities as json or xml
 	 */
-	@RequestMapping("/activity/{owner}/{name}")
+	@RequestMapping("/repos/{owner}/{name}/activity")
 	@ResponseBody
 	public CommitterActivities getCommitterActivities(@PathVariable String owner, @PathVariable String name) {
 		Repository repository = new Repository(owner, name);

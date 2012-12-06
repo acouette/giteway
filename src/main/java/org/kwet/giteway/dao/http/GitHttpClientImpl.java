@@ -41,6 +41,9 @@ public class GitHttpClientImpl implements GitHttpClient {
 		this.httpClient = new DefaultHttpClient(cm);
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public <T> T executeGetRequest(String uriString, Class<T> responseType, Object... urlVariables) {
 
@@ -111,8 +114,5 @@ public class GitHttpClientImpl implements GitHttpClient {
 		return uriTemplate.expand(urlVariables);
 	}
 
-	public void setHttpClient(HttpClient httpClient) {
-		this.httpClient = httpClient;
-	}
 
 }

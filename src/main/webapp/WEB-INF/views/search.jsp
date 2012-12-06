@@ -36,7 +36,7 @@
 				//hide animated gif
 				$("#load-gif").hide();
 				//Add watermark in search input
-				$("#keyword").watermark('Search a git repository');
+				$("#keyword").watermark('Search a GitHub repository');
 				
 				//Autosuggest
 				$("#keyword").keyup(function(){
@@ -92,7 +92,7 @@
 								</tr>
 								<c:forEach var="repository" items="${repositories}" varStatus="status">
 									<tr>
-										<td><a href="${pageContext.request.contextPath}/repository/${repository.owner}/${repository.name}">${repository.name}</a></td>
+										<td><a href="${pageContext.request.contextPath}/repos/${repository.owner}/${repository.name}">${repository.name}</a></td>
 										<td>${repository.owner}</td>
 										<td>${repository.description}</td>
 									</tr>

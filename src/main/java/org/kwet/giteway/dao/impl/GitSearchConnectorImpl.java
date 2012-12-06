@@ -24,6 +24,9 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 
 	private static final String GET_REPOSITORIES_BY_KEYWORD = buildUrl("/legacy/repos/search/{keyword}");
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	@Cacheable("repositories")
 	public List<Repository> searchRepositoryByKeyword(String keyword) {
@@ -38,6 +41,9 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	@Cacheable("autosuggests")
 	public List<String> searchRepositoryNames(String keyword, int limit) {

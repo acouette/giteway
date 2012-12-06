@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 
  */
 @Controller
-@RequestMapping(value = "/repository")
+@RequestMapping(value = "/repos")
 public class RepositoryController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(RepositoryController.class);

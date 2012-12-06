@@ -44,6 +44,9 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	@Autowired
 	private GitRepositoryConnector repositoryConnector;
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public CommitterActivities calculateActivity(Repository repository) {
 
@@ -103,11 +106,17 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 		return user;
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public Timeline getTimeLine(Repository repository) {
 		return getTimeLine(repository, DEFAULT_SECTION_COUNT);
 	}
 
+	/**
+     * {@inheritDoc}
+     */
 	@Override
 	public Timeline getTimeLine(Repository repository, int sectionCount) {
 
