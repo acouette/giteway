@@ -18,6 +18,8 @@
 		
 			$(document).ready(function(){
 				
+				$("#submitKeyword").button();
+				
 				//Checks for empty keyword every 500ms to clear the result grid
 				setInterval(function(){
 					if($("#keyword").val().length==0){

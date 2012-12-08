@@ -1,16 +1,11 @@
 package org.kwet.giteway.controller.website;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.dao.GitRepositoryConnector;
-import org.kwet.giteway.model.CommitterActivities;
 import org.kwet.giteway.model.Repository;
-import org.kwet.giteway.model.Timeline;
 import org.kwet.giteway.model.User;
-import org.kwet.giteway.service.StatisticsCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,20 +30,12 @@ public class RepositoryController {
 	@Autowired
 	private GitRepositoryConnector gitRepositoryConnector;
 
-	@Autowired
-	private StatisticsCalculator statisticsCalculator;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
 
 	/**
 	 * Handles http restful get requests from /repository/{owner}/{name}. 
 	 * Sets as request attributes :
 	 * 	1. General repository information
 	 *  2. Collaborator list
-	 *  3. TimelineData
-	 *  4. Committers Activity
 	 * 
 	 * @param model
 	 * @param owner the repository owner
@@ -70,35 +57,10 @@ public class RepositoryController {
 		List<User> collaborators = gitRepositoryConnector.findCollaborators(repository);
 		model.addAttribute("collaborators", collaborators);
 
-
-		// Calculate Timeline stats
-		Timeline timeline = statisticsCalculator.getTimeLine(repository);
-		model.addAttribute("timeline", timeline);
-		model.addAttribute("timelineIntervalsJson", buildJsonString(timeline.getTimelineIntervals()));
-		
-
-		// Calculate Committers activity stats
-		CommitterActivities committerActivities = statisticsCalculator.calculateActivity(repository);
-		model.addAttribute("committerActivities", timeline);
-		model.addAttribute("committerActivitiesJson", buildJsonString(committerActivities.getCommitterActivityList()));
-
 		if(LOG.isInfoEnabled()){
 			LOG.info("Done handling repository stats request : Owner : ["+owner+"], Name : ["+name+"]");
 		}
 		
 		return "repository";
 	}
-	
-	
-	//Builds a json string from a serializable object
-	private String buildJsonString(Object object) throws IOException{
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		objectMapper.writeValue(outputStream, object);
-		String result = new String(outputStream.toByteArray());
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Generated Json : " + result);
-		}
-		return result;
-	}
-
 }

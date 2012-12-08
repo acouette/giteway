@@ -36,7 +36,7 @@ h2 {
 }
 
 h3 {
-	font: normal 165% 'century gothic', arial, sans-serif;
+	font: normal 150% 'century gothic', arial, sans-serif;font-weight: bold;
 }
 
 h6 {
@@ -195,10 +195,6 @@ a:hover {
     padding: 3px 5px 3px 5px;
 }
 
-input[type="submit"]::-moz-focus-inner { 
-    border: 0px;
-    padding: 5px 5px;
-}
 
 .searchTable {
 	width: 100%;
@@ -234,10 +230,6 @@ div.float img {
 	padding-left: 90px;
 }
 
-div.container {
-	background-color: #F4F4EE;
-}
-
 div.spacer {
 	clear: both;
 }
@@ -245,16 +237,14 @@ div.spacer {
 #timeline-chart {
 	margin-left: 60px;
 	margin-top: 20px;
-	margin-bottom: 20px;
 	width: 700px;
-	height: 300px;
+	height: 330px;
 }
 
-#committer-activities-chart{
+#activity-chart{
 	margin-left: 120px;
-	margin-bottom: 20px;
 	width:600px;
-	height:450px;
+	height:400px;
 }
 
 #repo-description{
@@ -267,8 +257,8 @@ div.spacer {
 }
 
 #load-gif{
-	height: 20px;
-	width: 20px;
+	height: 25px;
+	width: 25px;
 }
 
  

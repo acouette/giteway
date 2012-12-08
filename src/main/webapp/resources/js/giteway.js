@@ -4,7 +4,7 @@
 var drawTimeLine = function(jsonData, placeholder) {
 
 	
-	var arrayData = jQuery.parseJSON(jsonData);
+	var arrayData = jsonData["timelineIntervals"];
 	var chartData = new Array();
 	var step = 0;
 	if (arrayData.length > 0) {
@@ -47,7 +47,7 @@ var drawTimeLine = function(jsonData, placeholder) {
  */
 var drawCommitterActivities = function(jsonData, placeholder) {
 
-	var arrayData = jQuery.parseJSON(jsonData);
+	var arrayData = jsonData["committerActivityList"];
 	var chartData = new Array();
 	for ( var i = 0; i < arrayData.length; i++) {
 		chartData[i] = {
