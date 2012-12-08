@@ -102,7 +102,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 	 */
 	private User getUndefinedUser() {
 		User user = new User();
-		user.setLogin("undefined");
+		user.setLogin("unknown");
 		return user;
 	}
 

@@ -95,15 +95,16 @@ public class SearchController {
 	 * @param keyword : the search keyword
 	 * @return the serialized extra repos
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
 	@RequestMapping(value = "/extra/{keyword}", method = RequestMethod.GET)
 	@ResponseBody
-	public String handleExtraSearch(Model model, @PathVariable String keyword) throws IOException {
+	public String handleExtraSearch(Model model, @PathVariable String keyword) throws IOException, InterruptedException {
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Handling restful rextra search request with keyword : " + keyword);
 		}
 		List<Repository> repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
-
+		Thread.sleep(2000);
 		if (repositories.size()>EXTRA_RESULT_START) {
 			repositories = repositories.subList(EXTRA_RESULT_START, repositories.size());
 			return objectMapper.writeValueAsString(repositories);

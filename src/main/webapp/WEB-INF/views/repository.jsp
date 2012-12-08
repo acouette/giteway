@@ -27,10 +27,8 @@
 		//intitialize view : timeline 
 		$(document).ready(function(){
 			
-
+			//initialize radio button behaviour
 			$( "#radio" ).buttonset();
-			
-			
 			$("#timeline-radio").click(function(){
 				setView('#timeline');
 			});
@@ -41,14 +39,15 @@
 				setView('#collaborators');
 			});
 			
+			//initialize view state
 			$("#collaborators").hide();
 			$("#activity").hide();
 			$("#timeline").hide();
-			setView("#timeline");
+			setView(currentView);
 			
 		});
 		
-		//method invoked when switching view or stat
+		//method invoked when switching views
 		var setView = function(view){
 			$("#load-gif").show();
 			var previousView = this.currentView;
@@ -119,7 +118,7 @@
 					    <div id="radio" class="left">
 					        <input type="radio" id="timeline-radio" name="radio" checked="checked"/><label for="timeline-radio">Timeline</label>
 					        <input type="radio" id="activity-radio" name="radio" /><label for="activity-radio">Committers' activity</label>
-					        <input type="radio" id="collaborators-radio" name="radio" /><label for="collaborators-radio">Show collaborators</label>
+					        <input type="radio" id="collaborators-radio" name="radio" /><label for="collaborators-radio">Collaborators</label>
 					    </div>
 					</form>
 					<div style="height: 25px;" class="right"><img id="load-gif" alt="loading..." src="${pageContext.request.contextPath}/resources/style/loading-icon.gif"/></div>
@@ -130,9 +129,9 @@
 				<div id="timeline" class="stat-container">
 					<h3>Timeline</h3>
 					<p class="chart-comment">
-					Number of commits displayed : <span id="timeline-commitCount"></span><br/>
-					Total timeline duration : <span id="timeline-timelineDays"></span> day(s)<br/>
-					Interval duration : <span id="timeline-intervalDays"></span> day(s)</p>
+					Number of commits displayed :&nbsp;<span id="timeline-commitCount"></span><br/>
+					Total timeline duration :&nbsp;<span id="timeline-timelineDays"></span>&nbsp;day(s)<br/>
+					Interval duration :&nbsp;<span id="timeline-intervalDays"></span>&nbsp;day(s)</p>
 					<div id="timeline-chart" ></div>
 				</div>
 				
@@ -169,9 +168,6 @@
 		</div>
 		
 		<div id="content_footer"></div>
-		<div id="footer">
-			<a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
-		</div>
 	</div>
   
   </body>

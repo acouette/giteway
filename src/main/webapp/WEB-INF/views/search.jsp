@@ -101,8 +101,8 @@
 								</c:forEach>
 							</table>
 							<c:if test="${extraReposAvailable}">
+								<a  id="extralink" href="javascript:onClickExtraLink()">see more results...</a>
 								<div>
-									<a  id="extralink" href="javascript:onClickExtraLink()">see more results...</a>
 									<img id="load-gif" alt="loading..." src="${pageContext.request.contextPath}/resources/style/loading-icon.gif"/>
 								</div>
 							</c:if>
@@ -110,11 +110,7 @@
 					</c:if>
 				</div>
 			</div>
-			
 			<div id="content_footer"></div>
-			<div id="footer">
-				<a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a>
-			</div>
 		</div>
 	 
 	</body>

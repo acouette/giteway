@@ -23,7 +23,7 @@ img {
 	border: 0;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3 {
 	font: normal 175% 'century gothic', arial, sans-serif;
 	color: #43423F;
 	margin: 0 0 15px 0;
@@ -36,11 +36,8 @@ h2 {
 }
 
 h3 {
-	font: normal 150% 'century gothic', arial, sans-serif;font-weight: bold;
-}
-
-h6 {
-	color: #362C20;
+	font: normal 150% 'century gothic', arial, sans-serif;
+	font-weight: bold;
 }
 
 a,a:hover {
@@ -144,7 +141,7 @@ a:hover {
 	min-width: 878px;
 	overflow: hidden;
 	margin: 0 auto 0 auto;
-	padding: 0 20px 20px 40px;
+	padding: 0px 20px 0px 40px;
 	background: #FFF;
 	border-left: 1px solid #ECECE0;
 	border-right: 1px solid #ECECE0;
@@ -157,28 +154,6 @@ a:hover {
 	padding: 0;
 }
 
-#footer {
-	max-width: 1116px;
-	min-width: 916px;
-	font: normal 90% arial, sans-serif;
-	height: 28px;
-	margin-top: 20px;
-	padding: 20px 0 5px 0;
-	text-align: center;
-	background: transparent;
-	color: #333;
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
-}
-
-#footer a,#footer a:hover {
-	color: #888;
-	text-decoration: none;
-}
-
-#footer a:hover {
-	color: #333;
-}
 
 .searchbar input[type="text"] {
 	height: 23px;
@@ -187,14 +162,13 @@ a:hover {
 
 /* Remove button padding in FF */
 #submitKeyword::-moz-focus-inner {
-    border:0;
-    padding: 0px 0px;
+	border: 0;
+	padding: 0px 0px;
 }
 
-#submitKeyword{
-    padding: 3px 5px 3px 5px;
+#submitKeyword {
+	padding: 3px 5px 3px 5px;
 }
-
 
 .searchTable {
 	width: 100%;
@@ -205,7 +179,7 @@ table {
 }
 
 table tr th,table tr td {
-	background: #3B3B3B;
+	background: #3A332D;
 	color: #FFF;
 	padding: 7px 4px;
 	text-align: left;
@@ -241,26 +215,28 @@ div.spacer {
 	height: 330px;
 }
 
-#activity-chart{
+#activity-chart {
 	margin-left: 120px;
-	width:600px;
-	height:400px;
+	width: 600px;
+	height: 400px;
 }
 
-#repo-description{
+#repo-description {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-.chart-comment{
+.chart-comment {
 	font-style: italic;
 }
 
-#load-gif{
-	height: 25px;
-	width: 25px;
+#load-gif {
+	height: 20px;
+	width: 20px;
 }
 
- 
-
-
+#designed {
+	position: absolute;
+	top: 10px;
+	right: 0;
+}
