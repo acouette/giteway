@@ -10,7 +10,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitRepositoryConnector;
@@ -94,11 +93,6 @@ public class RepositoryControllerTest {
 		StatisticsCalculatorImpl statisticsCalculator = new StatisticsCalculatorImpl();
 		statisticsCalculator.setRepositoryConnector(gitRepositoryConnector);
 
-		ReflectionTestUtils.setField(repositoryController, "statisticsCalculator", statisticsCalculator);
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		ReflectionTestUtils.setField(repositoryController, "objectMapper", objectMapper);
-
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		String result = repositoryController.getRepositoryStats(uiModel, owner, name);
 
@@ -107,9 +101,6 @@ public class RepositoryControllerTest {
 		Assert.assertEquals(repository, uiModel.get("repository"));
 
 		Assert.assertEquals(userList, uiModel.get("collaborators"));
-
-		Assert.assertNotNull(uiModel.get("timeline"));
-		Assert.assertNotNull(uiModel.get("committerActivities"));
 
 	}
 
