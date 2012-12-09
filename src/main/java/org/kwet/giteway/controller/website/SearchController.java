@@ -99,12 +99,11 @@ public class SearchController {
 	 */
 	@RequestMapping(value = "/extra/{keyword}", method = RequestMethod.GET)
 	@ResponseBody
-	public String handleExtraSearch(Model model, @PathVariable String keyword) throws IOException, InterruptedException {
+	public String handleExtraSearch(Model model, @PathVariable String keyword) throws IOException {
 		if (LOG.isInfoEnabled()) {
-			LOG.info("Handling restful rextra search request with keyword : " + keyword);
+			LOG.info("Handling restful extra search request with keyword : " + keyword);
 		}
 		List<Repository> repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
-		Thread.sleep(2000);
 		if (repositories.size()>EXTRA_RESULT_START) {
 			repositories = repositories.subList(EXTRA_RESULT_START, repositories.size());
 			return objectMapper.writeValueAsString(repositories);
@@ -117,23 +116,23 @@ public class SearchController {
 	 * Handles Ajax request performed to make suggestions about what to search for
 	 * 
 	 * @param model
-	 * @param keyword : a few letter that the user has typed in the search box
+	 * @param term : a few letter that the user has typed in the search box
 	 * @return a list of repository names starting with the keyword letters
 	 * @throws IOException
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/autosuggest/{keyword}", method = RequestMethod.GET)
-	public String handleAutosuggest(Model model, @PathVariable String keyword) throws IOException {
+	@RequestMapping(value = "/autosuggest", method = RequestMethod.GET)
+	public String handleAutosuggest(Model model, @RequestParam String term) throws IOException {
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Handling autocomplete with keyword : " + keyword);
+			LOG.debug("Handling autocomplete with term : " + term);
 		}
 
-		List<String> repositories = gitSearchConnector.searchRepositoryNames(keyword, SUGGEST_COUNT);
+		List<String> repositories = gitSearchConnector.searchRepositoryNames(term, SUGGEST_COUNT);
 		String result = objectMapper.writeValueAsString(repositories);
 
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("Done handling autosuggest with keyword : " + keyword + ". returning : " + result);
+			LOG.debug("Done handling autosuggest with term : " + term + ". returning : " + result);
 		}
 
 		return objectMapper.writeValueAsString(repositories);

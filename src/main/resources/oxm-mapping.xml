@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
 <mapping>
 	<class name="org.kwet.giteway.model.Repository">
 		<map-to xml="repository" />
@@ -52,10 +54,10 @@
 	</class>
 	<class name="org.kwet.giteway.model.TimelineInterval" identity="start">
 		<map-to xml="timelineInterval" />
-		<field name="start" type="long">
+		<field name="start" type="date">
 			<bind-xml name="start" node="element" />
 		</field>
-		<field name="end" type="long">
+		<field name="end" type="date">
 			<bind-xml name="end" node="element" />
 		</field>
 		<field name="commitCount" type="integer">

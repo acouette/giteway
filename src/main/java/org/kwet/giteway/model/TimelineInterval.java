@@ -1,39 +1,40 @@
 package org.kwet.giteway.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @SuppressWarnings("serial")
 public class TimelineInterval implements Serializable {
 
-	private long start;
+	private Date start;
 
-	private long end;
+	private Date end;
 
 	private int commitCount;
 
 	public TimelineInterval() {
 	}
 
-	public TimelineInterval(long start, long end, int commitCount) {
+	public TimelineInterval(Date start, Date end, int commitCount) {
 		super();
 		this.start = start;
 		this.end = end;
 		this.commitCount = commitCount;
 	}
 
-	public long getStart() {
+	public Date getStart() {
 		return start;
 	}
 
-	public void setStart(long start) {
+	public void setStart(Date start) {
 		this.start = start;
 	}
 
-	public long getEnd() {
+	public Date getEnd() {
 		return end;
 	}
 
-	public void setEnd(long end) {
+	public void setEnd(Date end) {
 		this.end = end;
 	}
 

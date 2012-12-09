@@ -11,55 +11,11 @@
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/style.css" />
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/style/jquery-ui-1.9.2.custom.min.css"/>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.watermark.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-ui-1.9.2.custom.min.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.watermark.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway-search.js"></script>
 		<script type="text/javascript">
-		
-			$(document).ready(function(){
-				
-				$("#submitKeyword").button();
-				
-				//Checks for empty keyword every 500ms to clear the result grid
-				setInterval(function(){
-					if($("#keyword").val().length==0){
-						$('.searchResult').html('');
-						
-					}
-				},500);
-				
-				//Stop a form submit if the keyword is empty
-				$("form").submit(function() {
-					$("#keyword").val($("#keyword").val().replace('/', ''));
-					if($("#keyword").val().length==0){
-						return false;
-					}
-				});
-				//hide animated gif
-				$("#load-gif").hide();
-				//Add watermark in search input
-				$("#keyword").watermark('Search a GitHub repository');
-				
-				//Autosuggest
-				$("#keyword").keyup(function(){
-					defineAutosuggest("#keyword","${pageContext.request.contextPath}/search/autosuggest/");
-				});
-				
-				
-			});
-			
-			//ajax extralink request
-			var onClickExtraLink = function(){
-				$("#load-gif").show();
-				getExtraRepositories("#searchTable", "${pageContext.request.contextPath}","${keyword}",extraLinksLoaded);
-			};
-
-			//callback when ajax completed
-			var extraLinksLoaded = function(){
-				$("#load-gif").hide();
-				$("#extralink").hide();
-			};
-			
+			var rootContext = "${pageContext.request.contextPath}";
 		</script>
 	</head>
 
@@ -101,7 +57,7 @@
 								</c:forEach>
 							</table>
 							<c:if test="${extraReposAvailable}">
-								<a  id="extralink" href="javascript:onClickExtraLink()">see more results...</a>
+								<a  id="extralink" href="javascript:getExtraLink('${keyword}')">see more results...</a>
 								<div>
 									<img id="load-gif" alt="loading..." src="${pageContext.request.contextPath}/resources/style/loading-icon.gif"/>
 								</div>

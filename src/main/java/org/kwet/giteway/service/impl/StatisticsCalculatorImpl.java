@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class StatisticsCalculatorImpl implements StatisticsCalculator {
 			// Creates the intervals from calculated attributes if commits were found
 			int commitCount = filtered.size();
 			if (commitCount > 0) {
-				timelineIntervals.add(new TimelineInterval(startTimeInterval, endTimeInterval, commitCount));
+				timelineIntervals.add(new TimelineInterval(new Date(startTimeInterval), new Date(endTimeInterval), commitCount));
 			}
 
 		}

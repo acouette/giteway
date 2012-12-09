@@ -119,7 +119,7 @@ public class StatisticsCalculatorTest {
 		assertEquals(3, committerActivityList.size());
 		assertEquals(user1, committerActivityList.get(0).getCommitter());
 		assertEquals(60, committerActivityList.get(0).getPercentage());
-		assertEquals("undefined", committerActivityList.get(1).getCommitter().getLogin());
+		assertEquals("unknown", committerActivityList.get(1).getCommitter().getLogin());
 		assertEquals(20, committerActivityList.get(1).getPercentage());
 		assertEquals(user2, committerActivityList.get(2).getCommitter());
 		assertEquals(20, committerActivityList.get(2).getPercentage());
@@ -169,16 +169,16 @@ public class StatisticsCalculatorTest {
 		assertEquals(3, timelineIntervals.size());
 		
 		assertEquals(2, timelineIntervals.get(0).getCommitCount());
-		assertEquals(0L, timelineIntervals.get(0).getStart());
-		assertEquals(9L, timelineIntervals.get(0).getEnd());
+		assertEquals(0L, timelineIntervals.get(0).getStart().getTime());
+		assertEquals(9L, timelineIntervals.get(0).getEnd().getTime());
 		
 		assertEquals(1L, timelineIntervals.get(1).getCommitCount());
-		assertEquals(20L, timelineIntervals.get(1).getStart());
-		assertEquals(29L, timelineIntervals.get(1).getEnd());
+		assertEquals(20L, timelineIntervals.get(1).getStart().getTime());
+		assertEquals(29L, timelineIntervals.get(1).getEnd().getTime());
 		
 		assertEquals(1L, timelineIntervals.get(2).getCommitCount());
-		assertEquals(90L, timelineIntervals.get(2).getStart());
-		assertEquals(99L, timelineIntervals.get(2).getEnd());
+		assertEquals(90L, timelineIntervals.get(2).getStart().getTime());
+		assertEquals(99L, timelineIntervals.get(2).getEnd().getTime());
 	}
 	
 	@Test
@@ -204,16 +204,16 @@ public class StatisticsCalculatorTest {
 		assertEquals(3, timelineIntervals.size());
 		
 		assertEquals(2, timelineIntervals.get(0).getCommitCount());
-		assertEquals(0L, timelineIntervals.get(0).getStart());
-		assertEquals(10L, timelineIntervals.get(0).getEnd());
+		assertEquals(0L, timelineIntervals.get(0).getStart().getTime());
+		assertEquals(10L, timelineIntervals.get(0).getEnd().getTime());
 		
 		assertEquals(1L, timelineIntervals.get(1).getCommitCount());
-		assertEquals(11L, timelineIntervals.get(1).getStart());
-		assertEquals(21L, timelineIntervals.get(1).getEnd());
+		assertEquals(11L, timelineIntervals.get(1).getStart().getTime());
+		assertEquals(21L, timelineIntervals.get(1).getEnd().getTime());
 		
 		assertEquals(2L, timelineIntervals.get(2).getCommitCount());
-		assertEquals(99L, timelineIntervals.get(2).getStart());
-		assertEquals(109L, timelineIntervals.get(2).getEnd());
+		assertEquals(99L, timelineIntervals.get(2).getStart().getTime());
+		assertEquals(109L, timelineIntervals.get(2).getEnd().getTime());
 	}
 	
 	@Test
@@ -238,8 +238,8 @@ public class StatisticsCalculatorTest {
 		assertEquals(1,timelineIntervals.size());
 		TimelineInterval timelineInterval = timelineIntervals.get(0);
 		assertEquals(1,timelineInterval.getCommitCount());
-		assertEquals(1000,timelineInterval.getStart());
-		assertEquals(1000,timelineInterval.getEnd());
+		assertEquals(1000,timelineInterval.getStart().getTime());
+		assertEquals(1000,timelineInterval.getEnd().getTime());
 	}
 	
 	@Test
@@ -271,14 +271,14 @@ public class StatisticsCalculatorTest {
 		assertEquals(2,timelineIntervals.size());
 		TimelineInterval timelineInterval = timelineIntervals.get(0);
 		assertEquals(1,timelineInterval.getCommitCount());
-		assertEquals(1000,timelineInterval.getStart());
-		assertEquals(1100,timelineInterval.getEnd());
+		assertEquals(1000,timelineInterval.getStart().getTime());
+		assertEquals(1100,timelineInterval.getEnd().getTime());
 		
 
 		TimelineInterval timelineInterval2 = timelineIntervals.get(1);
 		assertEquals(1,timelineInterval2.getCommitCount());
-		assertEquals(1909,timelineInterval2.getStart());
-		assertEquals(2009,timelineInterval2.getEnd());
+		assertEquals(1909,timelineInterval2.getStart().getTime());
+		assertEquals(2009,timelineInterval2.getEnd().getTime());
 	}
 	
 	
@@ -309,8 +309,8 @@ public class StatisticsCalculatorTest {
 		for(int i = 0;i<10;i++){
 			TimelineInterval timelineInterval = timelineIntervals.get(i);
 			assertEquals(100,timelineInterval.getCommitCount());
-			assertEquals(100*i,timelineInterval.getStart());
-			assertEquals(100*(i+1)-1,timelineInterval.getEnd());
+			assertEquals(100*i,timelineInterval.getStart().getTime());
+			assertEquals(100*(i+1)-1,timelineInterval.getEnd().getTime());
 		}
 	}
 

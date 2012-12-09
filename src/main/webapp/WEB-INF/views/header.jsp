@@ -1,8 +1,8 @@
 <%@page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE HTML>
 <html>
-	<header>
-	</header>
+	<head>
+	</head>
 	<div id="header">
 		<div id="logo">
 			<div id="logo_text">
