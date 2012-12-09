@@ -1,23 +1,23 @@
-Giteway
-
-
-        /\Deployment instructions/\
-
-
-Giteway is a web app. It requires a JDK 7 and Maven 3.
-
-First, clone the repository in your local environment. 
-
-----------------------------------JETTY----------------------------------
-To start the web app with the jetty plugin, run the following command from the app root:
-
-mvn jetty:run [options]
-
-Options:
--Dhttp.proxyHost=<arg>
--Dhttp.proxyPort=<arg>
-
-
-----------------------------------WAR----------------------------------
-To build the war, run the following command from the app root:
-mvn package
+Giteway<br/>
+<br/>
+<br/>
+        /\Deployment instructions/\\<br/>
+<br/>
+<br/>
+Giteway is a web app. It requires a JDK 7 and Maven 3.<br/>
+<br/>
+First, clone the repository in your local environment. <br/>
+<br/>
+----------------------------------JETTY----------------------------------<br/>
+To start the web app with the jetty plugin, run the following command from the app root:<br/>
+<br/>
+mvn jetty:run [options]<br/>
+<br/>
+Options:<br/>
+-Dhttp.proxyHost=<arg><br/>
+-Dhttp.proxyPort=<arg><br/>
+<br/>
+<br/>
+----------------------------------WAR----------------------------------<br/>
+To build the war, run the following command from the app root:<br/>
+mvn package<br/>
