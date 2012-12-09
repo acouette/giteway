@@ -1,5 +1,5 @@
-var searchType;
 
+//Initialize
 $(document).ready(function() {
 
 	//define button as a jqueryUI button
@@ -36,12 +36,14 @@ $(document).ready(function() {
 			return false;
 		}
 	});
+	
 	// hide animated gif
 	$("#load-gif").hide();
+	
 	// Add watermark in search input
 	$("#keyword").watermark('Search a GitHub repository');
 
-	// Autosuggest
+	// Autosuggest on keyup
 	$("#keyword").keyup(function() {
 		autosuggest();
 	});

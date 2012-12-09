@@ -1,6 +1,7 @@
 package org.kwet.giteway.controller.website;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -71,9 +72,14 @@ public class SearchController {
 	 */
 	@RequestMapping(value = "/{type}/{keyword}", method = RequestMethod.GET)
 	public String handleSearch(Model model, @PathVariable String type, @PathVariable String keyword) {
+
+		//Hack for cloudFoundry
+		//term = new String(term.getBytes("ISO-8859-15"), "UTF-8");
+		
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Start handling restful search request with keyword: " + keyword + " | type: " + type);
 		}
+		
 
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("type", type);
@@ -81,10 +87,10 @@ public class SearchController {
 		List<Repository> repositories = null;
 		switch (SearchType.getSearchType(type)) {
 		case OWNER:
-			repositories = gitSearchConnector.searchRepositoryByOwner(keyword);
+			repositories = gitSearchConnector.searchRepositoriesByOwner(keyword);
 			break;
 		case KEYWORD:
-			repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
+			repositories = gitSearchConnector.searchRepositoriesByKeyword(keyword);
 			break;
 
 		default:
@@ -120,6 +126,10 @@ public class SearchController {
 	@RequestMapping(value = "/extra/{type}/{keyword}", method = RequestMethod.GET)
 	@ResponseBody
 	public String handleExtraSearch(Model model, @PathVariable String type, @PathVariable String keyword) throws IOException {
+		
+		//Hack for cloudFoundry
+		//term = new String(term.getBytes("ISO-8859-15"), "UTF-8");
+		
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Handling restful extra search request with keyword : " + keyword);
 		}
@@ -127,10 +137,10 @@ public class SearchController {
 		List<Repository> repositories = null;
 		switch (SearchType.getSearchType(type)) {
 		case OWNER:
-			repositories = gitSearchConnector.searchRepositoryByOwner(keyword);
+			repositories = gitSearchConnector.searchRepositoriesByOwner(keyword);
 			break;
 		case KEYWORD:
-			repositories = gitSearchConnector.searchRepositoryByKeyword(keyword);
+			repositories = gitSearchConnector.searchRepositoriesByKeyword(keyword);
 			break;
 
 		default:
@@ -157,6 +167,9 @@ public class SearchController {
 	@RequestMapping(value = "/autosuggest/{type}", method = RequestMethod.GET)
 	public String handleAutosuggest(Model model, @PathVariable String type, @RequestParam String term) throws IOException {
 
+		//Hack for cloudFoundry
+		//term = new String(term.getBytes("ISO-8859-15"), "UTF-8");
+		
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Handling autocomplete with term : " + term);
 		}

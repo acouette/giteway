@@ -36,8 +36,8 @@
 						<form action="${pageContext.request.contextPath}/search" method="post" >
 						<input id="keyword" name="keyword" type="text" autocomplete="off" value="${keyword}" />
 						<input id="submitKeyword" type="submit" value="Search"/>&nbsp;
-				        <input type="radio" id="keyword-radio" name="type" value="keyword"/><label for="keyword-radio">by Keyword</label>&nbsp;
-				        <input type="radio" id="owner-radio" name="type" value="owner"/><label for="user-radio">by Owner</label>
+				        <input type="radio" id="keyword-radio" name="type" value="keyword"/><label for="keyword-radio">&nbsp;by Keyword</label>&nbsp;
+				        <input type="radio" id="owner-radio" name="type" value="owner"/><label for="user-radio">&nbsp;by Owner</label>
 						</form>
 					</div>
 					<c:if test="${unknowRepo}">

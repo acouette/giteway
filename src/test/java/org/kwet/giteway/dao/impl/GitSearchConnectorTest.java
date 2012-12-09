@@ -29,7 +29,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "matchingKeyword";
 		String responseFile = "search-repos";
 		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(1, repositorySearchs.size());
@@ -45,7 +45,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "guillaumebort";
 		String responseFile = "search-repos-by-owner";
 		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByOwner(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByOwner(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(2, repositorySearchs.size());
@@ -65,7 +65,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "unknownOwner";
 		String responseFile = "search-repos-by-owner";
 		configureHttpClient(responseFile,404);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByOwner(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByOwner(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(0, repositorySearchs.size());
@@ -77,7 +77,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "notMatchingKeyword";
 		String responseFile = "search-repos-empty";
 		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(0, repositorySearchs.size());
@@ -90,7 +90,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 			String keyword = "anyKeyword";
 			String responseFile = "search-repos-unexpected";
 			configureHttpClient(responseFile);
-			gitSearchConnector.searchRepositoryByKeyword(keyword);
+			gitSearchConnector.searchRepositoriesByKeyword(keyword);
 
 			fail("expected HttpMessageNotReadableException");
 
@@ -135,8 +135,8 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		List<String> repositoryNames = gitSearchConnector.searchUserNames(keyword, 5);
 		assertNotNull(repositoryNames);
 		assertEquals(5, repositoryNames.size());
-		assertEquals("Mar", repositoryNames.get(0));
-		assertEquals("Marak", repositoryNames.get(1));
+		assertEquals("mar", repositoryNames.get(0));
+		assertEquals("marak", repositoryNames.get(1));
 		assertEquals("marasb16", repositoryNames.get(2));
 		assertEquals("marltu", repositoryNames.get(3));
 		assertEquals("martaponzoni", repositoryNames.get(4));

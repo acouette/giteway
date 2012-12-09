@@ -18,7 +18,7 @@ public interface GitSearchConnector {
 	 * @param keyword : the search keyword
 	 * @return the matching repository list
 	 */
-	List<Repository> searchRepositoryByKeyword(String keyword);
+	List<Repository> searchRepositoriesByKeyword(String keyword);
 	
 	/**
 	 * Search repository by owner.
@@ -26,7 +26,7 @@ public interface GitSearchConnector {
 	 * @param owner : the repository owner
 	 * @return the matching repository list
 	 */
-	List<Repository> searchRepositoryByOwner(String owner);
+	List<Repository> searchRepositoriesByOwner(String owner);
 	
 	/**
 	 * Search repository names by keyword.

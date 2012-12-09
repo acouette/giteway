@@ -3,6 +3,7 @@ package org.kwet.giteway.controller.website;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class SearchControllerTest {
 		repositoryList.add(repository2);
 
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(repositoryList);
+		when(gitSearchConnector.searchRepositoriesByKeyword("test")).thenReturn(repositoryList);
 
 		SearchController searchController = new SearchController();
 
@@ -70,7 +71,7 @@ public class SearchControllerTest {
 		repositoryList.add(repository2);
 
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByOwner("test")).thenReturn(repositoryList);
+		when(gitSearchConnector.searchRepositoriesByOwner("test")).thenReturn(repositoryList);
 
 		SearchController searchController = new SearchController();
 
@@ -87,9 +88,9 @@ public class SearchControllerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepositoryNoResult() {
+	public void testSearchRepositoryNoResult() throws UnsupportedEncodingException {
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(new ArrayList<Repository>());
+		when(gitSearchConnector.searchRepositoriesByKeyword("test")).thenReturn(new ArrayList<Repository>());
 
 		SearchController searchController = new SearchController();
 		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
@@ -163,7 +164,7 @@ public class SearchControllerTest {
 		}
 
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(repositoryList);
+		when(gitSearchConnector.searchRepositoriesByKeyword("test")).thenReturn(repositoryList);
 
 		SearchController searchController = new SearchController();
 
@@ -191,7 +192,7 @@ public class SearchControllerTest {
 		}
 
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByKeyword("test")).thenReturn(repositoryList);
+		when(gitSearchConnector.searchRepositoriesByKeyword("test")).thenReturn(repositoryList);
 
 		SearchController searchController = new SearchController();
 
@@ -217,7 +218,7 @@ public class SearchControllerTest {
 		}
 
 		gitSearchConnector = mock(GitSearchConnector.class);
-		when(gitSearchConnector.searchRepositoryByOwner("test")).thenReturn(repositoryList);
+		when(gitSearchConnector.searchRepositoriesByOwner("test")).thenReturn(repositoryList);
 
 		SearchController searchController = new SearchController();
 

@@ -37,8 +37,8 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
      * {@inheritDoc}
      */
 	@Override
-	@Cacheable("repositories")
-	public List<Repository> searchRepositoryByKeyword(String keyword) {
+	@Cacheable("searchRepositoriesByKeyword")
+	public List<Repository> searchRepositoriesByKeyword(String keyword) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
 		List<Repository> repositories = new ArrayList<>();
@@ -54,7 +54,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
      * {@inheritDoc}
      */
 	@Override
-	@Cacheable("autosuggests")
+	@Cacheable("searchRepositoryNames")
 	public List<String> searchRepositoryNames(String keyword, int limit) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		GitHubRepositories gitHubRepositories = getGitHttpClient().executeGetRequest(GET_REPOSITORIES_BY_KEYWORD, GitHubRepositories.class, keyword);
@@ -65,7 +65,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 				break;
 			}
 			if(gr.getName().toLowerCase().startsWith(keyword.toLowerCase()) && !repositoryNames.contains(gr.getName())){
-				repositoryNames.add(gr.getName());
+				repositoryNames.add(gr.getName().toLowerCase());
 				i++;
 			}
 		}
@@ -77,7 +77,8 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
      * {@inheritDoc}
      */
 	@Override
-	public List<Repository> searchRepositoryByOwner(String owner) {
+	@Cacheable("searchRepositoriesByOwner")
+	public List<Repository> searchRepositoriesByOwner(String owner) {
 		Validate.notEmpty(owner, "Owner must be null and not empty");
 		GitHubRepository[] gitHubRepositories = null;
 		List<Repository> repositories = new ArrayList<>();
@@ -97,6 +98,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 	}
 
 	@Override
+	@Cacheable("searchUserNames")
 	public List<String> searchUserNames(String keyword, int limit) {
 		Validate.notEmpty(keyword, "Keyword must be null and not empty");
 		GitHubUsers gitHubUsers = getGitHttpClient().executeGetRequest(GET_USERS_BY_KEYWORD, GitHubUsers.class, keyword);
@@ -107,7 +109,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 				break;
 			}
 			if(gr.getLogin().toLowerCase().startsWith(keyword.toLowerCase()) && !userNames.contains(gr.getLogin())){
-				userNames.add(gr.getLogin());
+				userNames.add(gr.getLogin().toLowerCase());
 				i++;
 			}
 		}

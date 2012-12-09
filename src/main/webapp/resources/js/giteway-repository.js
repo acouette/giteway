@@ -129,8 +129,11 @@ var setView = function(view) {
  * Function Show the panel associated to the current view
  */
 var showCurrentView = function() {
-	$("#load-gif").hide();
-	$(currentView).slideDown("slow");
+
+	$(currentView).slideDown("slow",function(){
+		$("#load-gif").hide();
+	});
+	
 };
 
 /**
