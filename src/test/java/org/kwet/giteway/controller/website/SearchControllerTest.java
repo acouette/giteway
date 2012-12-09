@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitSearchConnector;
 import org.kwet.giteway.model.Repository;
+import org.kwet.giteway.model.SearchType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ExtendedModelMap;
 
@@ -22,7 +23,7 @@ public class SearchControllerTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepository() {
+	public void testSearchRepositoryByKeyword() {
 
 		List<Repository> repositoryList = new ArrayList<>();
 
@@ -44,7 +45,39 @@ public class SearchControllerTest {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
 
-		String result = searchController.handleSearch(uiModel, "test");
+		String result = searchController.handleSearch(uiModel, SearchType.KEYWORD.getType(),"test");
+		Assert.assertEquals("search", result);
+		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
+		Assert.assertEquals(2, repositoriesInModel.size());
+		Assert.assertNull(uiModel.get("noResult"));
+		Assert.assertNull((Boolean)uiModel.get("extraReposAvailable"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSearchRepositoryByOwner() {
+
+		List<Repository> repositoryList = new ArrayList<>();
+
+		Repository repository1 = new Repository();
+		repository1.setName("couettos");
+		repository1.setName("giteway");
+		repositoryList.add(repository1);
+
+		Repository repository2 = new Repository();
+		repository2.setName("pipin");
+		repository2.setName("cowork");
+		repositoryList.add(repository2);
+
+		gitSearchConnector = mock(GitSearchConnector.class);
+		when(gitSearchConnector.searchRepositoryByOwner("test")).thenReturn(repositoryList);
+
+		SearchController searchController = new SearchController();
+
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
+
+		String result = searchController.handleSearch(uiModel, SearchType.OWNER.getType(),"test");
 		Assert.assertEquals("search", result);
 		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
 		Assert.assertEquals(2, repositoriesInModel.size());
@@ -62,7 +95,7 @@ public class SearchControllerTest {
 		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
 
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		String result = searchController.handleSearch(uiModel, "test");
+		String result = searchController.handleSearch(uiModel, SearchType.KEYWORD.getType(),"test");
 
 		Assert.assertEquals("search", result);
 		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
@@ -72,7 +105,7 @@ public class SearchControllerTest {
 	}
 
 	@Test
-	public void testAutocomplete() throws Exception {
+	public void testAutocompleteByKeyword() throws Exception {
 		gitSearchConnector = mock(GitSearchConnector.class);
 
 		List<String> names = new ArrayList<>();
@@ -88,7 +121,29 @@ public class SearchControllerTest {
 		ReflectionTestUtils.setField(searchController, "objectMapper", objectMapper);
 
 		ExtendedModelMap uiModel = new ExtendedModelMap();
-		String result = searchController.handleAutosuggest(uiModel, "foo");
+		String result = searchController.handleAutosuggest(uiModel,  SearchType.KEYWORD.getType(), "foo");
+		Assert.assertEquals("[\"foobar\",\"foobob\"]", result);
+
+	}
+	
+	@Test
+	public void testAutocompleteByOwner() throws Exception {
+		gitSearchConnector = mock(GitSearchConnector.class);
+
+		List<String> names = new ArrayList<>();
+		names.add("foobar");
+		names.add("foobob");
+
+		when(gitSearchConnector.searchUserNames("foo", 5)).thenReturn(names);
+
+		SearchController searchController = new SearchController();
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
+		ReflectionTestUtils.setField(searchController, "objectMapper", objectMapper);
+
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		String result = searchController.handleAutosuggest(uiModel,  SearchType.OWNER.getType(), "foo");
 		Assert.assertEquals("[\"foobar\",\"foobob\"]", result);
 
 	}
@@ -115,7 +170,7 @@ public class SearchControllerTest {
 		ExtendedModelMap uiModel = new ExtendedModelMap();
 		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
 
-		String result = searchController.handleSearch(uiModel, "test");
+		String result = searchController.handleSearch(uiModel,SearchType.KEYWORD.getType(), "test");
 		Assert.assertEquals("search", result);
 		List<Repository> repositoriesInModel = (List<Repository>) uiModel.get("repositories");
 		Assert.assertEquals(10, repositoriesInModel.size());
@@ -124,13 +179,14 @@ public class SearchControllerTest {
 	}
 	
 	@Test
-	public void testExtraReposSearch() throws Exception {
+	public void testExtraReposSearchByKeyword() throws Exception {
 		List<Repository> repositoryList = new ArrayList<>();
 
 		for(int i = 0;i<12;i++){
 			Repository repository = new Repository();
 			repository.setOwner("couettos");
 			repository.setName("giteway"+i);
+			repository.setDescription("coolRepo"+i);
 			repositoryList.add(repository);
 		}
 
@@ -143,9 +199,35 @@ public class SearchControllerTest {
 		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
 		ReflectionTestUtils.setField(searchController, "objectMapper", new ObjectMapper());
 		
-		String result = searchController.handleExtraSearch(uiModel, "test");
+		String result = searchController.handleExtraSearch(uiModel, SearchType.KEYWORD.getType(), "test");
 		System.out.println(result);
-		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":\"couettos\",\"description\":null},{\"name\":\"giteway11\",\"owner\":\"couettos\",\"description\":null}]", result);
+		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":\"couettos\",\"description\":\"coolRepo10\"},{\"name\":\"giteway11\",\"owner\":\"couettos\",\"description\":\"coolRepo11\"}]", result);
+	}
+	
+	@Test
+	public void testExtraReposSearchByOwner() throws Exception {
+		List<Repository> repositoryList = new ArrayList<>();
+
+		for(int i = 0;i<12;i++){
+			Repository repository = new Repository();
+			repository.setOwner("couettos");
+			repository.setName("giteway"+i);
+			repository.setDescription("coolRepo"+i);
+			repositoryList.add(repository);
+		}
+
+		gitSearchConnector = mock(GitSearchConnector.class);
+		when(gitSearchConnector.searchRepositoryByOwner("test")).thenReturn(repositoryList);
+
+		SearchController searchController = new SearchController();
+
+		ExtendedModelMap uiModel = new ExtendedModelMap();
+		ReflectionTestUtils.setField(searchController, "gitSearchConnector", gitSearchConnector);
+		ReflectionTestUtils.setField(searchController, "objectMapper", new ObjectMapper());
+		
+		String result = searchController.handleExtraSearch(uiModel, SearchType.OWNER.getType(), "test");
+		System.out.println(result);
+		Assert.assertEquals("[{\"name\":\"giteway10\",\"owner\":\"couettos\",\"description\":\"coolRepo10\"},{\"name\":\"giteway11\",\"owner\":\"couettos\",\"description\":\"coolRepo11\"}]", result);
 	}
 
 }

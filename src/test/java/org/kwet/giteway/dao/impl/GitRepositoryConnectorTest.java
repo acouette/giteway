@@ -2,6 +2,7 @@ package org.kwet.giteway.dao.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,6 +47,19 @@ public class GitRepositoryConnectorTest extends BaseGitConnectorTest {
 		assertNotNull(repository);
 
 		assertEquals("octocat", repository.getOwner());
+
+	}
+	
+	@Test
+	public void testFindUnknow() throws IllegalStateException, IOException {
+		String name = "Hello-World";
+		String owner = "octocat";
+		String responseFile = "repo";
+
+		configureHttpClient(responseFile,404);
+
+		Repository repository = gitRepositoryConnector.find(owner, name);
+		assertNull(repository);
 
 	}
 

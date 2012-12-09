@@ -20,32 +20,36 @@ import org.springframework.test.util.ReflectionTestUtils;
 public abstract class BaseGitConnectorTest {
 
 	protected GitHttpClientImpl gitHttpClient;
-	
+
 	private HttpClient httpClient;
-	
-	public BaseGitConnectorTest(){
+
+	public BaseGitConnectorTest() {
 		gitHttpClient = new GitHttpClientImpl();
 	}
 
 	protected void configureHttpClient(String responseFile) throws IllegalStateException, IOException {
-		
-		
+
+		configureHttpClient(responseFile, 200);
+	}
+
+	protected void configureHttpClient(String responseFile, int code) throws IllegalStateException, IOException {
+
 		httpClient = mock(HttpClient.class);
 		ReflectionTestUtils.setField(gitHttpClient, "httpClient", httpClient);
-		
+
 		HttpResponse httpResponse = mock(HttpResponse.class);
 		StatusLine statusLine = mock(StatusLine.class);
 		HttpEntity httpEntity = mock(HttpEntity.class);
-		
-		when(statusLine.getStatusCode()).thenReturn(200);
+
+		when(statusLine.getStatusCode()).thenReturn(code);
 		when(httpResponse.getStatusLine()).thenReturn(statusLine);
-		
+
 		InputStream is = jsonResource(responseFile).getInputStream();
 		when(httpEntity.getContent()).thenReturn(is);
 		when(httpResponse.getEntity()).thenReturn(httpEntity);
-		
+
 		when(httpClient.execute(any(HttpGet.class))).thenReturn(httpResponse);
-		
+
 	}
 
 	protected Resource jsonResource(String filename) {

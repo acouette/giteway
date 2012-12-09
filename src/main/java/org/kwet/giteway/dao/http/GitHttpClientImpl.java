@@ -54,14 +54,18 @@ public class GitHttpClientImpl implements GitHttpClient {
 		InputStream inputStream = null;
 		T returnValue = null;
 		try {
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Requesting URI :"+uri);
+			}
+			
 			// execute the request
 			HttpResponse response = httpClient.execute(getRequest);
 
 			// Check the status
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() != 200) {
-				throw new GitewayRequestException("HTTP error code : " + statusLine.getStatusCode() + ". Reason : " + statusLine.getReasonPhrase()
-						+ ". Uri : " + uri);
+				System.out.println(statusLine);
+				throw new GitewayRequestException(statusLine.getStatusCode() ,statusLine.getReasonPhrase(),uri.toString());
 			}
 
 			// Parse the response

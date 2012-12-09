@@ -51,6 +51,11 @@ public class RepositoryController {
 		
 		// find the repository
 		Repository repository = gitRepositoryConnector.find(owner, name);
+		if(repository==null){
+			model.addAttribute("unknowRepo", true);
+			return "search";
+		}
+		
 		model.addAttribute("repository", repository);
 
 		// populate the collaborators

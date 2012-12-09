@@ -1,6 +1,26 @@
+var searchType;
+
 $(document).ready(function() {
 
+	//define button as a jqueryUI button
 	$("#submitKeyword").button();
+	
+	//initialize radio
+	if(type=="keyword"){
+		$("#keyword-radio").click();
+	}else if(type=="owner"){
+		$("#owner-radio").click();
+	}
+	
+	//define radio behaviour
+	$("#keyword-radio").click(function() {
+		type = "keyword";
+		$('.searchResult').html('');
+	});
+	$("#owner-radio").click(function() {
+		type = "owner";
+		$('.searchResult').html('');
+	});
 
 	// Checks for empty keyword every 500ms to clear the result grid
 	setInterval(function() {
@@ -31,10 +51,10 @@ $(document).ready(function() {
  * Function triggered when a user clicks on the extra search link Loads the
  * extra links
  */
-var getExtraLink = function(keyword) {
+var getExtraLink = function() {
 	$("#load-gif").show();
 	$.ajax({
-		url : rootContext + "/search/extra/" + keyword,
+		url : rootContext + "/search/extra/" + type + "/" + keyword,
 		dataType : 'json',
 		success : function(response) {
 			for ( var i = 0; i < response.length; i++) {
@@ -57,7 +77,7 @@ var getExtraLink = function(keyword) {
  */
 var autosuggest = function() {
 	$("#keyword").autocomplete({
-		source : rootContext + "/search/autosuggest",
+		source : rootContext + "/search/autosuggest/"+type,
 		minLength : 2,
 		select : function(event, ui) {
 			$("#keyword").val(ui.item.value);

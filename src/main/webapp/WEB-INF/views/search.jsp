@@ -16,6 +16,11 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/giteway-search.js"></script>
 		<script type="text/javascript">
 			var rootContext = "${pageContext.request.contextPath}";
+			var type = "${type}";
+			if(type == ""){
+				type = "keyword";
+			}
+			var keyword = "${keyword}";
 		</script>
 	</head>
 
@@ -27,16 +32,23 @@
 			<div id="site_content">
 				<div id="content">
 					<!-- The search panel -->
-					<div id="searchBar" class="center searchbar">
-						<form action="${pageContext.request.contextPath}/search" method="post">
-							<input id="keyword" name="keyword" type="text" autocomplete="off" value="${keyword}" />
-							<input id="submitKeyword" type="submit" value="Search"/>
+					<div id="searchBar" class="searchbar center" >
+						<form action="${pageContext.request.contextPath}/search" method="post" >
+						<input id="keyword" name="keyword" type="text" autocomplete="off" value="${keyword}" />
+						<input id="submitKeyword" type="submit" value="Search"/>&nbsp;
+				        <input type="radio" id="keyword-radio" name="type" value="keyword"/><label for="keyword-radio">by Keyword</label>&nbsp;
+				        <input type="radio" id="owner-radio" name="type" value="owner"/><label for="user-radio">by Owner</label>
 						</form>
 					</div>
+					<c:if test="${unknowRepo}">
+						<div>
+							The repository does not seem to exist
+						</div>
+					</c:if>
 					<!-- The no result panel -->
 					<c:if test="${noResult}">
 						<div class="searchResult">
-							Your keyword - ${keyword} - did not match any repositories
+							Your keyword - ${keyword} - did not match any result
 						</div>
 					</c:if>
 					<!-- The result panel -->
@@ -57,7 +69,7 @@
 								</c:forEach>
 							</table>
 							<c:if test="${extraReposAvailable}">
-								<a  id="extralink" href="javascript:getExtraLink('${keyword}')">see more results...</a>
+								<a  id="extralink" href="javascript:getExtraLink()">see more results...</a>
 								<div>
 									<img id="load-gif" alt="loading..." src="${pageContext.request.contextPath}/resources/style/loading-icon.gif"/>
 								</div>

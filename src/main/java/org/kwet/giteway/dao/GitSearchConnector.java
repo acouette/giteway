@@ -21,6 +21,14 @@ public interface GitSearchConnector {
 	List<Repository> searchRepositoryByKeyword(String keyword);
 	
 	/**
+	 * Search repository by owner.
+	 *
+	 * @param owner : the repository owner
+	 * @return the matching repository list
+	 */
+	List<Repository> searchRepositoryByOwner(String owner);
+	
+	/**
 	 * Search repository names by keyword.
 	 * 
 	 * @param keyword : the search keyword
@@ -28,5 +36,14 @@ public interface GitSearchConnector {
 	 * @return the matching repository list
 	 */
 	List<String> searchRepositoryNames(String keyword, int limit);
+	
+	/**
+	 * Search repository names by keyword.
+	 * 
+	 * @param keyword : the search keyword
+	 * @param limit of repositories returned
+	 * @return the matching repository list
+	 */
+	List<String> searchUserNames(String user, int limit);
 
 }
