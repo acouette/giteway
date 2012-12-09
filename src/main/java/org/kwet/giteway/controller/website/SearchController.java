@@ -1,7 +1,6 @@
 package org.kwet.giteway.controller.website;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -71,10 +70,10 @@ public class SearchController {
 	 * @return the search view
 	 */
 	@RequestMapping(value = "/{type}/{keyword}", method = RequestMethod.GET)
-	public String handleSearch(Model model, @PathVariable String type, @PathVariable String keyword) {
+	public String handleSearch(Model model, @PathVariable String type, @PathVariable String keyword) throws IOException{
 
 		//Hack for cloudFoundry
-		//term = new String(term.getBytes("ISO-8859-15"), "UTF-8");
+		//keyword = new String(keyword.getBytes("ISO-8859-15"), "UTF-8");
 		
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Start handling restful search request with keyword: " + keyword + " | type: " + type);
@@ -128,7 +127,7 @@ public class SearchController {
 	public String handleExtraSearch(Model model, @PathVariable String type, @PathVariable String keyword) throws IOException {
 		
 		//Hack for cloudFoundry
-		//term = new String(term.getBytes("ISO-8859-15"), "UTF-8");
+		//keyword = new String(keyword.getBytes("ISO-8859-15"), "UTF-8");
 		
 		if (LOG.isInfoEnabled()) {
 			LOG.info("Handling restful extra search request with keyword : " + keyword);

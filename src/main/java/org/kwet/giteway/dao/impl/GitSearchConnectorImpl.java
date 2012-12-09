@@ -64,7 +64,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 			if(i==limit){
 				break;
 			}
-			if(gr.getName().toLowerCase().startsWith(keyword.toLowerCase()) && !repositoryNames.contains(gr.getName())){
+			if(gr.getName().toLowerCase().startsWith(keyword.toLowerCase()) && !repositoryNames.contains(gr.getName().toLowerCase())){
 				repositoryNames.add(gr.getName().toLowerCase());
 				i++;
 			}
@@ -108,7 +108,7 @@ public class GitSearchConnectorImpl extends AbstractGitConnector implements GitS
 			if(i==limit){
 				break;
 			}
-			if(gr.getLogin().toLowerCase().startsWith(keyword.toLowerCase()) && !userNames.contains(gr.getLogin())){
+			if(gr.getLogin().toLowerCase().startsWith(keyword.toLowerCase()) && !userNames.contains(gr.getLogin().toLowerCase())){
 				userNames.add(gr.getLogin().toLowerCase());
 				i++;
 			}

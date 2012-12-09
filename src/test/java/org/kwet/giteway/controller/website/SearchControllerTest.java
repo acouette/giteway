@@ -3,7 +3,7 @@ package org.kwet.giteway.controller.website;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class SearchControllerTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepositoryByKeyword() {
+	public void testSearchRepositoryByKeyword() throws IOException {
 
 		List<Repository> repositoryList = new ArrayList<>();
 
@@ -56,7 +56,7 @@ public class SearchControllerTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepositoryByOwner() {
+	public void testSearchRepositoryByOwner() throws IOException {
 
 		List<Repository> repositoryList = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class SearchControllerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepositoryNoResult() throws UnsupportedEncodingException {
+	public void testSearchRepositoryNoResult() throws IOException {
 		gitSearchConnector = mock(GitSearchConnector.class);
 		when(gitSearchConnector.searchRepositoriesByKeyword("test")).thenReturn(new ArrayList<Repository>());
 
@@ -152,7 +152,7 @@ public class SearchControllerTest {
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testSearchRepositoryLimit() {
+	public void testSearchRepositoryLimit() throws IOException {
 
 		List<Repository> repositoryList = new ArrayList<>();
 
