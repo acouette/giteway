@@ -14,8 +14,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.params.ConnRoutePNames;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.model.GitewayRequestException;
 import org.slf4j.Logger;
@@ -37,8 +36,8 @@ public class GitHttpClientImpl implements GitHttpClient {
 	public GitHttpClientImpl() {
 	}
 
-	public GitHttpClientImpl(PoolingClientConnectionManager cm) {
-		this.httpClient = new DefaultHttpClient(cm);
+	public GitHttpClientImpl(HttpClient httpClient) {
+		this.httpClient = httpClient;
 	}
 
 	/**
@@ -54,24 +53,23 @@ public class GitHttpClientImpl implements GitHttpClient {
 		InputStream inputStream = null;
 		T returnValue = null;
 		try {
-			if(LOG.isDebugEnabled()){
-				LOG.debug("Requesting URI :"+uri);
-			}
-			
 			// execute the request
 			HttpResponse response = httpClient.execute(getRequest);
 
 			// Check the status
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() != 200) {
-				System.out.println(statusLine);
-				throw new GitewayRequestException(statusLine.getStatusCode() ,statusLine.getReasonPhrase(),uri.toString());
+				throw new GitewayRequestException("HTTP error code : " + statusLine.getStatusCode() + ". Reason : " + statusLine.getReasonPhrase()
+						+ ". Uri : " + uri);
 			}
 
 			// Parse the response
 			HttpEntity entity = response.getEntity();
+
 			inputStream = entity.getContent();
 			returnValue = new ObjectMapper().readValue(inputStream, responseType);
+			EntityUtils.consume(entity);
+			
 		} catch (IOException e) {
 			throw new GitewayRequestException(e);
 		} finally {

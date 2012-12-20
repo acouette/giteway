@@ -11,12 +11,8 @@ import org.kwet.giteway.dao.dto.GitHubCommit;
 import org.kwet.giteway.dao.dto.GitHubRepository;
 import org.kwet.giteway.dao.dto.GitHubUser;
 import org.kwet.giteway.model.Commit;
-import org.kwet.giteway.model.GitewayRequestException;
 import org.kwet.giteway.model.Repository;
 import org.kwet.giteway.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,34 +32,22 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 
 	private static final String GET_COMMITS = buildUrl(GET_BASE + "/commits") + "&page=1&per_page={count}";
 
-	private static final Logger LOG = LoggerFactory.getLogger(GitRepositoryConnectorImpl.class);
-	
 	/**
      * {@inheritDoc}
      */
 	@Override
-	@Cacheable("repositories")
 	public Repository find(String repositoryOwner, String repositoryName) {
 		Validate.notEmpty(repositoryOwner, "Owner can not be empty or null");
 		Validate.notEmpty(repositoryName, "Repository name can not be empty or null");
-		try{
-			GitHubRepository gitHubRepository = getGitHttpClient().executeGetRequest(GET_REPOSITORY, GitHubRepository.class, repositoryOwner,
-					repositoryName);
-			return DtoToModel.getRepository(gitHubRepository);
-		}catch(GitewayRequestException e){
-			if(e.getStatusCode()==404){
-				LOG.warn(e.getMessage());
-				return null;
-			}
-		}
-		return null;
+		GitHubRepository gitHubRepository = getGitHttpClient().executeGetRequest(GET_REPOSITORY, GitHubRepository.class, repositoryOwner,
+				repositoryName);
+		return DtoToModel.getRepository(gitHubRepository);
 	}
 
 	/**
      * {@inheritDoc}
      */
 	@Override
-	@Cacheable("users")
 	public List<User> findCollaborators(Repository repository) {
 		checkRepository(repository);
 		GitHubUser[] gitHubUsers = getGitHttpClient().executeGetRequest(GET_COLLABORATORS, GitHubUser[].class, repository.getOwner(), repository.getName());
@@ -79,7 +63,6 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
      * {@inheritDoc}
      */
 	@Override
-	@Cacheable("commits")
 	public List<Commit> findCommits(Repository repository, int limit) {
 
 		checkRepository(repository);
@@ -101,7 +84,7 @@ public class GitRepositoryConnectorImpl extends AbstractGitConnector implements 
 	 * @param repository
 	 */
 	private void checkRepository(Repository repository) {
-		Validate.notNull(repository, "Repository can not be null");
+		Validate.notNull(repository, "Repository can not null");
 		Validate.notEmpty(repository.getOwner(), "Owner can not be empty or null");
 		Validate.notEmpty(repository.getName(), "Repository name can not be empty or null");
 	}
