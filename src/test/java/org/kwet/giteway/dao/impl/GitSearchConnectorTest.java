@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kwet.giteway.dao.GitSearchConnector;
-import org.kwet.giteway.model.GitewayRequestException;
 import org.kwet.giteway.model.Repository;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -29,7 +28,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "matchingKeyword";
 		String responseFile = "search-repos";
 		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByKeyword(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(1, repositorySearchs.size());
@@ -38,38 +37,6 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		assertEquals("feliperazeek", repo0.getOwner());
 		assertEquals("Integrate Elastic Search in a Play! Framework Application.", repo0.getDescription());
 	}
-	
-	@Test
-	public void testSearchRepositoryByOwner() throws Exception {
-
-		String keyword = "guillaumebort";
-		String responseFile = "search-repos-by-owner";
-		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByOwner(keyword);
-
-		assertNotNull(repositorySearchs);
-		assertEquals(2, repositorySearchs.size());
-		Repository repo0 = repositorySearchs.get(0);
-		assertEquals("bootstrap", repo0.getName());
-		assertEquals("guillaumebort", repo0.getOwner());
-		assertEquals("Sleek, intuitive, and powerful front-end framework for faster and easier web development.", repo0.getDescription());
-		Repository repo1 = repositorySearchs.get(1);
-		assertEquals("cagette", repo1.getName());
-		assertEquals("guillaumebort", repo1.getOwner());
-		assertEquals("The quick and dirty datastore for prototyping", repo1.getDescription());
-	}
-	
-	@Test
-	public void testSearchRepositoryByUnknowOwner() throws Exception {
-
-		String keyword = "unknownOwner";
-		String responseFile = "search-repos-by-owner";
-		configureHttpClient(responseFile,404);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByOwner(keyword);
-
-		assertNotNull(repositorySearchs);
-		assertEquals(0, repositorySearchs.size());
-	}
 
 	@Test
 	public void testSearchRepositoryByKeywordEmpty() throws Exception {
@@ -77,7 +44,7 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		String keyword = "notMatchingKeyword";
 		String responseFile = "search-repos-empty";
 		configureHttpClient(responseFile);
-		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoriesByKeyword(keyword);
+		List<Repository> repositorySearchs = gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 		assertNotNull(repositorySearchs);
 		assertEquals(0, repositorySearchs.size());
@@ -90,11 +57,11 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 			String keyword = "anyKeyword";
 			String responseFile = "search-repos-unexpected";
 			configureHttpClient(responseFile);
-			gitSearchConnector.searchRepositoriesByKeyword(keyword);
+			gitSearchConnector.searchRepositoryByKeyword(keyword);
 
 			fail("expected HttpMessageNotReadableException");
 
-		} catch (GitewayRequestException e) {
+		} catch (RuntimeException e) {
 		}
 	}
 	
@@ -124,22 +91,6 @@ public class GitSearchConnectorTest extends BaseGitConnectorTest {
 		assertEquals("playframework-3", repositoryNames.get(2));
 		assertEquals("playframework-4", repositoryNames.get(3));
 		assertEquals("playframework-elasticsearch", repositoryNames.get(4));
-	}
-	
-	
-	@Test
-	public void testSearchUserNamesMulti() throws Exception{
-		String keyword = "mar";
-		String responseFile = "repo-users-autocomplete";
-		configureHttpClient(responseFile);
-		List<String> repositoryNames = gitSearchConnector.searchUserNames(keyword, 5);
-		assertNotNull(repositoryNames);
-		assertEquals(5, repositoryNames.size());
-		assertEquals("mar", repositoryNames.get(0));
-		assertEquals("marak", repositoryNames.get(1));
-		assertEquals("marasb16", repositoryNames.get(2));
-		assertEquals("marltu", repositoryNames.get(3));
-		assertEquals("martaponzoni", repositoryNames.get(4));
 	}
 
 

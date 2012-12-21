@@ -1,5 +1,6 @@
 package org.kwet.giteway.dao.impl;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kwet.giteway.dao.http.GitHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,17 @@ public class AbstractGitConnector {
 
 	private static final String CREDENTIALS = "?client_id=afd1b5696c7f02a5393e&client_secret=bdeedc27efd87f502bd6b932781836f514da201a";
 
+	protected ObjectMapper objectMapper = new ObjectMapper();
+	
+	
+	protected <T> T readValue(String response, Class<T> clazz){
+		try {
+			return objectMapper.readValue(response, clazz);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	/**
 	 * utility method used by subclasses to build there URLS. Abstract the base URL and credentials
 	 * 
